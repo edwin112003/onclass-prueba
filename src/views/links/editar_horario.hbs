@@ -1,0 +1,219 @@
+
+    <!--Aqui metemos el segundo div, primera tabla-->
+    <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center">
+      <div class="border"> 
+        <form action="/links/editar_horario/{{user.id_usuario}}" method="POST">
+          <h5 class="text-center">Agrega una clase</h5><br>
+          <div class="form-group d-flex justify-content-center">
+            
+            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
+                    <option selected>Seleccione un dia</option>
+                    <option name="dia" value="1">Lunes</option>
+                    <option name="dia" value="2">Martes</option>
+                    <option name="dia" value="3">Miercoles</option>
+                    <option name="dia" value="4">Jueves</option>
+                    <option name="dia" value="5">Viernes</option>
+                    <option name="dia" value="6">Sabado</option>
+                    <option name="dia" value="7">Domingo</option>
+            </select>
+          </div><br>
+          <div class="dropdown d-flex justify-content-center">
+            <input type="text" class="form-control col-sm-6" name="nombre" placeholder="Nombre de la clase">       
+          </div><br>
+          <div class="d-flex justify-content-around">
+              <div class=" form-group p-2">
+                  <select class="form-select btn btn-secondary" name="horai" id="inhoras1" aria-label="Default select example">
+                    <option selected>Hora de inicio</option>
+                    
+                  </select>                
+              </div>
+              <div class=" form-group p-2">
+                  <select class="form-select btn btn-secondary" name="horat" id="inhoras2" aria-label="Default select example">
+                    <option selected>Hora de termino</option>
+                    
+                  </select>              
+              </div>                         
+          </div>
+          <div class="d-flex justify-content-around">
+            <div class="d-flex align-items-center p-2">
+                <button type="submit" class="btn btn-secondary">Guardar</button>
+                
+            </div>  
+          </div>
+        </form>
+                
+      </div>      
+    </div><br>
+     <!--DIV EDITAR HORARIO-->
+    <div class="d-flex justify-content-center">
+      <div class="border">
+        <form action="/links/editar_clase/{{user.id_usuario}}" method="GET">
+          <h5 class="text-center">Elimina/Edita una clase</h5><br>
+          <div class="form-group d-flex justify-content-center">          
+            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
+                    <option selected>Seleccione un dia</option>
+                    <option value="1">Lunes</option>
+                    <option value="2">Martes</option>
+                    <option value="3">Miercoles</option>
+                    <option value="4">Jueves</option>
+                    <option value="5">Viernes</option>
+                    <option value="6">Sabado</option>
+                    <option value="7">Domingo</option>
+            </select>
+          </div><br>
+          <div class="dropdown d-flex justify-content-center">
+            <select class="form-select btn btn-secondary"  aria-label="Default select example">
+                    <option selected>Seleccione una clase</option>
+                    {{#each clases}}
+                    <option value="{{nombre_clase}}">{{nombre_clase}}</option>
+                    {{/each}}
+            </select> 
+          </div><br>
+          <div class="d-flex justify-content-around">
+              <div class=" form-group p-2">
+                  <select class="form-select btn btn-secondary" name="horai" id="inhoras3" aria-label="Default select example">
+                    <option selected>Hora de inicio</option>                    
+                  </select>                 
+              </div>                                  
+          </div>          
+          <div class="d-flex justify-content-around">
+            <div class="d-flex align-items-center p-2">
+              <button type="submit" class="btn btn-secondary">Editar clase</button>
+            </div>   
+          </div>
+        </form>                 
+      </div>      
+    </div><br>
+
+    </div>
+    
+    <!--Aqui metenoms el tercer div, segundo menu-->
+    <div class="d-flex justify-content-center">
+      <div class="border">
+        <h5 class="text-center">Horario</h5><br>
+        <div class="border p-4">
+          <div class=" form-group d-flex justify-content-center" style="max-width: 700px;">
+            <table class="table table-bordered">
+              <thead >
+                <tr>
+                  <th scope="col">Hora</th>
+                  <th scope="col">Lunes</th>
+                  <th scope="col">Martes</th>
+                  <th scope="col">Miercoles</th>
+                  <th scope="col">Jueves</th>
+                  <th scope="col">Viernes</th>
+                  <th scope="col">Sabado</th>
+                  <th scope="col">Domingo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td style="background-color:#A0F026;">Clase</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td style="background-color:#6B26F0;">Clase</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td style="background-color:#23EB5F;">Clase</td>
+                  <td style="background-color:#E63E25;">Clase</td>
+                  <td></td>
+                  <td style="background-color:#F09326;">Clase</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td style="background-color:#D9BC2E;">Clase</td>
+                  <td style="background-color:#F09326;">Clase</td>
+                  <td style="background-color:#6B26F0;">Clase</td>
+                  <td style="background-color:#F09326;">Clase</td>
+                  <td style="background-color:#23EB5F;">Clase</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td></td>
+                  <td></td>
+                  <td style="background-color:#6B26F0;">Clase</td>
+                  <td></td>
+                  <td style="background-color:#E63E25;">Clase</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td style="background-color:#F09326;">Clase</td>
+                  <td></td>
+                  <td style="background-color:#D9BC2E;">Clase</td>
+                  <th></th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">6</th>
+                  <td style="background-color:#C664F0;">Clase</td>
+                  <td></td>
+                  <td style="background-color:#E63E25;">Clase</td>
+                  <td style="background-color:#C664F0;">Clase</td>
+                  <td style="background-color:#F09326;">Clase</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">7</th>
+                  <td style="background-color:#C664F0;">Clase</td>
+                  <td style="background-color:#D9BC2E;">Clase</td>
+                  <td style="background-color:#E63E25;">Clase</td>
+                  <td style="background-color:#C664F0;">Clase</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">8</th>
+                  <td style="background-color:#6B26F0;">Clase</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">9</th>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    
+    
+    <script src="js/jquery.js" type="text/javascript"></script>
+    
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
+    
+    <script src="/js/horario.js" var="{{user.id_usuario}}"></script>
+
+</body> 

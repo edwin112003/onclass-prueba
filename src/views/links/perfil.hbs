@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar_tareas</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
+
+    <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="../libs/css/form-validation.css" rel="stylesheet">
+    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="/links/index_login"><img src="/img/OnClass.png" width="130px" height="70px"></a>
+              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/links/Horario">Horario</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/clase_proyecto">Grupos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/pendientes">Pendientes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/pendientes">Mensajes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/mostrar_cosas">COsas</a>
+                  </li>
+              </ul>
+              
+              
+              <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
+                <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg></a>
+              
+        </div>
+      </nav>
+     
+        <hr><center><img src="https://media.gq.com.mx/photos/5f8336a73515c53dd2a8653c/master/pass/the-batman-robert-pattinson-matt-reeves.jpg" alt="" class="rounded-pill" height="120"></center>
+        <center><h5>{{user.nombre_usuario}}</h5></center>
+        <br>
+    
+
+    <div class="container">    
+    <div class="row">
+    <div class="col-md-4 order-md-2 mb-4">
+      
+      <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-muted">Contactos</span>       
+      </h4>
+      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+      </svg>
+      <input class="form-control mr-sm-2" style="border-radius :80em ;" type="search" placeholder="Buscar amigos" aria-label="Search">
+      <button type="button" class="btn btn-secondary">Buscar</button>
+      {{#each usuarios}}
+      
+      <ul class="list-group mb-3">
+        
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">{{nombre_usuario}}</h6> Falta eliminar con el id
+            <small class="text-muted">Brief description</small>
+          </div>
+          <span class="text-muted">
+          	<svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+             <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            </svg>            
+
+           </span>
+           <div>
+             <a href="/links/editar_perfil/{{id_contacto}}" class="btn btn-secondary">Eliminar</a>
+           </div>
+        </li>
+      </ul>
+      {{/each}}
+     
+    </div>
+    
+    <div class="col-md-8 order-md-1">
+
+        <div class="mb-3">
+          <label>Usertag</label>
+          <div class="input-group"> 
+            <input type="text" class="form-control" value="{{user.usertag}}" readonly="readonly">
+          </div>  
+        </div>
+        <div class="mb-3">
+          <label>Contraseña</label>
+          <div class="input-group"> 
+            <input type="text" class="form-control" value="{{user.pass_usuario}}" readonly="readonly">
+          </div>  
+        </div>         
+        <div class="mb-3">
+          <label for="email">Correo</label>
+          <div class="input-group"> 
+            <input type="text" class="form-control" value="{{user.correo_usuario}}" readonly="readonly">
+          </div>  
+        </div>
+        <div class="mb-3">
+          <label>Nombre</label>
+          <div class="input-group"> 
+            <input type="email" class="form-control" value="{{user.nombre_usuario}}" readonly="readonly">
+          </div>  
+        </div>
+        <div class="mb-3">
+          <label>Llave</label>
+          <div class="input-group"> 
+            <input type="email" class="form-control" value="{{user.llave_usuario}}" readonly="readonly">
+          </div>  
+        </div>
+        <input type="text" value="{{user.id_usuario}}">
+
+    <div>
+      <a href="/links/editar_perfil/{{user.id_usuario}}" class="btn btn-secondary">Editar</a>
+    </div>
+    </div> 
+    
+  </div>
+</div>
+    
+      
+      
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="/js/funciones.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/form-validation.js"></script>
+        <script src="/js/urls.js"></script>
+</body> 
+</html>
