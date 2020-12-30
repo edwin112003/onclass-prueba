@@ -13,23 +13,18 @@ passport.use('local.login', new LocalStrategy({
         const user = rows[0];
         user.nota = "";
         user.room = "";
-        if(password == user.nombre_usuario){
-            console.log('llega');
-            console.log('ussser: ', user);
+        if(password == user.pass_usuario){
             const clases = await pool.query("call GetClas (?)", [user.id_usuario]);
             clases.pop();
-            const clas = clases[0];
-            
-            done(null, user, null);
+            const clas = clases[0];            
+            done(null, user, req.flash('success', 'Buenas ' +user.nombre_usuario));
             
         }else{
-            console.log('mal algo');
-            done(null, false,null);
+            done(null, false,req.flash('message', 'Contraseña incorrecta'));
         }
     }
     else{
-        console.log('mla usuario')
-        done(null, false, null);
+        done(null, false,req.flash('message', 'Usuario incorrecto'));
     }
 }));
 

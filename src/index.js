@@ -39,14 +39,16 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 //Middlewares
+app.use(session({
+  secret: 'abcdefg',
+  resave: true,
+  saveUninitialized: false
+}));
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({
-    secret: 'abcdefg',
-    resave: true,
-    saveUninitialized: false
-}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -66,15 +68,15 @@ app.locals.user = {
   nota: ''
 }
 app.use((req,res,next)=>{
+  app.locals.success = req.flash('success');
+  app.locals.message = req.flash('message'); 
+
   if (typeof(req.user) == "undefined") {
     app.locals.user = req.user;
     app.locals.nota = "";
-    console.log('xdd',req.user);
   }else{
-    console.log(typeof(typeof(req.user)));
     req.user.nota = app.locals.nota;
     app.locals.user = req.user;
-    console.log('Aber2',req.user);
   }
     next();
 });
@@ -88,7 +90,6 @@ io.on('connection', socket => {
     console.log('entrada de nuevo socket');
     socket.on('joinRoom', ({ username, room }) => {
       const user = userJoin(socket.id, username, room);
-      console.log('saadshgasjkdgajsghdajsgdasd',user);
   
       socket.join(user.room);
   

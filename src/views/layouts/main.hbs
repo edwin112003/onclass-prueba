@@ -17,6 +17,34 @@
 </head>
 <body>
     {{> navigation}}
+    {{#if message}}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mx-auto">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{success}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+	{{#if success}}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mx-auto">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{success}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
     {{{body}}}
   {{!-- jquery --}}
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
