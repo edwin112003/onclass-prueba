@@ -73,8 +73,8 @@ router.get('/clase_resto_dia', (req,res)=>{
 router.get('/Horario', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
-    console.log("Vamos a crear el horario", clase[0]);
-    res.render('links/Horario'); 
+    console.log("Vamos a crear el horario", clase[0][0]);
+    res.render('links/Horario', {clases: clase[0][0]}); 
 });
 router.get('/contactos', (req,res)=>{
     res.render('links/contactos'); 
@@ -148,12 +148,12 @@ router.get('/clase_pendiente', (req,res)=>{
 router.get('/proyecto', (req,res)=>{
     res.render('links/proyecto'); 
 });
-router.get('/editar_horario', async (req,res)=>{  
+router.get('/editar_horario', isLoggedIn, async (req,res)=>{  
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
     res.render('links/editar_horario', {clases: clase[0]}); 
 });
-router.post('/editar_horario/:id', async (req,res)=>{  
+router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{  
     const id = req.params;  
     
         let {nombre, dia, horai, horat} = req.body;
@@ -169,7 +169,7 @@ router.post('/editar_horario/:id', async (req,res)=>{
        await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
         res.redirect('/links/editar_horario'); 
 });
-router.post('/editar_clase', async (req, res)=>{
+router.post('/editar_clase', isLoggedIn, async (req, res)=>{
     
     let {dia, horai, id} = req.body;
         let clase = {
@@ -187,7 +187,7 @@ router.post('/editar_clase', async (req, res)=>{
             console.log(obj);
     res.render('links/editar_clase', {obj});
 });
-router.post('/update_clase/:id', async(req,res)=>{
+router.post('/update_clase/:id', isLoggedIn, async(req,res)=>{
     const params = req.params;
     const {nombre, dia, horai, horat} = req.body;
     const new_clase = {
@@ -203,7 +203,7 @@ router.post('/update_clase/:id', async(req,res)=>{
     await pool.query('call EditClas (?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
     res.redirect('/links/editar_horario');
 });
-router.post('/delete_clase', async(req, res)=>{
+router.post('/delete_clase', isLoggedIn, async(req, res)=>{
     let id = req.body.id;
     id= parseInt(id);
     console.log(id);
