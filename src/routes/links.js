@@ -98,13 +98,13 @@ router.get('/clase_proyecto',isLoggedIn, (req,res)=>{
 
 router.get('/perfil', isLoggedIn,async (req,res)=>{
 
-    const contactos = await pool.query('call GetCont (?)',11);
+    const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
     console.log(contactos);
 
     console.log('pepepepepepe',contactos[0]);
 
-    res.render('links/perfil', {layout: 'login',perfil,usuarios: contactos[0]}); 
+    res.render('links/perfil', {layout: 'login',usuarios: contactos[0]}); 
 });
 
 router.get('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
