@@ -77,8 +77,17 @@ router.get('/clase_resto_dia', isLoggedIn,(req,res)=>{
 router.get('/Horario', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
-    console.log("Vamos a crear el horario", clase[0][0]);
-    res.render('links/Horario', {clases: clase[0][0]}); 
+    console.log("Vamos a crear el horario", clase[0]);
+    const clas = clase[0];
+    
+    res.render('links/Horario', {clases: clas}); 
+});
+router.post('/Horario',  async (req,res)=>{
+    const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
+    clase.pop();
+    console.log("Vamos a crear el horario", clase[0]);
+    const clas = clase[0];
+    res.json(clas);
 });
 router.get('/contactos',isLoggedIn, (req,res)=>{
     res.render('links/contactos'); 
