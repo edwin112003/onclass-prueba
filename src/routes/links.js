@@ -24,6 +24,7 @@ router.get('/login', (req,res)=>{
     res.render('links/login', {layout: 'login'}); 
 });
 router.post('/login', (req,res,next)=>{
+    console.log('estoy aqui');
     passport.authenticate('local.login',{        
         successRedirect: '/links/Horario',
         failureRedirect: '/links/login',
@@ -42,6 +43,8 @@ router.get('/logout', (req,res)=>{
 
 //rutas del chat
 router.get('/chat', isLoggedIn, (req,res)=>{
+    console.log('chat:',  req.params);
+    console.log('chat:',  req.body);
     res.render('links/chat', {layout: 'login'});
 });
 router.get('/chat_menu', isLoggedIn, async (req,res)=>{
@@ -52,11 +55,13 @@ router.get('/chat_menu', isLoggedIn, async (req,res)=>{
     res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
+    console.log('bodu:', req.body) ;
     const {username,room} = req.body;     
     const newlink = {
         username,
         room
         };
+    console.log(newlink.room);
     res.render('links/chat', {layout: 'login',newlink : newlink.room});
 });
 //rutas del chat final    
@@ -69,8 +74,10 @@ router.get('/registro', (req,res)=>{
 router.get('/clase_resto_dia', isLoggedIn,(req,res)=>{
     res.render('links/clase_resto_dia'); 
 }); 
-router.get('/Horario', isLoggedIn, (req,res)=>{
-    
+router.get('/Horario', isLoggedIn, async (req,res)=>{
+    const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
+    clase.pop();
+    console.log("Vamos a crear el horario", clase[0]);
     res.render('links/Horario'); 
 });
 router.get('/contactos',isLoggedIn, (req,res)=>{
@@ -82,22 +89,25 @@ router.get('/clase_proyecto',isLoggedIn, (req,res)=>{
 
 router.get('/perfil', isLoggedIn,async (req,res)=>{
 
-    const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
+    const contactos = await pool.query('call GetCont (?)',11);
     contactos.pop();
     console.log(contactos);
 
+    console.log('pepepepepepe',contactos[0]);
 
-    res.render('links/perfil', {layout: 'login',usuarios: contactos[0]}); 
+    res.render('links/perfil', {layout: 'login',perfil,usuarios: contactos[0]}); 
 });
 
 router.get('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
     const {id} = req.params;
+    console.log(id);
     const perfil = await pool.query('select * from E_Usuario where id_usuario = ?',[id]);
     res.render('links/editar_perfil', {perfil: perfil[0]});
 });
 
 router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
     const {id} = req.params;
+    console.log('asdasdasdasdasdasdasdasdasdadsasdasd');
 
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;     
     const newlink = {
@@ -106,6 +116,7 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
         correo_usuario,
         nombre_usuario
     };
+    console.log(newlink);
 
     await pool.query('call EditUsu(?,?,?,?,?)',
     [id,
@@ -182,11 +193,13 @@ router.post('/editar_clase/:id',isLoggedIn, async (req, res)=>{
     let {dia, horai} = req.body;
         let clase = {
             dia,
-            horai
+            horai,
+            id
         };
         clase.dia=parseInt(clase.dia);
         clase.horai=parseInt(clase.horai);
-        var editar_clase = await pool.query('call GetClasHora (?, ?, ?)', [clase.dia, clase.horai, id.id]);            
+        clase.id=parseInt(clase.id);
+        const editar_clase = await pool.query('call GetClasHora (?, ?, ?)', [clase.dia, clase.horai, clase.id]);            
             editar_clase.pop();
             console.log(editar_clase[0]);
     res.render('links/editar_clase',isLoggedIn, {clase : editar_clase[0]});
@@ -212,6 +225,7 @@ router.post('/registro', async (req,res)=>{
         nombre_usuario,
         llave_usuario
     };
+    console.log(newlink);
     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, newlink.llave_usuario]);
     res.redirect('/links/login');
 });
@@ -224,6 +238,7 @@ res.json({ url: response.url });
 });
 router.post("/save_nota",isLoggedIn,(req,res)=>{
     req.app.locals.nota = req.body.nota;
+    console.log("buenas", req.app.locals.nota);
     res.json({tag: req.app.locals.user.usertag});
     });
 /*Esta es la url que se va a meter a la basede datos*/
