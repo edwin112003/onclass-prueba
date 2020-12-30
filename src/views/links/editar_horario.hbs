@@ -48,7 +48,8 @@
      <!--DIV EDITAR HORARIO-->
     <div class="d-flex justify-content-center">
       <div class="border">
-        <form action="/links/editar_clase/{{user.id_usuario}}" method="GET">
+        <form action="/links/editar_clase" method="POST">
+          <input type="hidden" value="{{user.id_usuario}}" name="id">
           <h5 class="text-center">Elimina/Edita una clase</h5><br>
           <div class="form-group d-flex justify-content-center">          
             <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">

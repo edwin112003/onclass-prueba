@@ -5,21 +5,22 @@
             <div class=" col-md-4 mx-auto">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/links/editar_clase/{{user.id_usuario}}" method="POST">
+                        <form action="/links/delete_clase" method="POST">
                         <div class="form-group">
-                            <input type="text" value = "{{clase.nombre_clase}}" class="form-control" name="nombre" readonly="readonly">
+                             <input type="hidden" value="{{obj.id_clase}}" name="id">
+                            <input type="text" value="{{obj.nombre_clase}}" class="form-control" name="nombre" readonly="readonly">
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{clase.desc_dia}}" class="form-control" name="dia" readonly="readonly">
+                            <input type="text" value="{{obj.desc_dia}}" class="form-control" name="dia" readonly="readonly">
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{clase.horai_clase}} horas" class="form-control" name="horai" readonly="readonly">
+                            <input type="text" value="{{obj.horai_clase}} horas" class="form-control" name="horai" readonly="readonly">
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{clase.horat_clase}} horas" class="form-control" name="horat" readonly="readonly">
+                            <input type="text" value="{{obj.horat_clase}} horas" class="form-control" name="horat" readonly="readonly">
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-success btn-block">Guardar</button>
+                            <button class="btn btn-success btn-block">Eliminar</button>
                         </div>
                     </form>
                     </div>
@@ -27,27 +28,44 @@
             </div>
         </div>
     </div>
-    <!-- DATOS NUEVOS-->
+    
+</div>
+<!-- DATOS NUEVOS-->
     <div class="container p-4">
         <div class="row">
             <div class=" col-md-4 mx-auto">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/links/editar_perfil/{{perfil.id_usuario}}" method="POST">
+                        <form action="/links/update_clase/{{obj.id_clase}}" method="POST">
                         <div class="form-group">
-                            <input type="text" value = "{{perfil.usertag}}" class="form-control" name="usertag" placeholder="usertag">
+                            <input type="text" value = "{{obj.nombre_clase}}" class="form-control" name="nombre" placeholder="Nomre de la clase">
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{perfil.pass_usuario}}" class="form-control" name="contra" placeholder="contraseña">
+                            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
+                                    <option selected>Seleccione un dia</option>
+                                    <option value="1">Lunes</option>
+                                    <option value="2">Martes</option>
+                                    <option value="3">Miercoles</option>
+                                    <option value="4">Jueves</option>
+                                    <option value="5">Viernes</option>
+                                    <option value="6">Sabado</option>
+                                    <option value="7">Domingo</option>
+                            </select>                            
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{perfil.correo_usuario}}" class="form-control" name="correo_usuario" placeholder="Correo">
+                            <select class="form-select btn btn-secondary" name="horai" id="inhoras1" aria-label="Default select example">
+                                <option selected>Hora de inicio</option>
+                                
+                            </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" value = "{{perfil.nombre_usuario}}" class="form-control" name="nombre_usuario" placeholder="nombre">
+                            <select class="form-select btn btn-secondary" name="horat" id="inhoras2" aria-label="Default select example">
+                                <option selected>Hora de termino</option>
+                                
+                            </select>  
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-success btn-block">Guardar</button>
+                            <button class="btn btn-success btn-block">Actualizar</button>
                         </div>
                     </form>
                     </div>
@@ -55,4 +73,4 @@
             </div>
         </div>
     </div>
-</div>
+<script src="/js/horario.js" var="{{user.id_usuario}}"></script>
