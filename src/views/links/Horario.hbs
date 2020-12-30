@@ -1,4 +1,12 @@
 <body> 
+  {{#each clases}}
+  
+    {{nombre_clase}}
+    {{desc_dia}}
+    {{horai_clase}}
+    {{horat_clase}}
+  {{/each}}
+  <script src="/js/ver_horario.js" clase="{{clases}}"></script>
     <!--Aqui metenoms el tercer div, segundo menu-->
     <div class="d-flex justify-content-center">
       <div class="border">
@@ -42,5 +50,6 @@
     
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
     <script src="/js/funciones.js"></script>
+    
     
 </body> 

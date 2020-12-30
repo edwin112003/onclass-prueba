@@ -35,7 +35,3 @@ for(let j=1; j<4; j++){
     }    
 }
 
-let id= document.currentScript.getAttribute('var');
-
-
-console.log(id);
