@@ -135,7 +135,7 @@ router.get('/material_clase',isLoggedIn, (req,res)=>{
     res.render('links/material_clase'); 
 });
 router.get('/pendientes', isLoggedIn,(req,res)=>{
-    res.render('links/pendientes');
+    res.render('links/pendientes', {layout: 'login'});
 });
 router.get('/clase_notas', isLoggedIn,(req,res)=>{
     res.render('links/clase_notas'); 
