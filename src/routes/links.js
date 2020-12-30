@@ -44,8 +44,12 @@ router.get('/logout', (req,res)=>{
 router.get('/chat', isLoggedIn, (req,res)=>{
     res.render('links/chat', {layout: 'login'});
 });
-router.get('/chat_menu', isLoggedIn, (req,res)=>{
-    res.render('links/chat_menu', {layout : 'login'});
+router.get('/chat_menu', isLoggedIn, async (req,res)=>{
+    const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
+    
+    contactos.pop();
+    console.log(contactos[0]); 
+    res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
     const {username,room} = req.body;     
@@ -56,42 +60,43 @@ router.post('/chat_menu', isLoggedIn, (req,res)=>{
     res.render('links/chat', {layout: 'login',newlink : newlink.room});
 });
 //rutas del chat final    
-router.get('/index_login', (req,res)=>{
+router.get('/index_login',isLoggedIn, (req,res)=>{
     res.render('links/index_login'); 
 });
 router.get('/registro', (req,res)=>{
     res.render('links/registro', {layout: 'login'}); 
 }); 
-router.get('/clase_resto_dia', (req,res)=>{
+router.get('/clase_resto_dia', isLoggedIn,(req,res)=>{
     res.render('links/clase_resto_dia'); 
 }); 
 router.get('/Horario', isLoggedIn, (req,res)=>{
     
     res.render('links/Horario'); 
 });
-router.get('/contactos', (req,res)=>{
+router.get('/contactos',isLoggedIn, (req,res)=>{
     res.render('links/contactos'); 
 });
-router.get('/clase_proyecto', (req,res)=>{
+router.get('/clase_proyecto',isLoggedIn, (req,res)=>{
     res.render('links/clase_proyecto'); 
 });
 
-router.get('/perfil', async (req,res)=>{
+router.get('/perfil', isLoggedIn,async (req,res)=>{
 
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
+    console.log(contactos);
 
 
     res.render('links/perfil', {layout: 'login',usuarios: contactos[0]}); 
 });
 
-router.get('/editar_perfil/:id', async (req,res)=>{
+router.get('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
     const {id} = req.params;
     const perfil = await pool.query('select * from E_Usuario where id_usuario = ?',[id]);
     res.render('links/editar_perfil', {perfil: perfil[0]});
 });
 
-router.post('/editar_perfil/:id', async (req,res)=>{
+router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
     const {id} = req.params;
 
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;     
@@ -115,33 +120,33 @@ router.post('/editar_perfil/:id', async (req,res)=>{
 
 
 
-router.get('/material_clase', (req,res)=>{
+router.get('/material_clase',isLoggedIn, (req,res)=>{
     res.render('links/material_clase'); 
 });
-router.get('/pendientes', (req,res)=>{
+router.get('/pendientes', isLoggedIn,(req,res)=>{
     res.render('links/pendientes');
 });
-router.get('/clase_notas', (req,res)=>{
+router.get('/clase_notas', isLoggedIn,(req,res)=>{
     res.render('links/clase_notas'); 
 });
 router.get('/clase_tomar_nota',isLoggedIn, (req,res)=>{
     res.render('links/clase_tomar_nota', {layout: 'login'}); 
 });
-router.get('/clase_mensajes', (req,res)=>{
+router.get('/clase_mensajes',isLoggedIn, (req,res)=>{
     res.render('links/clase_mensajes'); 
 });
-router.get('/clase_pendiente', (req,res)=>{
+router.get('/clase_pendiente', isLoggedIn,(req,res)=>{
     res.render('links/clase_pendiente'); 
 });
-router.get('/proyecto', (req,res)=>{
+router.get('/proyecto', isLoggedIn,(req,res)=>{
     res.render('links/proyecto'); 
 });
-router.get('/editar_horario', async (req,res)=>{  
+router.get('/editar_horario',isLoggedIn, async (req,res)=>{  
     const clase = await pool.query("call GetClas (?)", 121);
     clase.pop();
     res.render('links/editar_horario', {clases: clase[0]}); 
 });
-router.post('/editar_horario/:id', async (req,res)=>{  
+router.post('/editar_horario/:id', isLoggedIn,async (req,res)=>{  
     const id = req.params;  
     
         let {nombre, dia, horai, horat} = req.body;
@@ -157,7 +162,7 @@ router.post('/editar_horario/:id', async (req,res)=>{
        await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
         res.redirect('/links/editar_horario'); 
 });
-router.get('/editar_clase/:id', async(req, res)=>{
+router.get('/editar_clase/:id', isLoggedIn,async(req, res)=>{
     const id =req.params;
     let {dia, horai} = req.body ;
         let clase = {
@@ -172,7 +177,7 @@ router.get('/editar_clase/:id', async(req, res)=>{
             console.log(editar_clase[0]);
     res.render('links/editar_clase', {clase : editar_clase[0]});
 });
-router.post('/editar_clase/:id', async (req, res)=>{
+router.post('/editar_clase/:id',isLoggedIn, async (req, res)=>{
     const id =req.params;
     let {dia, horai} = req.body;
         let clase = {
@@ -184,15 +189,15 @@ router.post('/editar_clase/:id', async (req, res)=>{
         var editar_clase = await pool.query('call GetClasHora (?, ?, ?)', [clase.dia, clase.horai, id.id]);            
             editar_clase.pop();
             console.log(editar_clase[0]);
-    res.render('links/editar_clase', {clase : editar_clase[0]});
+    res.render('links/editar_clase',isLoggedIn, {clase : editar_clase[0]});
 });
 
-router.get('/ver', async (req,res)=>{
+router.get('/ver', isLoggedIn,async (req,res)=>{
     const clase = await pool.query('call GetCont(?)',11);
     clase.pop();
     res.render('links/ver', {usuarios: clase[0]});
 });
-router.get('/mostrar_cosas', async (req,res)=>{
+router.get('/mostrar_cosas', isLoggedIn,async (req,res)=>{
     const e_usuario = await pool.query('select * from E_Usuario');
     res.render('links/mostrar_cosas', {e_usuario});
 
@@ -213,14 +218,32 @@ router.post('/registro', async (req,res)=>{
 /*Req para subir pdf*/
     var url_mysql = "";
     var response ='';
-router.post("/save_pdf",async(req,res)=>{
+router.post("/save_pdf",isLoggedIn,async(req,res)=>{
 await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
 res.json({ url: response.url }); 
 });
-router.post("/save_nota",(req,res)=>{
+router.post("/save_nota",isLoggedIn,(req,res)=>{
     req.app.locals.nota = req.body.nota;
     res.json({tag: req.app.locals.user.usertag});
     });
 /*Esta es la url que se va a meter a la basede datos*/
 url_mysql = response.url;
+
+router.get('/agregar_contacto',isLoggedIn, (req,res)=>{
+    res.render('links/agregar_contacto');
+});
+router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
+    const {id_contacto} = req.body;     
+    const newlink = {
+        id_contacto
+    };
+    await pool.query('call SaveCont(? ,?)',[req.app.locals.user.id_usuario,newlink.id_contacto]);
+    res.redirect('/links/perfil');
+});
+router.get('/eliminar_contacto/:id',isLoggedIn, async (req,res)=>{
+    const id_contacto = req.params;
+    console.log(id_contacto);
+    await pool.query('call DelCont(?,?)',[req.app.locals.user.id_usuario,id_contacto.id]);
+    res.redirect('/links/perfil');  
+});
 module.exports = router;

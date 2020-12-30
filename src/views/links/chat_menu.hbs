@@ -40,7 +40,7 @@
                     <a class="nav-link" href="/links/chat_menu">Mensajes</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/links/mostrar_cosas">COsas</a>
+                    <a class="nav-link" href="/links/mostrar_cosas">COsaasdasdasds</a>
                   </li>
               </ul>
               <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
@@ -54,6 +54,8 @@
 		<div class="d-flex justify-content-center">
 			
 			<main class="join-main">
+        
+        
 				<form  action="/links/chat_menu" method="POST">
 					<div class="form-control">
 						<label for="username">Username</label>
@@ -67,19 +69,18 @@
 							required
 						/>
 					</div>
+          
 					<div class="form-control">
 						<label for="room">Room</label>
 						<select name="room" id="room">
-							<option value="JavaScript">Contacto1</option>
-							<option value="Python">Contacto1</option>
-							<option value="PHP">Contacto1</option>
-							<option value="C#">Contacto1</option>
-							<option value="Ruby">Contacto1</option>
-							<option value="Java">Contacto1</option>
+              {{#each usuarios}}
+							<option value="{{id_usuario}}">{{nombre_usuario}}</option>
+							
 						</select>
 					</div>
 					<button type="submit" class="btn" >Join Chat</button>
 				</form>
+        {{/each}}
 			</main>
 		</div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
