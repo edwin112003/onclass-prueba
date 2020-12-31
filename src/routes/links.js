@@ -77,7 +77,6 @@ router.get('/clase_resto_dia', isLoggedIn,(req,res)=>{
 router.get('/Horario', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
-    console.log("Vamos a crear el horario", clase[0]);
     const clas = clase[0];
     
     res.render('links/Horario', {clases: clas}); 
@@ -85,7 +84,6 @@ router.get('/Horario', isLoggedIn, async (req,res)=>{
 router.post('/Horario',  async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
-    console.log("Vamos a crear el horario", clase[0]);
     const clas = clase[0];
     res.json(clas);
 });
@@ -143,8 +141,82 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
 router.get('/material_clase',isLoggedIn, (req,res)=>{
     res.render('links/material_clase'); 
 });
-router.get('/pendientes', isLoggedIn,(req,res)=>{
-    res.render('links/pendientes', {layout: 'login'});
+router.get('/pendientes', isLoggedIn, async (req,res)=>{
+    const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
+    clase.pop();
+    const pendientes = await pool.query("call GetPen(?)", req.app.locals.user.id_usuario);
+    pendientes.pop();
+   for(let i =0; i<pendientes[0].length;i++){
+       let fecha_sint = pendientes[0][i].fecha_entrega.toString();
+       let fecha_media =  fecha_sint.split(' ');
+       let fecha_muestra = `${fecha_media[2]}-${fecha_media[1]}-${fecha_media[3]}`;
+        
+        let estado = pendientes[0][i].estado_pendiente;
+        if(estado == 0){
+            let estado2 = pendientes[0][i].estado_pendiente.toString();
+            estado2 = 'Sin terminar';
+            pendientes[0][i].estado_pendiente = estado2;
+        }else{
+            pendientes[0][i].estado_pendiente = 'Terminado';
+        }
+
+       pendientes[0][i].fecha_entrega = fecha_muestra;
+   }
+   
+    res.render('links/pendientes', {layout: 'login', clases: clase[0], pendientes : pendientes[0]});
+});
+router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
+    console.log(req.body);
+    res.redirect('/links/pendientes');
+});
+router.post('/pendientes',isLoggedIn, async (req,res)=>{
+    const {nombre, descripcion, clase,fecha} = req.body;     
+    const newlink = {
+        nombre,
+        descripcion,
+        clase,
+        fecha
+    };
+    const fecha_nueva = newlink.fecha.split('/');
+    const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
+
+
+    await pool.query('call SavePen(?,?,?,?,?,?,?)',
+    [newlink.nombre,
+     newlink.descripcion, 
+     1,
+     false,
+     req.app.locals.user.id_usuario,
+     newlink.clase,
+     fecha_base]);
+
+    res.redirect('/links/pendientes');
+});
+
+router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
+    const {id} = req.body;     
+    const newlink = {
+        id
+    };
+    console.log(newlink.id);
+
+    const pendiente = await pool.query('call GetPenId(?)',
+    [newlink.id]);
+    pendiente.pop();
+    const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
+    clase.pop();
+    let fecha_valor =pendiente[0][0].fecha_entrega; 
+    let fecha_sint = pendiente[0][0].fecha_entrega.toString();
+    let fecha_media =  fecha_sint.split(' ');
+    let fecha_muestra = `${fecha_media[2]}-${fecha_media[1]}-${fecha_media[3]}`;
+    
+
+    res.render('links/editar_pendiente',{pendiente: pendiente[0],fecha_muestra,fecha_valor, clases: clase[0]});
+});
+
+router.get('/pendientes_grupo', isLoggedIn, async (req,res)=>{
+    
+    res.render('links/pendientes_grupo', {layout: 'login'});
 });
 router.get('/clase_notas', isLoggedIn,(req,res)=>{
     res.render('links/clase_notas'); 
