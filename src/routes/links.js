@@ -44,7 +44,7 @@ router.get('/logout', (req,res)=>{
 //rutas del chat
 router.get('/chat', isLoggedIn, (req,res)=>{
     console.log('chat:',  req.params);
-    console.log('chat:',  req.body);
+    console.log('chat:',  req.body); 
     res.render('links/chat', {layout: 'login'});
 });
 router.get('/chat_menu', isLoggedIn, async (req,res)=>{
