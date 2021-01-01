@@ -60,9 +60,23 @@
                       <input type="hidden" value="{{id_pendiente}}" name="id">                    
                     <h6>fecha de entrega: </h6>
                     {{fecha_entrega}}
-                    <button type="submit" class="btn">
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-success">
                       Eidtar
                     </button>
+                    <br>     
+                    <form action="/links/cambiar_estado" method="POST">
+                    <input type="hidden" name="id" value="{{id_pendiente}}">
+                    <button type="submit" class="btn btn-success">
+                      Cambiar estado
+                    </button></a>
+                    </form>           
+                    
+                    <br>
+                    <a href=""><button type="button" class="btn btn-success ">
+                      Eliminar
+                    </button></a>
                     </form>
                 </div>
             </div>

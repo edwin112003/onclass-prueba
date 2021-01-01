@@ -167,6 +167,22 @@ router.get('/pendientes', isLoggedIn, async (req,res)=>{
 });
 router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
     console.log(req.body);
+    const {id, nombre, desc, clase, fecha} = req.body;
+    const newlink = {
+        id,
+        nombre, 
+        desc, 
+        clase,
+        fecha
+    }
+    const fecha_nueva = newlink.fecha.split('/');
+    const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
+
+    await pool.query('call EditPen (?, ?, ?, ?, ?)', [newlink.id, newlink.nombre, newlink.desc, newlink.clase, fecha_base]);
+    res.redirect('/links/pendientes');
+});
+router.post('/cambiar_estado', isLoggedIn, async(req,res)=>{
+    console.log(req.body);
     res.redirect('/links/pendientes');
 });
 router.post('/pendientes',isLoggedIn, async (req,res)=>{
