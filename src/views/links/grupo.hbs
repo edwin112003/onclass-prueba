@@ -3,12 +3,24 @@
         <div class="mx-auto">
           <h5 class="text-center">Lista de tus grupos</h5>            
         </div>
-        <div>
-            buenas
-        </div>
-        <div>
-            asdasd
-        </div>
+        {{#each grupos}}
+        <form action="/links/detalle_grupo" method="POST">
+            <div>
+                <input type="hidden" name="id" value="{{clave_equipo}}">
+            </div>            
+            <div>
+                <input type="text" readonly="readonly" name="nombre" value="{{nombre_proyecto}}"></input>
+            </div>
+            <button type="submit" class="btn">
+                Detalles del proyecto
+            </button>
+        </form>
+        <form action="/links/eliminar_equipo" method="POST">
+            <input type="hidden" name="clave" value="{{clave_equipo}}">
+            <button type="submit" class="btn">Eliminar Equipo</button>
+        </form>              
+        {{/each}}
+        
     </div>
 </div>
 <div class="container d-flex justify-content-center p-4 border" style="width: 60%;">

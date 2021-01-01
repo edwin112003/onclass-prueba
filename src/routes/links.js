@@ -48,11 +48,13 @@ router.get('/chat', isLoggedIn, (req,res)=>{
     res.render('links/chat', {layout: 'login'});
 });
 router.get('/chat_menu', isLoggedIn, async (req,res)=>{
+    const grupos = await pool.query('call GetT(?)',req.app.locals.user.id_usuario);
+    grupos.pop();
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     
     contactos.pop();
     console.log(contactos[0]); 
-    res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0]});
+    res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0], grupos : grupos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
     console.log('bodu:', req.body) ;
@@ -415,22 +417,68 @@ router.get('/eliminar_contacto/:id',isLoggedIn, async (req,res)=>{
     res.redirect('/links/perfil');  
 });
 router.get('/grupo', isLoggedIn, async (req,res)=>{
+    const grupos = await pool.query('call GetT(?)',req.app.locals.user.id_usuario);
+    grupos.pop();
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
-    res.render('links/grupo',{contactos : contactos[0]});
+
+    console.log(grupos);
+    res.render('links/grupo',{contactos : contactos[0], grupos: grupos[0]});
 });
 router.post('/grupo', isLoggedIn, async (req,res)=>{
-    console.log('grupoooooooos',req.body);
     const {nombre, check_usuarios} = req.body;
     const newLink= {
         nombre,
         check_usuarios
-    }
+    } 
+    check_usuarios.push(req.app.locals.user.id_usuario); 
     const ultimo = await pool.query('call Ult()');
     ultimo.pop();
+    
     for(let i=0; i<newLink.check_usuarios.length; i++){
         await pool.query('call SaveT(?,?,?)',[ultimo[0][0].id_registroE,newLink.check_usuarios[i],newLink.nombre]);
     }
     res.redirect('/links/grupo');
-})
+});
+
+router.post('/detalle_grupo',isLoggedIn, async (req,res)=>{
+    const {id, nombre} = req.body;
+    const newLink = {
+        id,
+        nombre
+    }
+    const integrantes = await pool.query('call GetUsuT(?)',[newLink.id]);
+
+    const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
+    contactos.pop();
+    res.render('links/detalle_grupo', {integrantes : integrantes[0], nombres: newLink,contactos : contactos[0]});
+});
+router.post('/eliminar_integrante',isLoggedIn, async (req,res)=>{
+    const {id_usuario, clave} = req.body;
+    const newLink = {
+        id_usuario,
+        clave
+    }
+    await pool.query('call DelUsuT(?,?)',[newLink.clave, newLink.id_usuario]);
+
+    res.redirect('/links/grupo');
+});
+router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
+    const {clave, nombre, id_nuevo_inte} = req.body;
+    const newLink = {
+        clave,
+        nombre,
+        id_nuevo_inte
+    }
+    await pool.query('call SaveInt(?,?,?)', [newLink.clave, newLink.id_nuevo_inte, newLink.nombre]);
+    res.redirect('/links/grupo');
+});
+router.post('/eliminar_equipo',isLoggedIn, async (req,res)=>{
+    const {clave} = req.body;
+    const newLink = {
+        clave
+    }
+    await pool.query('call DelT(?)', [newLink.clave]);
+    res.redirect('/links/grupo');
+});
 module.exports = router;

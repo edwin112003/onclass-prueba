@@ -1,0 +1,47 @@
+<h2 class="text-center">{{nombres.nombre}}</h2>
+<div class="container p-4">
+    <div class="row">
+        {{#each integrantes}}
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h6>Nombre del integrante: </h6>
+                {{nombre_usuario}}
+                <form action="/links/eliminar_integrante" method="POST">
+                    <input type="hidden" value="{{id_usuario}}" name="id_usuario">
+                    <input type="hidden" value="{{clave_equipo}}" name="clave">
+                <button type="submit" class="btn p-2">
+                    Eliminar
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    </div>
+</div>
+<div class="container p-4">
+    <div class="row">
+        <div class=" col-md-4 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/links/agregar_integrante" method="POST">
+                    <div class="form-group">
+                        <input type="hidden" value="{{nombres.id}}" name ="clave">
+                        <input type="hidden" value="{{nombres.nombre}}" name ="nombre">
+                        Agrega un usuario:
+                        <select name="id_nuevo_inte">
+                            {{#each contactos}}
+							<option value="{{id_usuario}}">{{nombre_usuario}}</option>
+							{{/each}}
+						</select>
+                    </div>                  
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block">Agregar</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

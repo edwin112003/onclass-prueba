@@ -31,10 +31,13 @@
                     <a class="nav-link" href="/links/Horario">Horario</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/links/clase_proyecto">Grupos</a>
+                    <a class="nav-link" href="/links/grupo">Grupos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes">Pendientes</a>
+                    <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/pendientes_grupo">Pendientes de equipo</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/links/chat_menu">Mensajes</a>
@@ -73,6 +76,40 @@
 						<select name="room" id="room">
               {{#each usuarios}}
 							<option value="{{id_chat}}">{{nombre_usuario}}{{id_chat}}</option>
+							{{/each}}
+						</select>
+					</div>
+					<button type="submit" class="btn" >Join Chat</button>
+				</form>
+        
+			</main>
+		</div>
+
+
+    <div class="d-flex justify-content-center">
+			
+			<main class="join-main">
+        
+        
+				<form  action="/links/chat_menu" method="POST">
+					<div class="form-control">
+						<label for="username">Username</label>
+						<input
+                        readonly="readonly"
+							type="text"
+							name="username"
+							id="username"
+							placeholder="Enter username..."
+                            value="{{user.nombre_usuario}}"
+							required
+						/>
+					</div>
+          
+					<div class="form-control">
+						<label for="room">Room</label>
+						<select name="room" id="room">
+              {{#each grupos}}
+							<option value="{{clave_equipo}}">{{nombre_proyecto}}</option>
 							{{/each}}
 						</select>
 					</div>
