@@ -1,0 +1,37 @@
+<div class="container d-flex justify-content-center p-4 border" style="width: 60%;">
+    <div class="">
+        <div class="mx-auto">
+          <h5 class="text-center">Lista de tus grupos</h5>            
+        </div>
+        <div>
+            buenas
+        </div>
+        <div>
+            asdasd
+        </div>
+    </div>
+</div>
+<div class="container d-flex justify-content-center p-4 border" style="width: 60%;">
+    <div class="">
+        <div class="mx-auto">
+           <h5 class="text-center">Crear un equipo</h5>           
+        </div>
+        <form action="/links/grupo" method="POST">
+            <div>
+                <input type="text" class="form-control md-6" name="nombre" placeholder="Nombre del equipo">
+            </div>
+            <div>
+            {{#each contactos}}
+                <input type="checkbox" name="check_usuarios" value="{{id_usuario}}">{{nombre_usuario}}<br>                                 
+            {{/each}}
+            </div>
+            <div>
+                <button type="submit">Guardar</button>
+            </div>
+        </form>
+        
+        
+    </div>
+</div>      
+</div>
+</div>

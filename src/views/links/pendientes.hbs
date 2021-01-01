@@ -40,50 +40,18 @@
          
         </div>
       </nav>
-      <div class="container p-4">
-        <div class="row">
-          {{#each pendientes}}
-      <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h6>Nombre del pendiente: </h6>
-                    {{nombre_pendiente}}<p></p>
-                    <h6>Descripcion: </h6>
-                    {{desc_pendiente}}<p></p>
-                    <h6>Tipo pendiente</h6>
-                    {{nombre_tipo}}
-                    <h6>Estado: </h6>
-                    {{estado_pendiente}}
-                    <h6>Clase: </h6>
-                    {{clase}}
-                    <form action="/links/editar_pendiente" method="POST">
-                      <input type="hidden" value="{{id_pendiente}}" name="id">                    
-                    <h6>fecha de entrega: </h6>
-                    {{fecha_entrega}}
-                    <br>
-                    <br>
-                    <button type="submit" class="btn btn-success">
-                      Eidtar
-                    </button>
-                    <br>     
-                    <form action="/links/cambiar_estado" method="POST">
-                    <input type="hidden" name="id" value="{{id_pendiente}}">
-                    <button type="submit" class="btn btn-success">
-                      Cambiar estado
-                    </button></a>
-                    </form>           
-                    
-                    <br>
-                    <a href=""><button type="button" class="btn btn-success ">
-                      Eliminar
-                    </button></a>
-                    </form>
-                </div>
-            </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="d-flex justify-content-center">
+              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/links/terminados">Terminados</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/no_terminados">No terminados</a>
+                  </li>
+              </ul>  
         </div>
-        {{/each}}
-        </div>
-      </div>
+      </nav>
       
       <div class="container p-4">
     <div class="row">
