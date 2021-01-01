@@ -389,7 +389,8 @@ router.post('/registro', async (req,res)=>{
     var response ='';
 router.post("/save_pdf",isLoggedIn,async(req,res)=>{
 await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
-res.json({ url: response.url }); 
+res.json({ url: response.url });
+
 });
 router.post("/save_nota",isLoggedIn,(req,res)=>{
     req.app.locals.nota = req.body.nota;
