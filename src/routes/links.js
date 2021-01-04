@@ -372,8 +372,33 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
         clase.dia=parseInt(clase.dia);
         clase.horai=parseInt(clase.horai);
         clase.horat=parseInt(clase.horat);
-       await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
-        res.redirect('/links/editar_horario'); 
+
+        try {
+            /*if(clase.horai == clase.horat && clase.horai>clase.horat){
+                throw res.redirect('links/editar_horario');
+            }*/
+            const clasecompa = await pool.query("call GetClas2 (?)", req.app.locals.user.id_usuario);
+
+            for (let i = 0; i < clasecompa[0].length -1; i++) {
+                if(clase.dia == clasecompa[0][i].dia_clase){
+                    if(clase.horai == clasecompa[0][i].horai_clase){
+                        throw res.redirect('links/editar_horario');
+                    }
+                }
+                console.log(clasecompa[0].length);
+                console.log(clase.dia);
+                console.log(clasecompa[0][i].dia_clase);
+                console.log(clasecompa[0][i].horai_clase);
+                console.log(clasecompa);
+            }
+            await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
+            res.redirect('/links/editar_horario'); 
+
+        } catch (error) {
+            console.log(error);
+        }
+
+       
 });
 router.post('/editar_clase', isLoggedIn, async (req, res)=>{
     
@@ -428,8 +453,10 @@ router.get('/mostrar_cosas', isLoggedIn,async (req,res)=>{
 
     
 });
+/*
 router.post('/registro', async (req,res)=>{
     const {usertag, contra, correo_usuario, nombre_usuario, llave_usuario} = req.body;     
+    
     const newlink = {
         usertag,
         contra,
@@ -438,9 +465,43 @@ router.post('/registro', async (req,res)=>{
         llave_usuario
     };
     console.log(newlink);
+    console.log(allusers);
     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, newlink.llave_usuario]);
     res.redirect('/links/login');
+});*/
+router.post('/registro', async (req,res)=>{
+    const {usertag, contra, correo_usuario, nombre_usuario, llave_usuario} = req.body;   
+    //aqui hice cambio para meter el for para identidifcar el repetido
+    const allusers = await pool.query('call GetAllUsu');
+    console.log(allusers);
+    const newlink = {
+        usertag,
+        contra,
+        correo_usuario,
+        nombre_usuario,
+        llave_usuario
+    };
+    console.log(newlink);
+    try {
+        for (let i = 0; i < allusers[0].length; i++) {
+      if(allusers[0][i].usertag == newlink.usertag){
+         throw res.redirect('/links/registro');          
+        }
+       console.log(allusers[0][i].usertag);
+       console.log(newlink.usertag);        
+    }
+     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, newlink.llave_usuario]);
+     res.redirect('/links/login');
+     console.log("todo bien");
+
+    } catch (error) {
+        console.log(error);
+        
+    }
+    
+      
 });
+
 /*Req para subir pdf*/
     var url_mysql = "";
     var response ='';

@@ -13,14 +13,19 @@ function guardar(descargar){
     if(descargar){
         
         
-        
-        // New Promise-based usage:
+        if(html2pdf().from(text) == null ||html2pdf().from(img) === undefined || html2pdf().from(nota) == null || html2pdf().from(text) == "" || html2pdf().from(nota) == "null"){
+            text= "OnClass";
+            html2pdf().set(opt).from(text).to('pdf').save();
+        }else{
+            // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
             var array = {pdf: file, nombre: name, clase: clase};
             fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
         });
         html2pdf().set(opt).from(text).to('pdf').save();
+        }
+
     }else{
         console.log("si");
         // New Promise-based usage:

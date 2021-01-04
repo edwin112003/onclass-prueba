@@ -19,7 +19,7 @@
             </select>
           </div><br>
           <div class="dropdown d-flex justify-content-center">
-            <input type="text" class="form-control col-sm-6" name="nombre" placeholder="Nombre de la clase">       
+            <input type="text" class="form-control col-sm-6" name="nombre" placeholder="Nombre de la clase" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" onkeypress="return isText(event)">       
           </div><br>
           <div class="d-flex justify-content-around">
               <div class=" form-group p-2">
@@ -120,5 +120,6 @@
     
     <script src="/js/horario.js" ></script>
     <script src="/js/ver_horario.js" ></script>
+    <script src="/js/main.js" ></script>
 
 </body> 

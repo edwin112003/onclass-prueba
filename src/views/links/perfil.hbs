@@ -30,7 +30,7 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="../libs/css/form-validation.css" rel="stylesheet">
-    
+    <script src="/js/main.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -78,7 +78,7 @@
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
           <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
       </svg>
-      <input class="form-control mr-sm-2" style="border-radius :80em ;" type="search" placeholder="Buscar amigos" aria-label="Search">
+      <input class="form-control mr-sm-2" style="border-radius :80em ;" type="search" placeholder="Buscar amigos" aria-label="Search" onkeypress="return isNumber(event)" pattern="[^\d]+$">
       <button type="button" class="btn btn-secondary">Buscar</button>
        <a href="/links/agregar_contacto" class="btn btn-secondary">Agregar</a>
       {{#each usuarios}}
@@ -137,7 +137,7 @@
             <input type="email" class="form-control" value="{{user.llave_usuario}}" readonly="readonly">
           </div>  
         </div>
-        <input type="text" value="{{user.id_usuario}}">
+        <input type="text" value="{{user.id_usuario}}" onkeypress="return isNumber(event)" pattern="^[\d]+$">
 
     <div>
       <a href="/links/editar_perfil/{{user.id_usuario}}" class="btn btn-secondary">Editar</a>
@@ -148,13 +148,15 @@
 </div>
     
       
-      
+     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="/js/funciones.js"></script>
+    <script src="/js/main.js" ></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
         <script src="/form-validation.js"></script>
         <script src="/js/urls.js"></script>
+        
 </body> 
 </html>
