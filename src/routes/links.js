@@ -159,57 +159,38 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
 
 router.get('/material_clase',isLoggedIn, async (req,res)=>{
     try{    
-    const fecha = new Date();
-    const hora = fecha.getHours();
-    let dia = fecha.getDay();
-    let nombre_clase = '';
-    let clase;
-    let contador = 0;
-    if(dia==0){
-        dia=7;
-    }
-    console.log('dia',dia);
-    console.log('hora',hora);
-    const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-    clase_actual.pop();
-    console.log('clase actual',clase_actual);
-
-    clase_actual[0].forEach(async element=>{
-
-        let h1 = element.horai_clase;
-        let resta = element.horat_clase - element.horai_clase;
-        for(let i =0; i<resta; i++){
-            
-            console.log('hi', h1);
-            console.log(element.nombre_clase);
-            console.log(hora);
-            if(h1 == hora){
-                contador++;
-                console.log('entramooosoosooasoas');
-                nombre_clase = element.nombre_clase;
-                clase = element; 
+        const fecha = new Date();
+        const hora = fecha.getHours();
+        let dia = fecha.getDay();
+        let nombre_clase = '';
+        let clase;
+        let contador = 0;
+        if(dia==0) dia=7;        
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        clase_actual.pop();      
+        clase_actual[0].forEach(async element=>{
+            let h1 = element.horai_clase;
+            let resta = element.horat_clase - element.horai_clase;
+            for(let i =0; i<resta; i++){
+                if(h1 == hora){
+                    contador++;                    
+                    nombre_clase = element.nombre_clase;
+                    clase = element; 
+                }
+                h1 ++;
             }
-            h1 ++;
-        }
-        if(contador == 1){
-            console.log('nombre clase', nombre_clase);
-            console.log('clase', clase);
-            const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
-            notas.pop()
-            throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
-        }else{
-            req.flash('success', 'No hay clase ahorita, tomate un descanso crack');
-            throw res.redirect('/links/Horario');
-        }
-       
-        
-    });
-
-    
-    
-}catch(error){
-    console.log(error);
-}
+            if(contador == 1){                
+                const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+                notas.pop()
+                throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
+            }else{            
+                throw res.redirect('/links/Horario');
+            }            
+        });
+    }catch(error){
+        console.log('Errooooooooooooooooooooooooooooooor',error);
+        res.redirect('/links/Horario');
+    }
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
@@ -401,8 +382,7 @@ router.get('/editar_horario', isLoggedIn, async (req,res)=>{
 });
 router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{  
     try { 
-    const id = req.params;  
-    
+        const id = req.params;      
         let {nombre, dia, horai, horat} = req.body;
         let clase ={
             nombre,
@@ -416,87 +396,120 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
         clase.horat=parseInt(clase.horat);
         console.log('clase con int', clase);
                    
-            if(clase.horai == clase.horat && clase.horai>clase.horat){
-                throw res.redirect('/links/editar_horario');
+        if(clase.horai == clase.horat && clase.horai>clase.horat){
+            throw res.redirect('/links/editar_horario');
+        }
+        /*const clasecompa = await pool.query("call GetClas2 (?)", req.app.locals.user.id_usuario);
+        for (let i = 0; i < clasecompa[0].length -1; i++) {
+            if(clase.dia == clasecompa[0][i].dia_clase){
+                if(clase.horai == clasecompa[0][i].horai_clase){
+                    throw res.redirect('/links/editar_horario');
+                }
             }
-            const clasecompa = await pool.query("call GetClas2 (?)", req.app.locals.user.id_usuario);
-            for (let i = 0; i < clasecompa[0].length -1; i++) {
-                if(clase.dia == clasecompa[0][i].dia_clase){
-                    if(clase.horai == clasecompa[0][i].horai_clase){
+        }*/
+        const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
+        console.log('clases deldia: ', clases_dia[0]);
+        clases_dia.pop();
+        clases_dia[0].forEach(element => {
+            let hi = element.horai_clase;
+            let hi2 = clase.horai;
+            const resta = element.horat_clase- element.horai_clase;
+            const resta2 = clase.horat - clase.horai;
+            for(let i =0; i<resta; i++){                
+                hi2=clase.horai;
+                for(let j = 0; j<resta2; j++){                    
+                    console.log('elemento', element);                        
+                    if(hi2 == hi){                                                
                         throw res.redirect('/links/editar_horario');
                     }
-                }
+                    hi2++;
+                } 
+                hi ++;
             }
-            const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
-            console.log('clases deldia: ', clases_dia);
-            clases_dia.pop();
+        });
 
-            clases_dia[0].forEach(element => {
-                let hi = element.horai_clase;
-                let hi2 = clase.horai;
-                const resta = element.horat_clase- element.horai_clase;
-                const resta2 = clase.horat - clase.horai;
-                for(let i =0; i<resta; i++){
-                    hi += i;
-                    for(let j = 0; j<resta2; j++){
-                        hi2+=j;
-                        if(hi2 == hi){
-                            throw res.redirect('/links/editar_horario');
-                        }
-                    }
-                    
-                    
-                    console.log(hi);
-                }
-            });
+        await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
+        res.redirect('/links/editar_horario'); 
 
-            await pool.query("call SaveClas (?, ?, ?, ?, ?)", [clase.nombre, clase.dia, clase.horai, clase.horat, id.id]);        
-            res.redirect('/links/editar_horario'); 
-
-        } catch (error) {
-            console.log(error);
-        }
+    } catch (error) {
+        res.redirect('/links/editar_horario'); 
+        console.log(error);
+    }
 
        
 });
 router.post('/editar_clase', isLoggedIn, async (req, res)=>{
-    
-    let {dia, horai, id} = req.body;
+    try {
+        let {dia, horai, id} = req.body;
         let clase = {
             dia,
             horai,
-            id
+            id //usuario
         };
         clase.dia=parseInt(clase.dia);
         clase.horai=parseInt(clase.horai);
         clase.id=parseInt(clase.id);
         const editar_clase = await pool.query('call GetClasHora (?, ?, ?)', [clase.dia, clase.horai, clase.id]);            
-            editar_clase.pop();
-            console.log(editar_clase[0]);
-            let obj = editar_clase[0][0];
-            console.log(obj);
-    res.render('links/editar_clase', {obj});
+        editar_clase.pop();
+        let obj = editar_clase[0][0];
+        if(obj.nombre_clase == undefined){
+            throw res.redirect('/links/editar_horario');
+        }else{
+            res.render('links/editar_clase', {obj});
+        }
+        
+    } catch (error) {
+        res.redirect('/links/editar_horario');
+    }
+    
 });
 router.post('/update_clase/:id', isLoggedIn, async(req,res)=>{
-    const params = req.params;
-    const {nombre, dia, horai, horat} = req.body;
-    const new_clase = {
-        nombre,
-        dia,
-        horai,
-        horat
-    };    
-    params.id = parseInt(params.id);
-    new_clase.dia=parseInt(new_clase.dia);
-    new_clase.horai=parseInt(new_clase.horai);
-    new_clase.horat=parseInt(new_clase.horat);
-    await pool.query('call EditClas (?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
-    res.redirect('/links/editar_horario');
+    try {
+        const params = req.params;
+        const {nombre, dia, horai, horat} = req.body;
+        const new_clase = {
+            nombre,
+            dia,
+            horai,
+            horat
+        };    
+        params.id = parseInt(params.id);
+        new_clase.dia=parseInt(new_clase.dia);
+        new_clase.horai=parseInt(new_clase.horai);
+        new_clase.horat=parseInt(new_clase.horat);
+        if(new_clase.horai == new_clase.horat && new_clase.horai>new_clase.horat){
+            throw res.redirect('/links/editar_horario');
+        }
+        const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
+        console.log('clases del dia: ', clases_dia[0]);
+        clases_dia.pop();
+
+        clases_dia[0].forEach(element => {
+            let hi = element.horai_clase;
+            let hi2 = new_clase.horai;
+            const resta = element.horat_clase- element.horai_clase;
+            const resta2 = new_clase.horat - new_clase.horai;
+            for(let i =0; i<resta; i++){                
+                hi2=new_clase.horai;
+                for(let j = 0; j<resta2; j++){                    
+                    console.log('elemento', element);
+                    if(hi2 == hi){                                                
+                        throw res.redirect('/links/editar_horario');
+                    }
+                    hi2++;
+                } 
+                hi ++;
+            }
+        });
+        await pool.query('call EditClas (?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
+        res.redirect('/links/editar_horario');
+    } catch (error) {
+        res.redirect('/links/editar_horario');
+    }    
 });
 router.post('/delete_clase', isLoggedIn, async(req, res)=>{
     let id = req.body.id;
     id= parseInt(id);
-    console.log(id);
     await pool.query('call DelClas (?)', [id]);
     res.redirect('/links/editar_horario');
 });
