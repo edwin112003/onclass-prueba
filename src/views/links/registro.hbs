@@ -20,6 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="/libs/css/util.css">
 	<link rel="stylesheet" type="text/css" href="/libs/css/main.css">
 <!--===============================================================================================-->
+<script src="/js/main.js"></script>
 </head>
 <body>
 	
@@ -35,7 +36,7 @@
 						Registro
 					</span>
 					<div class="wrap-input100 validate-input" data-validate="Ingresa tu usertag">
-						<input class="input100" type="text" name="usertag" placeholder="Usertag">
+						<input class="input100" type="text" name="usertag" placeholder="Usertag" pattern="^[A-Za-z]+$" onkeypress="return isText(event)">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -49,7 +50,7 @@
 						</span>
 					</div>
 					<div class="wrap-input100 validate-input" data-validate="email valido reqeurido: ex@abc.xyz">
-						<input class="input100" type="text" name="correo_usuario" placeholder="Email">
+						<input class="input100" type="text" name="correo_usuario" placeholder="Email" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -57,7 +58,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Ingresa un Nombre de usuario">
-						<input class="input100" type="text" name="nombre_usuario" placeholder="Nombre de usuario">
+						<input class="input100" type="text" name="nombre_usuario" placeholder="Nombre de usuario" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user" aria-hidden="true"></i>
@@ -105,7 +106,7 @@
 		})
 	</script>
 <!--===============================================================================================-->
-	<script src="/js/main.js"></script>
+	<script src="/js/main.js" ></script>
 
 </body>
 </html>

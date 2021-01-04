@@ -5,16 +5,16 @@
                 <div class="card-body">
                     <form action="/links/editar_perfil/{{perfil.id_usuario}}" method="POST">
                     <div class="form-group">
-                        <input type="text" value = "{{perfil.usertag}}" class="form-control" name="usertag" placeholder="usertag">
+                        <input type="text" value = "{{perfil.usertag}}" class="form-control" name="usertag" placeholder="usertag" pattern="^[A-Za-z]+$" onkeypress="return isText(event)">
                     </div>
                     <div class="form-group">
                         <input type="text" value = "{{perfil.pass_usuario}}" class="form-control" name="contra" placeholder="contraseña">
                     </div>
                     <div class="form-group">
-                        <input type="text" value = "{{perfil.correo_usuario}}" class="form-control" name="correo_usuario" placeholder="Correo">
+                        <input type="text" value = "{{perfil.correo_usuario}}" class="form-control" name="correo_usuario" placeholder="Correo" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
                     </div>
                     <div class="form-group">
-                        <input type="text" value = "{{perfil.nombre_usuario}}" class="form-control" name="nombre_usuario" placeholder="nombre">
+                        <input type="text" value = "{{perfil.nombre_usuario}}" class="form-control" name="nombre_usuario" placeholder="nombre" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" onkeypress="return isText(event)">
                     </div>
                     <div class="form-group">
                         <button class="btn btn-success btn-block">Guardar</button>
@@ -25,3 +25,13 @@
         </div>
     </div>
 </div>
+<script>
+     function isText(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode < 48 || charCode > 64 || 97<charCode>90) {
+                return true;
+            }
+            return false;
+        }
+</script>
