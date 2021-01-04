@@ -1,4 +1,5 @@
 var nota = document.currentScript.getAttribute('nota');
+var clase = document.currentScript.getAttribute('clase');
     console.log(nota);
 function guardar(descargar){
     var img = document.getElementById("img");
@@ -16,7 +17,7 @@ function guardar(descargar){
         // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
-            var array = {pdf: file, nombre: name};
+            var array = {pdf: file, nombre: name, clase: clase};
             fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
         });
         html2pdf().set(opt).from(text).to('pdf').save();
@@ -25,7 +26,7 @@ function guardar(descargar){
         // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
-            var array = {pdf: file, nombre: name};
+            var array = {pdf: file, nombre: name, clase: clase};
             fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
                 img.src = data.url;
             });

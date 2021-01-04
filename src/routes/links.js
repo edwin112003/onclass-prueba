@@ -73,10 +73,27 @@ router.get('/index_login',isLoggedIn, (req,res)=>{
 router.get('/registro', (req,res)=>{
     res.render('links/registro', {layout: 'login'}); 
 }); 
-router.get('/clase_resto_dia', isLoggedIn,(req,res)=>{
-    res.render('links/clase_resto_dia'); 
+router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
+    const fecha = new Date();
+    const hora = fecha.getHours();
+    let dia = fecha.getDay();
+    if(dia==0){
+        dia=7;
+    }
+    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
+    clase_actual.pop();
+    res.render('links/clase_resto_dia', {clase: clase_actual[0][0]}); 
 }); 
 router.get('/Horario', isLoggedIn, async (req,res)=>{
+    const fecha = new Date();
+    const hora = fecha.getHours();
+    let dia = fecha.getDay();
+    if(dia==0){
+        dia=7;
+    }
+    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
+    clase_actual.pop();
+    console.log(clase_actual);
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
     const clas = clase[0];
@@ -140,8 +157,19 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
 
 
 
-router.get('/material_clase',isLoggedIn, (req,res)=>{
-    res.render('links/material_clase'); 
+router.get('/material_clase',isLoggedIn, async(req,res)=>{
+    const fecha = new Date();
+    const hora = fecha.getHours();
+    let dia = fecha.getDay();
+    if(dia==0){
+        dia=7;
+    }
+    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
+    clase_actual.pop();
+    const nombre_clase = clase_actual[0][0].nombre_clase;
+    const notas_clase = await pool.query('call GetNotClas (?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+    notas_clase.pop();
+    res.render('links/material_clase', {clase : clase_actual[0][0], notas: notas_clase[0]}); 
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
@@ -285,14 +313,43 @@ router.get('/pendientes_grupo', isLoggedIn, async (req,res)=>{
 router.get('/clase_notas', isLoggedIn,(req,res)=>{
     res.render('links/clase_notas'); 
 });
-router.get('/clase_tomar_nota',isLoggedIn, (req,res)=>{
-    res.render('links/clase_tomar_nota', {layout: 'login'}); 
+router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
+    const fecha = new Date();
+    const hora = fecha.getHours();
+    let dia = fecha.getDay();
+    if(dia==0){
+        dia=7;
+    }
+    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
+    clase_actual.pop();
+    res.render('links/clase_tomar_nota', {layout: 'login', clase: clase_actual[0][0]}); 
 });
 router.get('/clase_mensajes',isLoggedIn, (req,res)=>{
     res.render('links/clase_mensajes'); 
 });
-router.get('/clase_pendiente', isLoggedIn,(req,res)=>{
-    res.render('links/clase_pendiente'); 
+router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
+    const fecha = new Date();
+    const hora = fecha.getHours();
+    let dia = fecha.getDay();
+    if(dia==0){
+        dia=7;
+    }
+    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
+    clase_actual.pop();
+    const nombre_clase = clase_actual[0][0].nombre_clase;
+    const pendientes = await pool.query('call GetPenClas (?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+    pendientes.pop();
+    for(let i=0; i<pendientes[0].length;i++){
+        let estado = pendientes[0][i].estado_pendiente;
+        if(estado == 0){
+            let estado2 = pendientes[0][i].estado_pendiente.toString();
+            estado2 = 'Sin terminar';
+            pendientes[0][i].estado_pendiente = estado2;
+        }else{
+            pendientes[0][i].estado_pendiente = 'Terminado';
+        }
+    }    
+    res.render('links/clase_pendiente', {clase: clase_actual[0][0], pendientes: pendientes[0]}); 
 });
 router.get('/proyecto', isLoggedIn,(req,res)=>{
     res.render('links/proyecto'); 
@@ -389,6 +446,16 @@ router.post('/registro', async (req,res)=>{
     var response ='';
 router.post("/save_pdf",isLoggedIn,async(req,res)=>{
 await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+console.log('URL repo: ',response.url);
+console.log('Nombre nota: ', req.body.nombre);
+console.log('ID usuario: ',req.app.locals.user.id_usuario);
+console.log('Nombre clase: ', req.body.clase);
+const url_repo = response.url;
+const nombre_nota = req.body.nombre;
+const id_usuario = req.app.locals.user.id_usuario;
+const clase = req.body.clase;
+await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
+
 res.json({ url: response.url });
 
 });
