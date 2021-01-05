@@ -47,10 +47,17 @@
                     <a class="nav-link" href="/links/grupo">Grupos</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes">Pendientes</a>
+                    <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/links/pendientes_grupo">Pendientes de equipo</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/links/chat_menu">Mensajes</a>
+                  </li>
+                  <li>
+                      
+    
                   </li>
               </ul>
               <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
@@ -127,12 +134,6 @@
           <label>Nombre</label>
           <div class="input-group"> 
             <input type="email" class="form-control" value="{{user.nombre_usuario}}" readonly="readonly">
-          </div>  
-        </div>
-        <div class="mb-3">
-          <label>Llave</label>
-          <div class="input-group"> 
-            <input type="email" class="form-control" value="{{user.llave_usuario}}" readonly="readonly">
           </div>  
         </div>
         <div class="mb-3">

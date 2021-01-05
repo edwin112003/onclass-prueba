@@ -1,4 +1,3 @@
-console.log('legooooooooooo');
 (function(){
 	var actualizarHora = function(){
 		// Obtenemos la fecha actual, incluyendo las horas, minutos, segundos, dia de la semana, dia del mes, mes y año;

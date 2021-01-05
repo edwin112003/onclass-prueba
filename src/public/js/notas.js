@@ -1,10 +1,10 @@
+var clase = document.currentScript.getAttribute('clase');
 var nota = ""
 if (typeof(localStorage.getItem('nota')) != "undefined") {
     nota = localStorage.getItem('nota');
 }
     
 function guardar(descargar){
-    var img = document.getElementById("img");
     var name = document.getElementById("nombre").value;
     var text = $('#nota').summernote('code');
     var opt = {
@@ -32,7 +32,7 @@ function guardar(descargar){
             var file = btoa(pdf);
             var array = {pdf: file, nombre: name, clase: clase};
             fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
-                img.src = data.url;
+               
             });
         });
     }
@@ -57,7 +57,7 @@ $(document).ready(function() {
     if (nota != "") {
         $('#nota').summernote('code',nota);
     }
-    
+    $('#nota').css('font-size',"18px");
 });
 
 function saveNota() {

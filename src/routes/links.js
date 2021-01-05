@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database');
 const passport = require('passport');
-const {isLoggedIn}= require('../lib/auth'); 
+const {isLoggedIn, isNotLoggedIn}= require('../lib/auth'); 
 const NodeRSA = require('node-rsa');
 var cloudinary = require('cloudinary').v2;
 //buenas
@@ -14,7 +14,7 @@ cloudinary.config({
     api_secret: 'AA0SdOf7vslkTGBAK1xaefXei18' 
   });
 
-router.get('/index', (req,res)=>{
+router.get('/index', isNotLoggedIn,(req,res)=>{
     res.render('links/index');
 });
 
@@ -29,12 +29,9 @@ function error404(req, res, next){
     res.render('links/error_404', {layout: 'login', locals:locals});
     
 }
-
-//Login
-
-
-router.get('/login', (req,res)=>{
-    console.log('estoy a');
+//login
+router.get('/login',isNotLoggedIn, (req,res)=>{
+    console.log('estoy en login');
     res.render('links/login', {layout: 'login'}); 
 });
 router.post('/login', (req,res,next)=>{
@@ -206,16 +203,17 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
                 if(h1 == hora){
                     contador++;                    
                     nombre_clase = element.nombre_clase;
-                    clase = element; 
+                    clase = element;  
                 }
                 h1 ++;
             }                     
         });
         if(contador == 1){    
             const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
-            notas.pop()
+            notas.pop();
             throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
-        }else{            
+        }else{    
+            req.flash('success', 'No tienes clase ahorita, tranqui tomate un descanso crack');        
             throw res.redirect('/links/Horario');
         }   
     }catch(error){
@@ -268,10 +266,24 @@ router.post('/pendientes',isLoggedIn, async (req,res)=>{
             clase,
             fecha
         };
-        if(newlink.clase == 'Seleccione una clase'){
+        console.log(newlink);
+        if(newlink.nombre == ''){
+            console.log('estanis');
+            req.flash('message', 'Dale un nombre al pendiente');
             throw res.redirect('/links/pendientes');
         }
-        console.log('Clase: ',newlink.clase);
+        if(newlink.descripcion == ''){
+            req.flash('message', 'Dale una descripcion al pendiente');
+            throw res.redirect('/links/pendientes');
+        }
+        if(newlink.fecha == ''){
+            req.flash('message', 'Coloca una fecha porfa');
+            throw res.redirect('/links/pendientes');
+        }
+        if(newlink.clase == 'Seleccione una clase'){
+            req.flash('message', 'Selecciona una clase plocs');
+            throw res.redirect('/links/pendientes');
+        }
         const fecha_nueva = newlink.fecha.split('/');
         const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
         await pool.query('call SavePen(?,?,?,?,?,?,?)',
@@ -428,6 +440,9 @@ router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
             const pendientes = await pool.query('call GetPenClas (?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
             pendientes.pop();
             for(let i=0; i<pendientes[0].length;i++){
+                let fecha_sint = pendientes[0][i].fecha_entrega.toString();
+       let fecha_media =  fecha_sint.split(' ');
+       let fecha_muestra = `${fecha_media[2]}-${fecha_media[1]}-${fecha_media[3]}`;
                 let estado = pendientes[0][i].estado_pendiente;
                 if(estado == 0){
                     let estado2 = pendientes[0][i].estado_pendiente.toString();
@@ -436,6 +451,7 @@ router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
                 }else{
                     pendientes[0][i].estado_pendiente = 'Terminado';
                 }
+                pendientes[0][i].fecha_entrega = fecha_muestra;
             }    
             throw res.render('links/clase_pendiente', {clase: clase, pendientes: pendientes[0]}); 
             
@@ -468,8 +484,16 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
         clase.horai=parseInt(clase.horai);
         clase.horat=parseInt(clase.horat);
         console.log('clase con int', clase);
-                   
-        if(clase.horai == clase.horat && clase.horai>clase.horat){
+        if(clase.nombre == ''){
+            req.flash('message', 'Ponle un nombre a la clase');
+            throw res.redirect('/links/editar_horario');
+        }
+        if(clase.horai == clase.horat){
+            req.flash('message', 'La hora de inicio no puede ser igual a la hora final');
+            throw res.redirect('/links/editar_horario');
+        }
+        if(clase.horai>clase.horat){
+            req.flash('message', 'La hora de inicio no puede ser mayor a la hora final');
             throw res.redirect('/links/editar_horario');
         }
         /*const clasecompa = await pool.query("call GetClas2 (?)", req.app.locals.user.id_usuario);
@@ -481,7 +505,6 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
             }
         }*/
         const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
-        console.log('clases deldia: ', clases_dia[0]);
         clases_dia.pop();
         clases_dia[0].forEach(element => {
             let hi = element.horai_clase;
@@ -494,7 +517,8 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
                     console.log('elemento', element);                     
                         console.log('hora bd', hi);
                         console.log('hora form', hi2);                       
-                    if(hi2 == hi){                                                
+                    if(hi2 == hi){
+                        req.flash('message', 'No pueden haber dos o mas clases en el mismo horario');                                                
                         throw res.redirect('/links/editar_horario');
                     }
                     hi2++;
@@ -528,12 +552,14 @@ router.post('/editar_clase', isLoggedIn, async (req, res)=>{
         editar_clase.pop();
         let obj = editar_clase[0][0];
         if(obj.nombre_clase == undefined){
+            console.log('buenas');            
             throw res.redirect('/links/editar_horario');
         }else{
             res.render('links/editar_clase', {obj});
         }
         
     } catch (error) {
+        req.flash('message', 'Si vas a editar porfavor selecciona un dia y una hora de inicio');
         res.redirect('/links/editar_horario');
     }
     
@@ -552,11 +578,15 @@ router.post('/update_clase/:id', isLoggedIn, async(req,res)=>{
         new_clase.dia=parseInt(new_clase.dia);
         new_clase.horai=parseInt(new_clase.horai);
         new_clase.horat=parseInt(new_clase.horat);
-        if(new_clase.horai == new_clase.horat && new_clase.horai>new_clase.horat){
+        if(new_clase.horai == new_clase.horat){
+            req.flash('message', 'La hora de inicio no puede ser igual a la hora final');
             throw res.redirect('/links/editar_horario');
         }
-        const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
-        console.log('clases del dia: ', clases_dia[0]);
+        if(new_clase.horai>new_clase.horat){
+            req.flash('message', 'La hora de inicio no puede ser mayor a la hora final');
+            throw res.redirect('/links/editar_horario');
+        }
+        const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, new_clase.dia] );
         clases_dia.pop();
 
         clases_dia[0].forEach(element => {
@@ -566,19 +596,23 @@ router.post('/update_clase/:id', isLoggedIn, async(req,res)=>{
             const resta2 = new_clase.horat - new_clase.horai;
             for(let i =0; i<resta; i++){                
                 hi2=new_clase.horai;
-                for(let j = 0; j<resta2; j++){                    
-                    console.log('elemento', element);
-                    if(hi2 == hi){                                                
-                        throw res.redirect('/links/editar_horario');
+                for(let j = 0; j<resta2; j++){        
+                    if(hi2 == hi){
+                        if(params.id != element.id_clase){
+                            req.flash('message', 'No pueden haber dos o mas clases en el mismo horario');                                                
+                            throw res.redirect('/links/editar_horario');                            
+                        }
+                        
                     }
                     hi2++;
                 } 
                 hi ++;
             }
         });
-        await pool.query('call EditClas (?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
+        await pool.query('call EditClas(?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
         res.redirect('/links/editar_horario');
     } catch (error) {
+        console.log('errrroorororr',error);
         res.redirect('/links/editar_horario');
     }    
 });
@@ -646,6 +680,12 @@ router.post("/save_pdf",isLoggedIn,async(req,res)=>{
             const nombre_nota = req.body.nombre;
             const id_usuario = req.app.locals.user.id_usuario;
             const clase = req.body.clase;
+            console.log('eepepeppwepwepwpepqwpepqepqwe');
+            console.log(url_repo);
+            console.log(nombre_nota);
+            console.log(id_usuario);
+            console.log(clase);
+            console.log('eepepeppwepwepwpepqwpepqepqwe');
 
             await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
 
@@ -764,6 +804,54 @@ router.post('/eliminar_integrante',isLoggedIn, async (req,res)=>{
 
     res.redirect('/links/grupo');
 });
+router.post('/agregar_tarea_integrante',isLoggedIn, async (req,res)=>{
+    const {id_usuario,nombre_equipo} = req.body;
+    const newLink = {
+        id_usuario,
+        nombre_equipo
+    }
+    res.render('links/agregar_tarea_equipo',{layout: 'login', datos: newLink});
+});
+router.post('/agregar_equipo_pendiente',isLoggedIn, async (req,res)=>{
+    try {
+        const {nombre, descripcion,nombre_equipo,id_integrante,fecha} = req.body;     
+        const newlink = {
+            nombre,
+            descripcion,
+            nombre_equipo,
+            id_integrante,
+            fecha
+        };
+        console.log(newlink);
+        if(newlink.nombre == ''){
+            console.log('estanis');
+            req.flash('message', 'Dale un nombre al pendiente');
+            throw res.redirect('/links/grupo');
+        }
+        if(newlink.descripcion == ''){
+            req.flash('message', 'Dale una descripcion al pendiente');
+            throw res.redirect('/links/grupo');
+        }
+        if(newlink.fecha == ''){
+            req.flash('message', 'Coloca una fecha porfa');
+            throw res.redirect('/links/grupo');
+        }
+        const fecha_nueva = newlink.fecha.split('/');
+        const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
+        await pool.query('call SavePen(?,?,?,?,?,?,?)',
+        [newlink.nombre,
+        newlink.descripcion, 
+        2,
+        false,
+        newlink.id_integrante,
+        newlink.nombre_equipo,
+        fecha_base]);
+        res.redirect('/links/grupo');
+    } catch (error) {
+        console.log(error);
+        res.redirect('/links/grupo');
+    }    
+});
 router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
     try {
         let cont =0;
@@ -777,6 +865,7 @@ router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
         equipo.pop();
         for(let i=0; i<equipo[0].length; i++){
             if(equipo[0][i].id_usuario == newLink.id_nuevo_inte){
+                req.flash('message', 'El usuario ya esta agregado');
                 console.log("Ya existe ese integrante ");
                 cont++;
             }

@@ -27,12 +27,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="/img/OnClass.jpg" alt="IMG">
-				</div>
-
-				<form class="login100-form validate-form" action="/links/login" method="POST">
-					{{#if message}}
+				{{#if message}}
       <div class="container">
         <div class="row">
           <div class="col-md-4 mx-auto">
@@ -60,6 +55,12 @@
         </div>
       </div>
     {{/if}}
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="/img/OnClass.jpg" alt="IMG">
+				</div>
+
+				<form class="login100-form validate-form" action="/links/login" method="POST">
+					
 					<span class="login100-form-title">
 						Login
 					</span>

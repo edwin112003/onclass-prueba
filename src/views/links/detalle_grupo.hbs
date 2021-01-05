@@ -14,6 +14,13 @@
                     Eliminar
                 </button>
                 </form>
+                <form action="/links/agregar_tarea_integrante" method="POST">
+                    <input type="hidden" value="{{id_usuario}}" name="id_usuario">
+                    <input type="hidden" value="{{nombre_proyecto}}" name="nombre_equipo">
+                <button type="submit" class="btn p-2">
+                    Agregar tarea
+                </button>
+                </form>
             </div>
         </div>
     </div>
