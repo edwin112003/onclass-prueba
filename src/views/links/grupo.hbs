@@ -30,7 +30,7 @@
         </div>
         <form action="/links/grupo" method="POST">
             <div>
-                <input type="text" class="form-control md-6" name="nombre" placeholder="Nombre del equipo">
+                <input type="text" class="form-control md-6" name="nombre" placeholder="Nombre del equipo" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
             </div>
             <div>
             {{#each contactos}}

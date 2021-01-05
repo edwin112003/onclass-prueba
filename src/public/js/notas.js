@@ -13,19 +13,23 @@ function guardar(descargar){
         image:        { type: 'jpeg', quality: 1 },
     };
     if(descargar){
-        // New Promise-based usage:
+            text= "OnClass";
+            html2pdf().set(opt).from(text).to('pdf').save();
+        }else{
+            // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
-            var array = {pdf: file, nombre: name};
-            fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
+            var array = {pdf: file, nombre: name, clase: clase};
         });
         html2pdf().set(opt).from(text).to('pdf').save();
+        }
+
     }else{
         console.log("si");
         // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
-            var array = {pdf: file, nombre: name};
+            var array = {pdf: file, nombre: name, clase: clase};
             fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
                 img.src = data.url;
             });
