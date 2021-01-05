@@ -21,6 +21,7 @@ router.get('/index', (req,res)=>{
 
 
 router.get('/login', (req,res)=>{
+    console.log('estoy a');
     res.render('links/login', {layout: 'login'}); 
 });
 router.post('/login', (req,res,next)=>{
@@ -572,7 +573,7 @@ router.get('/mostrar_cosas', isLoggedIn,async (req,res)=>{
 });
 router.post('/registro', async (req,res)=>{
     try {
-    const {usertag, contra, correo_usuario, nombre_usuario, llave_usuario} = req.body;   
+    const {usertag, contra, correo_usuario, nombre_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
     const allusers = await pool.query('call GetAllUsu');
     
@@ -580,8 +581,7 @@ router.post('/registro', async (req,res)=>{
         usertag,
         contra,
         correo_usuario,
-        nombre_usuario,
-        llave_usuario
+        nombre_usuario
     };
     console.log(newlink);
     
@@ -594,7 +594,7 @@ router.post('/registro', async (req,res)=>{
        console.log(allusers[0][i].usertag);
        console.log(newlink.usertag);        
     }
-     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, newlink.llave_usuario]);
+     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, null]);
      res.redirect('/links/login');
      console.log("todo bien");
 
@@ -609,19 +609,30 @@ router.post('/registro', async (req,res)=>{
     var url_mysql = "";
     var response ='';
 router.post("/save_pdf",isLoggedIn,async(req,res)=>{
-await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
-console.log('URL repo: ',response.url);
-console.log('Nombre nota: ', req.body.nombre);
-console.log('ID usuario: ',req.app.locals.user.id_usuario);
-console.log('Nombre clase: ', req.body.clase);
-const url_repo = response.url;
-const nombre_nota = req.body.nombre;
-const id_usuario = req.app.locals.user.id_usuario;
-const clase = req.body.clase;
+        if(req.app.locals.nota == ""){
+            req.app.locals.nota = "No pusiste nada en tu nota crack. Atte: OnClass";
+        }else{
+            await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+            const url_repo = response.url;
+            const nombre_nota = req.body.nombre;
+            const id_usuario = req.app.locals.user.id_usuario;
+            const clase = req.body.clase;
 
-await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
+            await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
 
-res.json({ url: response.url });
+            res.json({ url: response.url });
+        }
+    });
+router.post("/save_nota",isLoggedIn,(req,res)=>{
+        req.app.locals.nota = req.body.nota;
+        console.log("buenas", req.app.locals.nota);
+        res.json({tag: req.app.locals.user.usertag});
+        });  
+/*    
+router.post("/save_pdf",isLoggedIn,async(req,res)=>{
+    
+    await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+    res.json({ url: response.url });
 
 });
 router.post("/save_nota",isLoggedIn,(req,res)=>{
@@ -629,6 +640,7 @@ router.post("/save_nota",isLoggedIn,(req,res)=>{
     console.log("buenas", req.app.locals.nota);
     res.json({tag: req.app.locals.user.usertag});
     });
+*/
 /*Esta es la url que se va a meter a la basede datos*/
 url_mysql = response.url;
 
