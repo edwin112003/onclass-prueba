@@ -94,11 +94,18 @@ app.use((req,res,next)=>{
 
 //Manejo de errores
 
-
-
-
+function error404(req, res, next){
+  let error = new Error(),
+      locals = {
+          title: 'Error 404',
+          description: 'Recurso no encontrado',
+          error : error
+      }
+  error.status = 404;
+  res.render('links/error_404', {layout: 'login', locals:locals});
+  
+}
 //ruta
-
 app.use(require('./routes'));
 app.use('/links',require('./routes/links'));
 const botName = 'ChatCord Bot';
@@ -157,6 +164,8 @@ io.on('connection', socket => {
       }
     });
   });
+
+  app.use(error404);
 //archivos publicos
 
 //inciar servidor

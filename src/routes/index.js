@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+
 router.get('/', (req,res)=>{
-    
     res.render('links/index',{layout: 'login'});
 });
+
 
 /*router.get('/', function(req, res, next) { 
     console.log("Estamos9");
