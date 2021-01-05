@@ -49,7 +49,6 @@ passport.serializeUser((user,done)=>{
 passport.deserializeUser(async (id,done)=>{
     const rows = await pool.query('select * from e_usuario where id_usuario = ?', [id]);
     const user = rows[0];
-    user.nota = "";
     user.room = "";
     done(null, user);
 });

@@ -8,6 +8,7 @@ const validator = require('express-validator');
 const passport = require('passport');
 const flash = require('connect-flash');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser'); 
 const formatMessage = require('./lib/messages');
 const {
   userJoin,
@@ -38,6 +39,7 @@ app.engine('.hbs', exphbs({
 }));
 app.set('view engine', '.hbs');
 
+
 //Middlewares
 app.use(session({
   secret: 'abcdefg',
@@ -46,6 +48,7 @@ app.use(session({
 }));
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser()); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -57,27 +60,12 @@ app.use(passport.session());
 
 
 //globales
-app.locals.nota = "";
-app.locals.user = {
-  id_usuario: 0,
-  usertag: '',
-  pass_usuario: '',
-  correo_usuario: '',
-  nombre_usuario: '',
-  llave_usuario: '',
-  nota: ''
-}
+
 app.use((req,res,next)=>{
   app.locals.success = req.flash('success');
   app.locals.message = req.flash('message'); 
 
-  if (typeof(req.user) == "undefined") {
     app.locals.user = req.user;
-    app.locals.nota = "";
-  }else{
-    req.user.nota = app.locals.nota;
-    app.locals.user = req.user;
-  }
     next();
 });
 

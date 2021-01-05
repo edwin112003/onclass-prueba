@@ -1,6 +1,8 @@
-var nota = document.currentScript.getAttribute('nota');
-var clase = document.currentScript.getAttribute('clase');
-    console.log(nota);
+var nota = ""
+if (typeof(localStorage.getItem('nota')) != "undefined") {
+    nota = localStorage.getItem('nota');
+}
+    
 function guardar(descargar){
     var img = document.getElementById("img");
     var name = document.getElementById("nombre").value;
@@ -10,18 +12,15 @@ function guardar(descargar){
         filename:     name+'.pdf',
         image:        { type: 'jpeg', quality: 1 },
     };
-    if(descargar){
-        
-        
-        if(html2pdf().from(text) == null ||html2pdf().from(img) === undefined || html2pdf().from(nota) == null || html2pdf().from(text) == "" || html2pdf().from(nota) == "null"){
-            text= "OnClass";
+    if(descargar){        
+        if(text == null ||html2pdf().from(img) === undefined || nota == null ||text == "" || nota == ""){
+            text= "No guardaste nada en tu nota crack. Atte: OnClass";
             html2pdf().set(opt).from(text).to('pdf').save();
         }else{
             // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
             var array = {pdf: file, nombre: name, clase: clase};
-            fetch("/links/save_pdf", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
         });
         html2pdf().set(opt).from(text).to('pdf').save();
         }
@@ -61,9 +60,9 @@ $(document).ready(function() {
     
 });
 
-async function saveNota() {
+function saveNota() {
     console.log("body");
     var text = $('#nota').summernote('code');
-    var array = {nota: text};
-    await fetch("/links/save_nota", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
+    localStorage.setItem('nota', text);
+    /*await fetch("/links/save_nota", {method: 'POST',credentials: 'include',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});*/
 }
