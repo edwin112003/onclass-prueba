@@ -1,5 +1,8 @@
-var nota = document.currentScript.getAttribute('nota');
-    console.log(nota);
+var nota = ""
+if (typeof(localStorage.getItem('nota')) != "undefined") {
+    nota = localStorage.getItem('nota');
+}
+    
 function guardar(descargar){
     var img = document.getElementById("img");
     var name = document.getElementById("nombre").value;
@@ -10,9 +13,6 @@ function guardar(descargar){
         image:        { type: 'jpeg', quality: 1 },
     };
     if(descargar){
-        
-        
-        
         // New Promise-based usage:
         html2pdf().set(opt).from(text).to('pdf').output().then(function(pdf){
             var file = btoa(pdf);
@@ -55,9 +55,9 @@ $(document).ready(function() {
     
 });
 
-async function saveNota() {
+function saveNota() {
     console.log("body");
     var text = $('#nota').summernote('code');
-    var array = {nota: text};
-    await fetch("/links/save_nota", {method: 'POST',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});
+    localStorage.setItem('nota', text);
+    /*await fetch("/links/save_nota", {method: 'POST',credentials: 'include',headers:{'Content-Type': 'application/json'},  body:JSON.stringify(array)});*/
 }

@@ -21,6 +21,7 @@ router.get('/index', (req,res)=>{
 
 
 router.get('/login', (req,res)=>{
+    console.log('estoy a');
     res.render('links/login', {layout: 'login'}); 
 });
 router.post('/login', (req,res,next)=>{
@@ -392,11 +393,6 @@ await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'
 res.json({ url: response.url });
 
 });
-router.post("/save_nota",isLoggedIn,(req,res)=>{
-    req.app.locals.nota = req.body.nota;
-    console.log("buenas", req.app.locals.nota);
-    res.json({tag: req.app.locals.user.usertag});
-    });
 /*Esta es la url que se va a meter a la basede datos*/
 url_mysql = response.url;
 
