@@ -4,7 +4,7 @@ const router = express.Router();
 const pool = require('../database');
 const passport = require('passport');
 const {isLoggedIn}= require('../lib/auth'); 
-
+const NodeRSA = require('node-rsa');
 var cloudinary = require('cloudinary').v2;
 //buenas
 
@@ -111,6 +111,22 @@ router.get('/Horario', isLoggedIn, async (req,res)=>{
     clase.pop();
     const clas = clase[0];
     res.render('links/Horario', {clases: clas}); 
+});
+router.post('/llaves', isLoggedIn, async (req,res)=>{
+    const key = new NodeRSA().generateKeyPair();
+    const llavepublica = key.exportKey("public");
+    const llaveprivada = key.exportKey("private"); 
+    console.log('pu',llavepublica);
+    console.log('pri',llaveprivada);
+    await pool.query("call SaveKey(?,?)",[req.app.locals.user.id_usuario, llavepublica]);
+    res.json(llaveprivada);    
+});
+router.post('/llaves2', isLoggedIn, async (req,res)=>{
+    const obtllaves= await pool.query("call GetKey(?)",[req.app.locals.user.id_usuario]);
+    obtllaves.pop();
+    let llavepriv = obtllaves[0][0].llave_usuario;
+    console.log('llavepriv',llavepriv); 
+    res.json(llavepriv);    
 });
 router.post('/Horario',  async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);

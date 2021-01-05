@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const pool = require('../database');
-const NodeRSA = require('node-rsa');
+
 
 passport.use('local.login', new LocalStrategy({
     usernameField: 'username',
@@ -13,24 +13,10 @@ passport.use('local.login', new LocalStrategy({
         //notaaa para ellogin use nombre de usuario como contraseña porque no me deja por la ñ
         const user = rows[0];
         user.nota = "";
-
-        //generar llaves
-        const key = new NodeRSA().generateKeyPair();
-        const llavepublica = key.exportKey("public");
-        const llaveprivada = key.exportKey("private");
-        console.log('pu',llavepublica);
-        console.log('pri',llaveprivada);
-        let m_encr =key.encryptPrivate('buenas');
-        let m_d = key.decryptPublic(m_encr);
-        let mensaje = m_d.toString();
-        //generar llaves
-
-
-        
         if(password == user.pass_usuario){
             const clases = await pool.query("call GetClas (?)", [user.id_usuario]);
             clases.pop();
-            await pool.query("call SaveKey(?,?)",[user.id_usuario, llavepublica]);
+            
             const clas = clases[0];            
             done(null, user, req.flash('success', 'Buenas ' +user.nombre_usuario));
             

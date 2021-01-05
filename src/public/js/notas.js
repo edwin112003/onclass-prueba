@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-var nota = document.currentScript.getAttribute('nota');
-var clase = document.currentScript.getAttribute('nombre_clase');
-    console.log(clase);
-=======
 var nota = ""
 if (typeof(localStorage.getItem('nota')) != "undefined") {
     nota = localStorage.getItem('nota');
 }
     
->>>>>>> 747c7469ef8e0398a5c31ee841f15fa12de0c851
 function guardar(descargar){
     var img = document.getElementById("img");
     var name = document.getElementById("nombre").value;

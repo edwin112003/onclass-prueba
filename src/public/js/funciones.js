@@ -51,3 +51,7 @@ $(function ($) {
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
+fetch("/links/llaves", {method: 'POST'}).then(response => response.json()).then(data =>{
+    console.log('dataaaaaa',data);
+    localStorage.setItem('llaveprivada',data);
+});

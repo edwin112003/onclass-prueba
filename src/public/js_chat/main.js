@@ -31,8 +31,18 @@ const Enviar = ()=>{
 });
 var text = $('#nota').summernote('code');
 console.log(text);
-    socket.emit('fileMessage', text);
-      
+const key = new JSEncrypt();
+const private = localStorage.getItem("llaveprivada");
+key.setPrivateKey(private);        
+let m_encr =key.encrypt('buenas');
+fetch("/links/llaves2", {method: 'POST'}).then(response => response.json()).then(data =>{
+  console.log('llaves2',data);
+  let de = key.decrypt(m_encr);
+  console.log('text',de);
+});
+console.log('text',m_encr);
+
+    socket.emit('fileMessage', text);      
  }
 async function ObtenerSala() {
   var room = document.getElementById('room').value;
