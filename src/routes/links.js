@@ -74,30 +74,41 @@ router.get('/registro', (req,res)=>{
     res.render('links/registro', {layout: 'login'}); 
 }); 
 router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
-    const fecha = new Date();
-    const hora = fecha.getHours();
-    let dia = fecha.getDay();
-    if(dia==0){
-        dia=7;
+    try{   
+        const fecha = new Date();
+        const hora = fecha.getHours();
+        let dia = fecha.getDay();        
+        let clase;
+        let contador = 0;
+        if(dia==0) dia=7;        
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        clase_actual.pop();      
+        clase_actual[0].forEach(async element=>{
+            let h1 = element.horai_clase;
+            let resta = element.horat_clase - element.horai_clase;
+            for(let i =0; i<resta; i++){
+                if(h1 == hora){
+                    contador++;                    
+                    nombre_clase = element.nombre_clase;
+                    clase = element; 
+                }
+                h1 ++;
+            }                     
+        });
+        if(contador == 1){    
+            const resto_dia = await pool.query('call GetRestoDia(?,?,?)', [clase.horai_clase, req.app.locals.user.id_usuario, dia]);
+            resto_dia.pop();
+            throw res.render('links/clase_resto_dia', {clase: clase, resto: resto_dia[0]});            
+        }else{            
+            throw res.redirect('/links/Horario');
+        }   
+    }catch(error){
     }
-    const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-    clase_actual.pop();
-    res.render('links/clase_resto_dia', {clase: clase_actual[0][0]}); 
 }); 
 router.get('/Horario', isLoggedIn, async (req,res)=>{
-    const fecha = new Date();
-    const hora = fecha.getHours();
-    let dia = fecha.getDay();
-    if(dia==0){
-        dia=7;
-    }
-    const clase_actual = await pool.query('call GetClasHora (?,?,?)', [dia, hora, req.app.locals.user.id_usuario]);
-    clase_actual.pop();
-    console.log(clase_actual);
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
     const clas = clase[0];
-    
     res.render('links/Horario', {clases: clas}); 
 });
 router.post('/Horario',  async (req,res)=>{
@@ -117,24 +128,19 @@ router.get('/perfil', isLoggedIn,async (req,res)=>{
 
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
-    console.log(contactos);
-
-    console.log('pepepepepepe',contactos[0]);
-
     res.render('links/perfil', {layout: 'login',usuarios: contactos[0]}); 
 });
 
 router.get('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
-    const {id} = req.params;
-    console.log(id);
-    const perfil = await pool.query('select * from E_Usuario where id_usuario = ?',[id]);
-    res.render('links/editar_perfil', {perfil: perfil[0]});
+    
 });
-
-router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
-    const {id} = req.params;
-    console.log('asdasdasdasdasdasdasdasdasdadsasdasd');
-
+router.post('/vista_editar_perfil', isLoggedIn, async(req,res)=>{
+    const {id} = req.body;
+    const perfil = await pool.query('call GetUsu (?)',[id]);
+    res.render('links/editar_perfil', {perfil: perfil[0][0]});
+});
+router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
+    const {id} = req.body;
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;     
     const newlink = {
         usertag,
@@ -142,8 +148,6 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
         correo_usuario,
         nombre_usuario
     };
-    console.log(newlink);
-
     await pool.query('call EditUsu(?,?,?,?,?)',
     [id,
      newlink.usertag, 
@@ -154,11 +158,8 @@ router.post('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
     res.redirect('/links/perfil'); 
 });
 
-
-
-
 router.get('/material_clase',isLoggedIn, async (req,res)=>{
-    try{    
+    try{   
         const fecha = new Date();
         const hora = fecha.getHours();
         let dia = fecha.getDay();
@@ -178,24 +179,21 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
                     clase = element; 
                 }
                 h1 ++;
-            }
-            if(contador == 1){                
-                const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
-                notas.pop()
-                throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
-            }else{            
-                throw res.redirect('/links/Horario');
-            }            
+            }                     
         });
+        if(contador == 1){    
+            const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+            notas.pop()
+            throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
+        }else{            
+            throw res.redirect('/links/Horario');
+        }   
     }catch(error){
-        console.log('Errooooooooooooooooooooooooooooooor',error);
-        res.redirect('/links/Horario');
     }
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
-   
     res.render('links/pendientes', {layout: 'login', clases: clase[0]});
 });
 router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
@@ -210,12 +208,10 @@ router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
     }
     const fecha_nueva = newlink.fecha.split('/');
     const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
-
     await pool.query('call EditPen (?, ?, ?, ?, ?)', [newlink.id, newlink.nombre, newlink.desc, newlink.clase, fecha_base]);
     res.redirect('/links/pendientes');
 });
 router.post('/cambiar_estado_a_nt', isLoggedIn, async(req,res)=>{
-    console.log('llega a nt');
     const {id_estado} = req.body;
     const newlink = {
         id_estado
@@ -225,7 +221,6 @@ router.post('/cambiar_estado_a_nt', isLoggedIn, async(req,res)=>{
     res.redirect('/links/terminados');
 });
 router.post('/cambiar_estado_a_t', isLoggedIn, async(req,res)=>{
-    console.log('llega a nt');
     const {id_estado} = req.body;
     const newlink = {
         id_estado
@@ -235,27 +230,33 @@ router.post('/cambiar_estado_a_t', isLoggedIn, async(req,res)=>{
     res.redirect('/links/no_terminados');
 });
 router.post('/pendientes',isLoggedIn, async (req,res)=>{
-    const {nombre, descripcion, clase,fecha} = req.body;     
-    const newlink = {
-        nombre,
-        descripcion,
-        clase,
-        fecha
-    };
-    const fecha_nueva = newlink.fecha.split('/');
-    const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
-
-
-    await pool.query('call SavePen(?,?,?,?,?,?,?)',
-    [newlink.nombre,
-     newlink.descripcion, 
-     1,
-     false,
-     req.app.locals.user.id_usuario,
-     newlink.clase,
-     fecha_base]);
-
-    res.redirect('/links/pendientes');
+    try {
+        const {nombre, descripcion, clase,fecha} = req.body;     
+        const newlink = {
+            nombre,
+            descripcion,
+            clase,
+            fecha
+        };
+        if(newlink.clase == 'Seleccione una clase'){
+            throw res.redirect('/links/pendientes');
+        }
+        console.log('Clase: ',newlink.clase);
+        const fecha_nueva = newlink.fecha.split('/');
+        const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
+        await pool.query('call SavePen(?,?,?,?,?,?,?)',
+        [newlink.nombre,
+        newlink.descripcion, 
+        1,
+        false,
+        req.app.locals.user.id_usuario,
+        newlink.clase,
+        fecha_base]);
+        res.redirect('/links/pendientes');
+    } catch (error) {
+        console.log(error);
+        res.redirect('/links/pendientes');
+    }    
 });
 router.get('/no_terminados', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
@@ -335,42 +336,84 @@ router.get('/clase_notas', isLoggedIn,(req,res)=>{
     res.render('links/clase_notas'); 
 });
 router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
-    const fecha = new Date();
-    const hora = fecha.getHours();
-    let dia = fecha.getDay();
-    if(dia==0){
-        dia=7;
+    try{   
+        const fecha = new Date();
+        const hora = fecha.getHours();
+        let dia = fecha.getDay();
+        let nombre_clase = '';
+        let clase;
+        let contador = 0;
+        if(dia==0) dia=7;        
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        clase_actual.pop();      
+        clase_actual[0].forEach(async element=>{
+            let h1 = element.horai_clase;
+            let resta = element.horat_clase - element.horai_clase;
+            for(let i =0; i<resta; i++){
+                if(h1 == hora){
+                    contador++;                    
+                    nombre_clase = element.nombre_clase;
+                    clase = element; 
+                }
+                h1 ++;
+            }                     
+        });
+        if(contador == 1){    
+            const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+            notas.pop()
+            throw res.render('links/clase_tomar_nota', {layout: 'login', clase: clase});
+        }else{            
+            throw res.redirect('/links/Horario');
+        }   
+    }catch(error){
     }
-    const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-    clase_actual.pop();
-    res.render('links/clase_tomar_nota', {layout: 'login', clase: clase_actual[0][0]}); 
 });
 router.get('/clase_mensajes',isLoggedIn, (req,res)=>{
     res.render('links/clase_mensajes'); 
 });
 router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
-    const fecha = new Date();
-    const hora = fecha.getHours();
-    let dia = fecha.getDay();
-    if(dia==0){
-        dia=7;
+    try{   
+        const fecha = new Date();
+        const hora = fecha.getHours();
+        let dia = fecha.getDay();
+        let nombre_clase = '';
+        let clase;
+        let contador = 0;
+        if(dia==0) dia=7;        
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        clase_actual.pop();      
+        clase_actual[0].forEach(async element=>{
+            let h1 = element.horai_clase;
+            let resta = element.horat_clase - element.horai_clase;
+            for(let i =0; i<resta; i++){
+                if(h1 == hora){
+                    contador++;                    
+                    nombre_clase = element.nombre_clase;
+                    clase = element; 
+                }
+                h1 ++;
+            }                     
+        });
+        if(contador == 1){    
+            const pendientes = await pool.query('call GetPenClas (?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+            pendientes.pop();
+            for(let i=0; i<pendientes[0].length;i++){
+                let estado = pendientes[0][i].estado_pendiente;
+                if(estado == 0){
+                    let estado2 = pendientes[0][i].estado_pendiente.toString();
+                    estado2 = 'Sin terminar';
+                    pendientes[0][i].estado_pendiente = estado2;
+                }else{
+                    pendientes[0][i].estado_pendiente = 'Terminado';
+                }
+            }    
+            throw res.render('links/clase_pendiente', {clase: clase, pendientes: pendientes[0]}); 
+            
+        }else{            
+            throw res.redirect('/links/Horario');
+        }   
+    }catch(error){
     }
-    const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-    clase_actual.pop();
-    const nombre_clase = clase_actual[0][0].nombre_clase;
-    const pendientes = await pool.query('call GetPenClas (?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
-    pendientes.pop();
-    for(let i=0; i<pendientes[0].length;i++){
-        let estado = pendientes[0][i].estado_pendiente;
-        if(estado == 0){
-            let estado2 = pendientes[0][i].estado_pendiente.toString();
-            estado2 = 'Sin terminar';
-            pendientes[0][i].estado_pendiente = estado2;
-        }else{
-            pendientes[0][i].estado_pendiente = 'Terminado';
-        }
-    }    
-    res.render('links/clase_pendiente', {clase: clase_actual[0][0], pendientes: pendientes[0]}); 
 });
 router.get('/proyecto', isLoggedIn,(req,res)=>{
     res.render('links/proyecto'); 
@@ -418,7 +461,9 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
             for(let i =0; i<resta; i++){                
                 hi2=clase.horai;
                 for(let j = 0; j<resta2; j++){                    
-                    console.log('elemento', element);                        
+                    console.log('elemento', element);                     
+                        console.log('hora bd', hi);
+                        console.log('hora form', hi2);                       
                     if(hi2 == hi){                                                
                         throw res.redirect('/links/editar_horario');
                     }
@@ -530,7 +575,7 @@ router.post('/registro', async (req,res)=>{
     const {usertag, contra, correo_usuario, nombre_usuario, llave_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
     const allusers = await pool.query('call GetAllUsu');
-    console.log(allusers);
+    
     const newlink = {
         usertag,
         contra,
@@ -573,6 +618,7 @@ const url_repo = response.url;
 const nombre_nota = req.body.nombre;
 const id_usuario = req.app.locals.user.id_usuario;
 const clase = req.body.clase;
+
 await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
 
 res.json({ url: response.url });
@@ -590,12 +636,40 @@ router.get('/agregar_contacto',isLoggedIn, (req,res)=>{
     res.render('links/agregar_contacto');
 });
 router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
-    const {id_contacto} = req.body;     
-    const newlink = {
-        id_contacto
-    };
-    await pool.query('call SaveCont(? ,?)',[req.app.locals.user.id_usuario,newlink.id_contacto]);
-    res.redirect('/links/perfil');
+    try {
+        let cont =0;
+        const {id_contacto} = req.body;     
+        const newlink = {
+            id_contacto
+        };
+        const usuarios = await pool.query('call GetAllId');
+        usuarios.pop();
+        console.log('Usuarios',usuarios[0]);
+        for(let i=0; i<usuarios[0].length; i++){
+            if(usuarios[0][i].id_usuario == newlink.id_contacto){
+                console.log("Existe");
+                cont++;
+                
+            }
+        }
+        const contactos = await pool.query('call GetCont (?)', [req.app.locals.user.id_usuario]);
+        contactos.pop();
+        console.log('Contactos ', contactos[0]);
+        for(let i=0; i<contactos[0].length; i++){
+            if(contactos[0][i].id_usuario == newlink.id_contacto){
+                console.log("YA tiienes este contacto");
+                cont--;
+            }
+        }
+        if(cont==1){
+            await pool.query('call SaveCont(? ,?)',[req.app.locals.user.id_usuario,newlink.id_contacto]);
+                throw res.redirect('/links/perfil');
+        }else{
+            throw res.redirect('/links/perfil');
+        }
+    } catch (error) {
+        
+    }
 });
 router.get('/eliminar_contacto/:id',isLoggedIn, async (req,res)=>{
     const id_contacto = req.params;
@@ -609,7 +683,6 @@ router.get('/grupo', isLoggedIn, async (req,res)=>{
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
 
-    console.log(grupos);
     res.render('links/grupo',{contactos : contactos[0], grupos: grupos[0]});
 });
 router.post('/grupo', isLoggedIn, async (req,res)=>{
@@ -651,14 +724,33 @@ router.post('/eliminar_integrante',isLoggedIn, async (req,res)=>{
     res.redirect('/links/grupo');
 });
 router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
-    const {clave, nombre, id_nuevo_inte} = req.body;
-    const newLink = {
-        clave,
-        nombre,
-        id_nuevo_inte
+    try {
+        let cont =0;
+        const {clave, nombre, id_nuevo_inte} = req.body;
+        const newLink = {
+            clave,
+            nombre,
+            id_nuevo_inte
+        }
+        const equipo = await pool.query('call GetUsuT (?)', [newLink.clave]);
+        equipo.pop();
+        for(let i=0; i<equipo[0].length; i++){
+            if(equipo[0][i].id_usuario == newLink.id_nuevo_inte){
+                console.log("Ya existe ese integrante ");
+                cont++;
+            }
+        }
+        console.log("Contador", cont);
+        if(cont==0){
+            await pool.query('call SaveInt(?,?,?)', [newLink.clave, newLink.id_nuevo_inte, newLink.nombre]);
+            throw res.redirect('/links/grupo');
+        }else{
+            throw res.redirect('/links/grupo');
+        }
+        
+    } catch (error) {
+        
     }
-    await pool.query('call SaveInt(?,?,?)', [newLink.clave, newLink.id_nuevo_inte, newLink.nombre]);
-    res.redirect('/links/grupo');
 });
 router.post('/eliminar_equipo',isLoggedIn, async (req,res)=>{
     const {clave} = req.body;

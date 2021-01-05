@@ -53,6 +53,29 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+//errores
+/*if(app.get('env') === 'development') { 
+  console.log("Estamos1");
+  app.use(function(err, req, res, next) { 
+    console.log("Estamos2");
+    res.status(err.status ); 
+    console.log("Estamos3");
+    res.render('error', { 
+      message: err.message, 
+      error: err }); 
+  }); 
+  console.log("Estamos4");
+}
+console.log("Estamos5");
+app.use(function(err, req, res, next) { 
+  console.log("Estamos6");
+  res.status(err.status );
+  console.log("Estamos7"); 
+  res.render('error', { 
+    message: err.message, 
+    error: {} }); 
+}); 
+console.log("Estamos8");*/
 //socket
 
 
@@ -80,6 +103,11 @@ app.use((req,res,next)=>{
   }
     next();
 });
+
+//Manejo de errores
+
+
+
 
 //ruta
 

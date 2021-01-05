@@ -14,7 +14,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <a class="navbar-brand" href="/links/index_login"><img src="/img/OnClass.png" width="130px" height="70px"></a>
+          <a class="navbar-brand" href="/links/material_clase"><img src="/img/OnClass.png" width="130px" height="70px"></a>
               <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
                   <li class="nav-item ">
                     <a class="nav-link" href="/links/Horario">Horario</a>
@@ -61,7 +61,7 @@
                 <div class="card-body">
                     <form action="/links/pendientes" method="POST">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="nombre" placeholder="Nombre de la tarea" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
+                        <input type="text" class="form-control" name="nombre" placeholder="Nombre de la tarea" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" onkeypress="return isText(event)">
                     </div> 
                      <div class="form-group">
                         <input type="text" class="form-control" name="descripcion" placeholder="Descripcion" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">

@@ -1,6 +1,6 @@
 var nota = document.currentScript.getAttribute('nota');
-var clase = document.currentScript.getAttribute('clase');
-    console.log(nota);
+var clase = document.currentScript.getAttribute('nombre_clase');
+    console.log(clase);
 function guardar(descargar){
     var img = document.getElementById("img");
     var name = document.getElementById("nombre").value;
