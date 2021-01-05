@@ -22,7 +22,7 @@ console.log('legooooooooooo');
 			pMes = document.getElementById('mes'),
 			pYear = document.getElementById('year');
 
-		
+			
 		// Obtenemos el dia se la semana y lo mostramos
 		var semana = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 		pDiaSemana.textContent = semana[diaSemana];
