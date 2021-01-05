@@ -17,6 +17,19 @@ cloudinary.config({
 router.get('/index', (req,res)=>{
     res.render('links/index');
 });
+
+function error404(req, res, next){
+    let error = new Error(),
+        locals = {
+            title: 'Error 404',
+            description: 'Recurso no encontrado',
+            error : error
+        }
+    error.status = 404;
+    res.render('links/error_404', {layout: 'login', locals:locals});
+    
+}
+
 //Login
 
 
@@ -772,4 +785,7 @@ router.post('/eliminar_equipo',isLoggedIn, async (req,res)=>{
     await pool.query('call DelT(?)', [newLink.clave]);
     res.redirect('/links/grupo');
 });
+
+router.use(error404);
+
 module.exports = router;
