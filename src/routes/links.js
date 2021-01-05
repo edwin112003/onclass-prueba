@@ -514,7 +514,7 @@ router.get('/mostrar_cosas', isLoggedIn,async (req,res)=>{
 });
 router.post('/registro', async (req,res)=>{
     try {
-    const {usertag, contra, correo_usuario, nombre_usuario, llave_usuario} = req.body;   
+    const {usertag, contra, correo_usuario, nombre_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
     const allusers = await pool.query('call GetAllUsu');
     console.log(allusers);
@@ -522,8 +522,7 @@ router.post('/registro', async (req,res)=>{
         usertag,
         contra,
         correo_usuario,
-        nombre_usuario,
-        llave_usuario
+        nombre_usuario
     };
     console.log(newlink);
     
@@ -536,7 +535,7 @@ router.post('/registro', async (req,res)=>{
        console.log(allusers[0][i].usertag);
        console.log(newlink.usertag);        
     }
-     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, newlink.llave_usuario]);
+     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, null]);
      res.redirect('/links/login');
      console.log("todo bien");
 

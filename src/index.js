@@ -117,6 +117,11 @@ io.on('connection', socket => {
   
       io.to(user.room).emit('message', formatMessage(user.username, msg));
     });
+    socket.on('fileMessage', msg => {
+      const user = getCurrentUser(socket.id);
+  
+      io.to(user.room).emit('file', formatMessage(user.username, msg));
+    });
   
     // Runs when client disconnects
     socket.on('disconnect', () => {

@@ -9,7 +9,31 @@ var username= document.currentScript.getAttribute('username');
 console.log('atributo:', username);
 var room= document.currentScript.getAttribute('room');
 console.log('atributo:', room);
+var textooo = document.getElementById('nota').value;
+console.log('asdasdadasd',textooo);
+let file;
 
+const Enviar = ()=>{
+  $('#nota').summernote({
+    height: 300,                 // set editor height
+    minHeight: null,             // set minimum height of editor
+    maxHeight: null,             // set maximum height of editor
+    focus: true,                  // set focus to editable area after initializing summernote
+    toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture']],
+        ['view', ['codeview', 'help']],
+      ]
+});
+var text = $('#nota').summernote('code');
+console.log(text);
+    socket.emit('fileMessage', text);
+      
+ }
 async function ObtenerSala() {
   var room = document.getElementById('room').value;
   console.log('sala: ',room);
@@ -37,14 +61,38 @@ socket.on('message', message => {
   // Scroll down
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
+socket.on('file', message => {
+  console.log('dntro file',message);
+  $('#nota').summernote('code',message.text);
+});
 
 // Message submit
+  chatForm.addEventListener('submit', e => {
+    e.preventDefault(); 
+  
+    // Get message text
+    let msg = e.target.elements.msg.value;
+    console.log(msg);
+    msg = msg.trim();
+    
+    if (!msg){
+      return false;
+    }
+  
+    // Emit message to server
+    socket.emit('chatMessage', msg);
+  
+    // Clear input
+    e.target.elements.msg.value = '';
+    e.target.elements.msg.focus();
+  });
+
 chatForm.addEventListener('submit', e => {
   e.preventDefault(); 
 
   // Get message text
   let msg = e.target.elements.msg.value;
-  
+  console.log(msg);
   msg = msg.trim();
   
   if (!msg){
@@ -58,6 +106,7 @@ chatForm.addEventListener('submit', e => {
   e.target.elements.msg.value = '';
   e.target.elements.msg.focus();
 });
+
 
 // Output message to DOM
 function outputMessage(message) {
@@ -89,3 +138,7 @@ function outputUsers(users) {
     userList.appendChild(li);
   });
  }
+
+ 
+ console.log('fileeeeeee',file);
+ 
