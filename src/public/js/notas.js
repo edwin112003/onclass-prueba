@@ -9,11 +9,9 @@ function guardar(descargar){
         filename:     name+'.pdf',
         image:        { type: 'jpeg', quality: 1 },
     };
-    if(descargar){
-        
-        
-        if(html2pdf().from(text) == null ||html2pdf().from(img) === undefined || html2pdf().from(nota) == null || html2pdf().from(text) == "" || html2pdf().from(nota) == "null"){
-            text= "OnClass";
+    if(descargar){        
+        if(text == null ||html2pdf().from(img) === undefined || nota == null ||text == "" || nota == ""){
+            text= "No guardaste nada en tu nota crack. Atte: OnClass";
             html2pdf().set(opt).from(text).to('pdf').save();
         }else{
             // New Promise-based usage:

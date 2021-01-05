@@ -449,8 +449,25 @@ router.post('/registro', async (req,res)=>{
     var url_mysql = "";
     var response ='';
 router.post("/save_pdf",isLoggedIn,async(req,res)=>{
-await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
-res.json({ url: response.url });
+        if(req.app.locals.nota == ""){
+            req.app.locals.nota = "No pusiste nada en tu nota crack. Atte: OnClass";
+            await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+            res.json({ url: response.url });
+        }else{
+            await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+            res.json({ url: response.url });
+        }
+    });
+router.post("/save_nota",isLoggedIn,(req,res)=>{
+        req.app.locals.nota = req.body.nota;
+        console.log("buenas", req.app.locals.nota);
+        res.json({tag: req.app.locals.user.usertag});
+        });  
+/*    
+router.post("/save_pdf",isLoggedIn,async(req,res)=>{
+    
+    await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
+    res.json({ url: response.url });
 
 });
 router.post("/save_nota",isLoggedIn,(req,res)=>{
@@ -458,6 +475,7 @@ router.post("/save_nota",isLoggedIn,(req,res)=>{
     console.log("buenas", req.app.locals.nota);
     res.json({tag: req.app.locals.user.usertag});
     });
+*/
 /*Esta es la url que se va a meter a la basede datos*/
 url_mysql = response.url;
 
