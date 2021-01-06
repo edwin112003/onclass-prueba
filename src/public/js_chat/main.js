@@ -1,7 +1,9 @@
+
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
+
 
 // Get username and room from URL
 
@@ -9,6 +11,10 @@ var username= document.currentScript.getAttribute('username');
 console.log('atributo:', username);
 var room= document.currentScript.getAttribute('room');
 console.log('atributo:', room);
+var id_contacto = document.currentScript.getAttribute('id_usuario');
+console.log('con',id_contacto);
+var id_remitente = document.currentScript.getAttribute('id_remitente');
+console.log('con',id_remitente);
 var textooo = document.getElementById('nota').value;
 console.log('asdasdadasd',textooo);
 let file;
@@ -30,19 +36,54 @@ const Enviar = ()=>{
       ]
 });
 var text = $('#nota').summernote('code');
-console.log(text);
-const key = new JSEncrypt();
-const private = localStorage.getItem("llaveprivada");
-key.setPrivateKey(private);        
-let m_encr =key.encrypt('buenas');
-fetch("/links/llaves2", {method: 'POST'}).then(response => response.json()).then(data =>{
-  console.log('llaves2',data);
-  let de = key.decrypt(m_encr);
-  console.log('text',de);
-});
-console.log('text',m_encr);
+var texto = 'buenas';
+var k = 'pepe';
+// Encrypt
 
-    socket.emit('fileMessage', text);      
+/* Decrypt
+var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
+var originalText = bytes.toString(CryptoJS.enc.Utf8);
+ 
+console.log(originalText);*/
+
+//cifrar llave con asimetrico
+//obtener llave publica del contacto
+console.log('lleva');
+var array = {id:id_contacto};
+fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
+  var TC = CryptoJS.AES.encrypt(texto, k).toString();
+  console.log('rpueba',TC);
+  //asimetrico
+  console.log('llaves2',data);
+
+  const keyrsa = new JSEncrypt();
+ 
+  keyrsa.setPublicKey(data);
+
+  let kc =keyrsa.encrypt(k);
+  console.log('lleve del simetrico cifrada',kc);
+
+  var llaveprivada = localStorage.getItem('llaveprivada');
+  keyrsa.setPrivateKey(llaveprivada);
+  var cade_c =CryptoJS.SHA1(TC).toString();
+  console.log('cc',cade_c);
+  var ccc = keyrsa.encrypt(cade_c);
+  console.log("cccccc",ccc);
+  var ccc_simetrico = CryptoJS.AES.encrypt(ccc, k).toString();
+
+  var objeto = {
+    kc: kc,
+    TC : TC,
+    TCC : ccc_simetrico,
+    id:id_remitente
+  }
+  socket.emit('fileMessage', objeto); 
+});
+
+
+
+
+         
  }
 async function ObtenerSala() {
   var room = document.getElementById('room').value;
@@ -73,7 +114,48 @@ socket.on('message', message => {
 });
 socket.on('file', message => {
   console.log('dntro file',message);
+  var array = {
+    id:message.text.id
+  }
+  console.log('array',array);
+  fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
+  console.log('datadel2',data);
+  
+  var kc_de = message.text.kc;
+  var TC_de = message.text.TC;
+  var TCC_de = message.text.TCC;
+  var id_remi = message.text.id;
+  console.log('llave',kc_de);
+  console.log('cifrado',TC_de);
+  console.log('ccc',TCC_de);
+
+  //obtener privada
+  const keyrsade = new JSEncrypt(); 
+  var llaveprivada_de = localStorage.getItem('llaveprivada');
+  keyrsade.setPrivateKey(llaveprivada_de);
+  var k_de = keyrsade.decrypt(kc_de);
+  console.log('llae_des',k_de);
+
+  var txt = CryptoJS.AES.decrypt(TC_de, k_de).toString(CryptoJS.enc.Utf8);
+  console.log(txt);
+  var hash =CryptoJS.SHA1(TC_de);
+
+  var ccc_de = CryptoJS.AES.decrypt(TCC_de, k_de).toString(CryptoJS.enc.Utf8);
+  console.log('ccc_de',ccc_de);
+  keyrsade.setPrivateKey(data);
+  var hash2 = keyrsade.decrypt(ccc_de);
+  
+  var array2 = {
+    llave : data,
+    hash_cifrado : ccc_de
+  }
+  fetch("/links/descifrar", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array2)}).then(response => response.json()).then(data =>{
+    console.log('hash',hash);
+    console.log('hash2',data);
+  });
+  
   $('#nota').summernote('code',message.text);
+});
 });
 
 // Message submit

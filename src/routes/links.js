@@ -46,7 +46,7 @@ router.post('/login', (req,res,next)=>{
 //login final 
 
 //cerrar sesion
-router.get('/logout', (req,res)=>{
+router.get('/logout', isLoggedIn,(req,res)=>{
     req.logOut();
     res.redirect('/links/login');
 });
@@ -74,13 +74,14 @@ router.post('/chat_menu', isLoggedIn, (req,res)=>{
         username,
         room
         };
+    let sala_vista = newlink.room.split(':');
+    let sala = sala_vista[0];
+    let id_contacto = sala_vista[1];
     console.log(newlink.room);
-    res.render('links/chat', {layout: 'login',newlink : newlink.room});
+    res.render('links/chat', {layout: 'login',newlink :sala,contacto : id_contacto});
 });
-//rutas del chat final    
-router.get('/index_login',isLoggedIn, (req,res)=>{
-    res.render('links/index_login'); 
-});
+
+//rutas del chat final
 router.get('/registro', (req,res)=>{
     res.render('links/registro', {layout: 'login'}); 
 }); 
@@ -132,34 +133,38 @@ router.post('/llaves', isLoggedIn, async (req,res)=>{
     res.json(llaveprivada);    
 });
 router.post('/llaves2', isLoggedIn, async (req,res)=>{
-    const obtllaves= await pool.query("call GetKey(?)",[req.app.locals.user.id_usuario]);
+    console.log('reeeee',req.body.id);
+    let id = parseInt(req.body.id);
+    console.log('asdasdasd',req.app.locals.user.id_usuario);
+    const obtllaves= await pool.query("call GetKey(?)",[id]);
     obtllaves.pop();
     let llavepriv = obtllaves[0][0].llave_usuario;
     console.log('llavepriv',llavepriv); 
     res.json(llavepriv);    
 });
-router.post('/Horario',  async (req,res)=>{
+router.post('/descifrar', isLoggedIn, async (req,res)=>{
+    console.log('reeeee',req.body);
+    
+    const key = new NodeRSA();
+    key.importKey(req.body.llave,'pkcs8-public');
+    console.log(req.body.llave);
+    console.log('hashco',req.body.hash_cifrado);
+    var hashnuevo = key.decryptPublic(req.body.hash_cifrado).toString(); 
+    console.log(hashnuevo);
+    res.json(hashnuevo);    
+});
+router.post('/Horario', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
     const clas = clase[0];
     res.json(clas);
+    
 });
-router.get('/contactos',isLoggedIn, (req,res)=>{
-    res.render('links/contactos'); 
-});
-router.get('/clase_proyecto',isLoggedIn, (req,res)=>{
-    res.render('links/clase_proyecto'); 
-});
-
 router.get('/perfil', isLoggedIn,async (req,res)=>{
 
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     contactos.pop();
     res.render('links/perfil', {layout: 'login',usuarios: contactos[0]}); 
-});
-
-router.get('/editar_perfil/:id',isLoggedIn, async (req,res)=>{
-    
 });
 router.post('/vista_editar_perfil', isLoggedIn, async(req,res)=>{
     const {id} = req.body;
@@ -244,7 +249,6 @@ router.post('/cambiar_estado_a_nt', isLoggedIn, async(req,res)=>{
     const newlink = {
         id_estado
     }
-    console.log(newlink);
     await pool.query('call EditPenS(?,?)', [newlink.id_estado,false]);
     res.redirect('/links/terminados');
 });
@@ -253,7 +257,6 @@ router.post('/cambiar_estado_a_t', isLoggedIn, async(req,res)=>{
     const newlink = {
         id_estado
     }
-    console.log(newlink);
     await pool.query('call EditPenS(?,?)', [newlink.id_estado,true]);
     res.redirect('/links/no_terminados');
 });
@@ -266,9 +269,7 @@ router.post('/pendientes',isLoggedIn, async (req,res)=>{
             clase,
             fecha
         };
-        console.log(newlink);
         if(newlink.nombre == ''){
-            console.log('estanis');
             req.flash('message', 'Dale un nombre al pendiente');
             throw res.redirect('/links/pendientes');
         }
@@ -354,7 +355,6 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
     const newlink = {
         id
     };
-    console.log('estamos aqui',newlink.id);
 
     const pendiente = await pool.query('call GetPenId(?)',
     [newlink.id]);
@@ -368,14 +368,6 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
     
 
     res.render('links/editar_pendiente',{pendiente: pendiente[0],fecha_muestra,fecha_valor, clases: clase[0]});
-});
-
-router.get('/pendientes_grupo', isLoggedIn, async (req,res)=>{
-    
-    res.render('links/pendientes_grupo', {layout: 'login'});
-});
-router.get('/clase_notas', isLoggedIn,(req,res)=>{
-    res.render('links/clase_notas'); 
 });
 router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     try{   
@@ -409,9 +401,6 @@ router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
         }   
     }catch(error){
     }
-});
-router.get('/clase_mensajes',isLoggedIn, (req,res)=>{
-    res.render('links/clase_mensajes'); 
 });
 router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
     try{   
@@ -461,9 +450,6 @@ router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
     }catch(error){
     }
 });
-router.get('/proyecto', isLoggedIn,(req,res)=>{
-    res.render('links/proyecto'); 
-});
 router.get('/editar_horario', isLoggedIn, async (req,res)=>{  
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
@@ -496,14 +482,6 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
             req.flash('message', 'La hora de inicio no puede ser mayor a la hora final');
             throw res.redirect('/links/editar_horario');
         }
-        /*const clasecompa = await pool.query("call GetClas2 (?)", req.app.locals.user.id_usuario);
-        for (let i = 0; i < clasecompa[0].length -1; i++) {
-            if(clase.dia == clasecompa[0][i].dia_clase){
-                if(clase.horai == clasecompa[0][i].horai_clase){
-                    throw res.redirect('/links/editar_horario');
-                }
-            }
-        }*/
         const clases_dia = await pool.query("call GetDiaClas(?,?)",[req.app.locals.user.id_usuario, clase.dia] );
         clases_dia.pop();
         clases_dia[0].forEach(element => {
@@ -622,19 +600,7 @@ router.post('/delete_clase', isLoggedIn, async(req, res)=>{
     await pool.query('call DelClas (?)', [id]);
     res.redirect('/links/editar_horario');
 });
-
-router.get('/ver', isLoggedIn,async (req,res)=>{
-    const clase = await pool.query('call GetCont(?)',11);
-    clase.pop();
-    res.render('links/ver', {usuarios: clase[0]});
-});
-router.get('/mostrar_cosas', isLoggedIn,async (req,res)=>{
-    const e_usuario = await pool.query('select * from E_Usuario');
-    res.render('links/mostrar_cosas', {e_usuario});
-
-    
-});
-router.post('/registro', async (req,res)=>{
+router.post('/registro', isNotLoggedIn,async (req,res)=>{
     try {
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
@@ -680,13 +646,6 @@ router.post("/save_pdf",isLoggedIn,async(req,res)=>{
             const nombre_nota = req.body.nombre;
             const id_usuario = req.app.locals.user.id_usuario;
             const clase = req.body.clase;
-            console.log('eepepeppwepwepwpepqwpepqepqwe');
-            console.log(url_repo);
-            console.log(nombre_nota);
-            console.log(id_usuario);
-            console.log(clase);
-            console.log('eepepeppwepwepwpepqwpepqepqwe');
-
             await pool.query('call SaveNota (?,?,?,?)', [id_usuario, url_repo, nombre_nota, clase]);
 
             res.json({ url: response.url });
@@ -697,20 +656,6 @@ router.post("/save_nota",isLoggedIn,(req,res)=>{
         console.log("buenas", req.app.locals.nota);
         res.json({tag: req.app.locals.user.usertag});
         });  
-/*    
-router.post("/save_pdf",isLoggedIn,async(req,res)=>{
-    
-    await cloudinary.uploader.upload("data:image/png;base64,"+req.body.pdf,{format:'jpg', public_id: req.body.nombre}, function(error, result) { response = result;});
-    res.json({ url: response.url });
-
-});
-router.post("/save_nota",isLoggedIn,(req,res)=>{
-    req.app.locals.nota = req.body.nota;
-    console.log("buenas", req.app.locals.nota);
-    res.json({tag: req.app.locals.user.usertag});
-    });
-*/
-/*Esta es la url que se va a meter a la basede datos*/
 url_mysql = response.url;
 
 router.get('/agregar_contacto',isLoggedIn, (req,res)=>{
@@ -725,7 +670,6 @@ router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
         };
         const usuarios = await pool.query('call GetAllId');
         usuarios.pop();
-        console.log('Usuarios',usuarios[0]);
         for(let i=0; i<usuarios[0].length; i++){
             if(usuarios[0][i].id_usuario == newlink.id_contacto){
                 console.log("Existe");
@@ -735,7 +679,6 @@ router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
         }
         const contactos = await pool.query('call GetCont (?)', [req.app.locals.user.id_usuario]);
         contactos.pop();
-        console.log('Contactos ', contactos[0]);
         for(let i=0; i<contactos[0].length; i++){
             if(contactos[0][i].id_usuario == newlink.id_contacto){
                 console.log("YA tiienes este contacto");
@@ -754,7 +697,6 @@ router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
 });
 router.get('/eliminar_contacto/:id',isLoggedIn, async (req,res)=>{
     const id_contacto = req.params;
-    console.log(id_contacto);
     await pool.query('call DelCont(?,?)',[req.app.locals.user.id_usuario,id_contacto.id]);
     res.redirect('/links/perfil');  
 });
@@ -822,9 +764,7 @@ router.post('/agregar_equipo_pendiente',isLoggedIn, async (req,res)=>{
             id_integrante,
             fecha
         };
-        console.log(newlink);
         if(newlink.nombre == ''){
-            console.log('estanis');
             req.flash('message', 'Dale un nombre al pendiente');
             throw res.redirect('/links/grupo');
         }
@@ -870,7 +810,6 @@ router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
                 cont++;
             }
         }
-        console.log("Contador", cont);
         if(cont==0){
             await pool.query('call SaveInt(?,?,?)', [newLink.clave, newLink.id_nuevo_inte, newLink.nombre]);
             throw res.redirect('/links/grupo');
@@ -890,7 +829,18 @@ router.post('/eliminar_equipo',isLoggedIn, async (req,res)=>{
     await pool.query('call DelT(?)', [newLink.clave]);
     res.redirect('/links/grupo');
 });
-
+router.post('/eliminar_cuenta', isLoggedIn, async(req,res)=>{
+    const {id} = req.body;
+    const newLink = {
+        id
+    }
+    await pool.query('call DelUsu(?)',[newLink.id]);
+    req.logOut();
+    res.redirect('/links/Horario');
+});
+router.get('/terminos_condiciones', (req,res)=>{
+    res.render('links/terminos_condiciones', {layout:'login'});
+});
 router.use(error404);
 
 module.exports = router;

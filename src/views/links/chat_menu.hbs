@@ -16,7 +16,7 @@
   {{!-- FONT AWESOME 5 --}}
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
     crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="/css_index/estilos.css">
     <title>OnClass</title>
 	</head>
 	<body>
@@ -37,12 +37,33 @@
                     <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes_grupo">Pendientes de equipo</a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" href="/links/chat_menu">Mensajes</a>
                   </li>
-              </ul>
+              </ul>              
+<ul class="navbar-nav mr-auto mt-2 mt-xl-0">
+  <li class="nav-item">
+    <div class="d-flex flex-row bd-highlight mb-3">
+    <div class="p-1" id="diaSemana">Martes</div>
+    <div class="p-1" id="dia"> 27</div>
+    <div class="p-1"> de </div>
+    <div class="p-1" id="mes">Octubre </div>
+    <div class="p-1"> del</div>
+    <div class="p-1" id="year">2015</div>
+  </div>
+  </li>
+  <li class="nav-item">
+    <div  class="d-flex flex-row bd-highlight mb-3">
+    <div class="p-1" id="horas">11</div>
+    <div class="p-1" >:</div>
+    <div class="p-1" id="minutos">48</div>
+    <div class="p-1" >:</div>
+    <div class="p-1" id="segundos">12</div>
+    <div class="p-1" id="ampm">AM</div>    
+    </div>
+  </li>
+</ul>
+
+	
               <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
                 <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -75,7 +96,7 @@
 						<label for="room">Room</label>
 						<select name="room" id="room">
               {{#each usuarios}}
-							<option value="{{id_chat}}">{{nombre_usuario}}{{id_chat}}</option>
+							<option value="{{id_chat}}:{{id_usuario}}" >{{nombre_usuario}}</option>
 							{{/each}}
 						</select>
 					</div>
@@ -104,7 +125,6 @@
 							required
 						/>
 					</div>
-          
 					<div class="form-control">
 						<label for="room">Room</label>
 						<select name="room" id="room">
@@ -118,7 +138,61 @@
         
 			</main>
 		</div>
-    
+    <footer>
+       
+       <div class="container-footer-all">
+        
+            <div class="container-body">
+
+                <div class="colum1">
+                    <h1>Mas informacion de la compañia</h1>
+
+                    <p>Pretendemos ser una empresa fuerte en el mercado nacional dentro del sector privado en la 
+                      área de programación de Software, para ello abordaremos todos los servicios que ofrecemos 
+                      actualmente agregando los que vayan surgiendo debido a la necesidad de cambio provocado por 
+                      los avances tecnológicos.Somos una empresa que estará en constante innovación por lo que 
+                      Save Studio se compromete a siempre contar con las nuevas tecnologías de desarrollo de Software 
+                      dentro del mercado.</p>
+
+                </div>
+
+                <div class="colum3">
+
+                    <h1>Informacion Contactos</h1>
+
+                    <div class="row2">
+                        <label>Mar Mediterráneo 227, Popotla, 11400 Ciudad de México, CDMX Ciudad de México, Ciudad de México, México
+                        </label>
+                    </div>
+
+                    <div class="row2">
+                        <label>+52 5531415887</label>
+                    </div>
+
+                    <div class="row2">
+                         <label>savestudios@onclass.online</label>
+                    </div>
+
+                </div>
+
+            </div>
+        
+        </div>
+        
+        <div class="container-footer">
+               <div class="footer">
+                    <div class="copyright">
+                        © 2020 Todos los Derechos Reservados | <a href="">Magtimus</a>
+                    </div>
+
+                    <div class="information">
+                        <a href="/links/terminos_condiciones">Terminos y Condiciones</a>
+                    </div>
+                </div>
+
+            </div>
+        
+    </footer>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
