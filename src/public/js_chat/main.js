@@ -215,13 +215,16 @@ chatForm.addEventListener('submit', e => {
 // Output message to DOM
 function outputMessage(message) {
   const div = document.createElement('div');
+  div.className = 'd-flex justify-content-center';
   div.classList.add('message');
   const p = document.createElement('p');
   p.classList.add('meta');
+  p.className = 'p-1';
   p.innerText = message.username;
-  p.innerHTML += `<span>${message.time}</span>`;
+  p.innerHTML += ` <span>${message.time}</span> `;
   div.appendChild(p);
   const para = document.createElement('p');
+  para.className = 'p-1';
   para.classList.add('text');
   para.innerText = message.text;
   div.appendChild(para);
