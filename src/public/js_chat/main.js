@@ -51,7 +51,7 @@ console.log(originalText);*/
 console.log('lleva');
 var array = {id:id_contacto};
 fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
-  var TC = CryptoJS.AES.encrypt(texto, k).toString();
+  var TC = CryptoJS.AES.encrypt(text, k).toString();
   console.log('rpueba',TC);
   //asimetrico
   console.log('llaves2',data);
@@ -65,11 +65,16 @@ fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/jso
 
   var llaveprivada = localStorage.getItem('llaveprivada');
   keyrsa.setPrivateKey(llaveprivada);
-  var cade_c =CryptoJS.SHA1(TC).toString();
+  var cade_c =CryptoJS.SHA1(TC).toString(CryptoJS.enc.Base64);
   console.log('cc',cade_c);
-  var ccc = keyrsa.encrypt(cade_c);
-  console.log("cccccc",ccc);
-  var ccc_simetrico = CryptoJS.AES.encrypt(ccc, k).toString();
+  var array3 = {
+    llave_privada : llaveprivada,
+    hash : cade_c
+  }
+  fetch("/links/encriptar", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array3)}).then(response => response.json()).then(data =>{
+    console.log('hash',data);
+  console.log("n_cccccc",data);
+  var ccc_simetrico = CryptoJS.AES.encrypt(data, k).toString();
 
   var objeto = {
     kc: kc,
@@ -78,6 +83,9 @@ fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/jso
     id:id_remitente
   }
   socket.emit('fileMessage', objeto); 
+  
+  });
+  
 });
 
 
@@ -125,6 +133,10 @@ socket.on('file', message => {
   var TC_de = message.text.TC;
   var TCC_de = message.text.TCC;
   var id_remi = message.text.id;
+
+  if(id_remi == id_remitente){
+    console.log('buenabuenabuenabuenabuneaubuena saltamos cifrado');
+  }else{
   console.log('llave',kc_de);
   console.log('cifrado',TC_de);
   console.log('ccc',TCC_de);
@@ -138,13 +150,13 @@ socket.on('file', message => {
 
   var txt = CryptoJS.AES.decrypt(TC_de, k_de).toString(CryptoJS.enc.Utf8);
   console.log(txt);
-  var hash =CryptoJS.SHA1(TC_de);
+  var hash =CryptoJS.SHA1(TC_de).toString(CryptoJS.enc.Base64);
 
   var ccc_de = CryptoJS.AES.decrypt(TCC_de, k_de).toString(CryptoJS.enc.Utf8);
   console.log('ccc_de',ccc_de);
   keyrsade.setPrivateKey(data);
   var hash2 = keyrsade.decrypt(ccc_de);
-  
+  console.log("post-hash");
   var array2 = {
     llave : data,
     hash_cifrado : ccc_de
@@ -152,9 +164,9 @@ socket.on('file', message => {
   fetch("/links/descifrar", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array2)}).then(response => response.json()).then(data =>{
     console.log('hash',hash);
     console.log('hash2',data);
+    $('#nota').summernote('code',txt);
   });
-  
-  $('#nota').summernote('code',message.text);
+}
 });
 });
 
@@ -226,6 +238,7 @@ function outputUsers(users) {
   userList.innerHTML = '';
   users.forEach(user=>{
     const li = document.createElement('li');
+    li.className = 'list-group-item';
     li.innerText = user.username;
     userList.appendChild(li);
   });

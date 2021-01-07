@@ -64,7 +64,6 @@ router.get('/chat_menu', isLoggedIn, async (req,res)=>{
     const contactos = await pool.query('call GetCont (?)',req.app.locals.user.id_usuario);
     
     contactos.pop();
-    console.log(contactos[0]); 
     res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0], grupos : grupos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
@@ -126,32 +125,50 @@ router.get('/Horario', isLoggedIn, async (req,res)=>{
 router.post('/llaves', isLoggedIn, async (req,res)=>{
     const key = new NodeRSA().generateKeyPair();
     const llavepublica = key.exportKey("public");
-    const llaveprivada = key.exportKey("private"); 
-    console.log('pu',llavepublica);
-    console.log('pri',llaveprivada);
+    const llaveprivada = key.exportKey("private");
+    console.log('llaves del usuario inicio id',req.app.locals.user.id_usuario); 
+    console.log('publica de llaves',llavepublica);
+    console.log('privada de laves',llaveprivada);
+    console.log('llaves del usuario final id',req.app.locals.user.id_usuario); 
     await pool.query("call SaveKey(?,?)",[req.app.locals.user.id_usuario, llavepublica]);
+    console.log('se guardo la llave');
     res.json(llaveprivada);    
 });
 router.post('/llaves2', isLoggedIn, async (req,res)=>{
-    console.log('reeeee',req.body.id);
+    console.log('id del contacto',req.body.id);
     let id = parseInt(req.body.id);
-    console.log('asdasdasd',req.app.locals.user.id_usuario);
+    console.log('id del remitente',req.app.locals.user.id_usuario);
     const obtllaves= await pool.query("call GetKey(?)",[id]);
     obtllaves.pop();
     let llavepriv = obtllaves[0][0].llave_usuario;
-    console.log('llavepriv',llavepriv); 
+    console.log('llavepublica del id:'+id+'llave: ',llavepriv); 
     res.json(llavepriv);    
 });
 router.post('/descifrar', isLoggedIn, async (req,res)=>{
-    console.log('reeeee',req.body);
+    console.log('req.body de decifrar',req.body);
     
     const key = new NodeRSA();
     key.importKey(req.body.llave,'pkcs8-public');
-    console.log(req.body.llave);
-    console.log('hashco',req.body.hash_cifrado);
-    var hashnuevo = key.decryptPublic(req.body.hash_cifrado).toString(); 
-    console.log(hashnuevo);
+    console.log('llave que se manda en descifrar',req.body.llave);
+    console.log('hash cifrado',req.body.hash_cifrado);
+
+    var hashnuevo = key.decryptPublic(req.body.hash_cifrado).toString();
+
+    console.log('hash nuevo,a  comparar',hashnuevo); 
     res.json(hashnuevo);    
+});
+router.post('/encriptar', isLoggedIn, async (req,res)=>{
+    console.log('req.body de cifrar',req.body);
+    
+    const key = new NodeRSA();
+    key.importKey(req.body.llave_privada,'pkcs1');
+    console.log('llave que se manda en cifrar',req.body.llave_privada);
+    console.log('hash',req.body.hash);
+
+    var hash_cifrado = key.encryptPrivate(req.body.hash,'base64');
+     
+    console.log('hash cifrado',hash_cifrado); 
+    res.json(hash_cifrado);    
 });
 router.post('/Horario', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
