@@ -108,7 +108,7 @@ function error404(req, res, next){
 //ruta
 app.use(require('./routes'));
 app.use('/links',require('./routes/links'));
-const botName = 'ChatCord Bot';
+const botName = 'Onclass bot';
 io.on('connection', socket => {
     console.log('entrada de nuevo socket');
     socket.on('joinRoom', ({ username, room }) => {
@@ -117,14 +117,14 @@ io.on('connection', socket => {
       socket.join(user.room);
   
       // Welcome current user
-      socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+      socket.emit('message', formatMessage(botName, 'Bienvenido a tu chad!'));
   
       // Broadcast when a user connects
       socket.broadcast
         .to(user.room)
         .emit(
           'message',
-          formatMessage(botName, `${user.username} has joined the chat`)
+          formatMessage(botName, `${user.username} se ha unido al chat :)`)
         );
   
       // Send users and room info
@@ -153,7 +153,7 @@ io.on('connection', socket => {
       if (user) {
         io.to(user.room).emit(
           'message',
-          formatMessage(botName, `${user.username} has left the chat`)
+          formatMessage(botName, `${user.username} se ha ido del chat ):`)
         );
   
         // Send users and room info
