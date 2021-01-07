@@ -11,13 +11,13 @@
             <div>
                 <input type="text" readonly="readonly" name="nombre" value="{{nombre_proyecto}}"></input>
             </div>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn btn-secondary">
                 Detalles del proyecto
             </button>
         </form>
         <form action="/links/eliminar_equipo" method="POST">
             <input type="hidden" name="clave" value="{{clave_equipo}}">
-            <button type="submit" class="btn">Eliminar Equipo</button>
+            <button type="submit" class="btn btn-secondary">Eliminar Equipo</button>
         </form>              
         {{/each}}
         
@@ -32,13 +32,20 @@
             <div>
                 <input type="text" class="form-control md-6" name="nombre" placeholder="Nombre del equipo" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
             </div>
+            <br>
             <div>
             {{#each contactos}}
-                <input type="checkbox" name="check_usuarios" value="{{id_usuario}}">{{nombre_usuario}}<br>                                 
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <input type="checkbox" class="form-check-input me-1" name="check_usuarios" value="{{id_usuario}}">{{nombre_usuario}}<br>                                 
+                    </li>
+                </ul>
+                
             {{/each}}
             </div>
+            <br>
             <div>
-                <button type="submit">Guardar</button>
+                <button type="submit" class="btn btn-secondary">Guardar</button>
             </div>
         </form>
         
