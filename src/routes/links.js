@@ -842,7 +842,9 @@ router.post('/correo',(req,res)=>{
         subject: '¡SE ACABA EL TIEMPO!',
         html: contentHTML
     });
-})
+    req.flash('success', 'Correo enviado correctamente');
+    res.redirect('/links/no_terminados')
+});
 router.use(error404);
 
 module.exports = router;
