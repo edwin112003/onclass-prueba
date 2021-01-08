@@ -5,6 +5,8 @@ const pool = require('../database');
 const passport = require('passport');
 const {isLoggedIn, isNotLoggedIn}= require('../lib/auth'); 
 const NodeRSA = require('node-rsa');
+const crypto =require('crypto');
+const hash = crypto.createHash('sha256'); 
 var cloudinary = require('cloudinary').v2;
 //buenas
 
@@ -194,13 +196,16 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
         let contador = 0;
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-        clase_actual.pop();      
+        clase_actual.pop();
+        console.log('clase actual',clase_actual[0]);      
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
                 if(h1 == hora){
-                    contador++;                    
+                    console.log('contador antes del mas',contador);
+                    contador++;
+                    console.log('contador despues del mas',contador);                    
                     nombre_clase = element.nombre_clase;
                     clase = element;  
                 }
@@ -587,7 +592,7 @@ router.post('/delete_clase', isLoggedIn, async(req, res)=>{
     await pool.query('call DelClas (?)', [id]);
     res.redirect('/links/editar_horario');
 });
-router.post('/registro', isNotLoggedIn,async (req,res)=>{
+router.post('/registro', isNotLoggedIn,async (req,res)=>{ 
     try {
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
@@ -606,7 +611,18 @@ router.post('/registro', isNotLoggedIn,async (req,res)=>{
          throw res.redirect('/links/registro');          
         }     
     }
-     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, null]);
+    console.log('buenas reist');
+    var crypto = require('crypto'); 
+    var text  = 'I love cupcakes'; 
+    var secret = 'abcdeg'; //make this your secret!! 
+    var algorithm = 'sha256'; //consider using sha256 
+    var hash, hmac;
+    
+    hmac = crypto.createHmac(algorithm, secret); 
+    hmac.update(newlink.contra); 
+    hash = hmac.digest('hex'); 
+    console.log("contra cifrada con hash:", hash);
+     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, hash, newlink.correo_usuario, newlink.nombre_usuario, null]);
      res.redirect('/links/login');
 
     } catch (error) {
