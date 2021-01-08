@@ -248,7 +248,8 @@ router.get('/pendientes', isLoggedIn, async (req,res)=>{
     res.render('links/pendientes', {layout: 'login', clases: clase[0]});
 });
 router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
-    const {id, nombre, desc, clase, fecha} = req.body;
+    try {
+        const {id, nombre, desc, clase, fecha} = req.body;
     const newlink = {
         id,
         nombre, 
@@ -257,9 +258,16 @@ router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
         fecha
     }
     const fecha_nueva = newlink.fecha.split('/');
+    
+    if(fecha_nueva[1]==undefined || fecha_nueva[2]==undefined){
+        req.flash('message', 'Pon bien la fecha');
+        throw res.redirect('/links/pendientes');
+    }
     const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
     await pool.query('call EditPen (?, ?, ?, ?, ?)', [newlink.id, newlink.nombre, newlink.desc, newlink.clase, fecha_base]);
-    res.redirect('/links/pendientes');
+    throw res.redirect('/links/pendientes');
+    } catch (error) { 
+    }
 });
 router.post('/cambiar_estado_a_nt', isLoggedIn, async(req,res)=>{
     const {id_estado} = req.body;
@@ -821,6 +829,7 @@ router.post('/agregar_equipo_pendiente',isLoggedIn, async (req,res)=>{
         res.redirect('/links/grupo');
     } catch (error) {
         console.log(error);
+        req.flash('message', 'El formato de la fecha es incorrecto');
         res.redirect('/links/grupo');
     }    
 });

@@ -245,7 +245,7 @@ function outputMessage(message) {
   p.classList.add('meta');
   p.className = 'p-1';
   p.innerText = message.username;
-  p.innerHTML += ` <span>${message.time}</span> `;
+  p.innerHTML += ` `;
   div.appendChild(p);
   const para = document.createElement('p');
   para.className = 'p-1';

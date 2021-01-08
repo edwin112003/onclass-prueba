@@ -13,7 +13,7 @@ function guardar(descargar){
         image:        { type: 'jpeg', quality: 1 },
     };
     if(descargar){        
-        if(text == null ||html2pdf().from(img) === undefined || nota == null ||text == "" || nota == ""){
+        if(text == null || nota == null ||text == "" || nota == ""){
             text= "No guardaste nada en tu nota crack. Atte: OnClass";
             html2pdf().set(opt).from(text).to('pdf').save();
         }else{
