@@ -37,7 +37,8 @@
                         <input type="hidden" value="{{nombres.id}}" name ="clave">
                         <input type="hidden" value="{{nombres.nombre}}" name ="nombre">
                         Agrega un usuario:
-                        <select name="id_nuevo_inte">
+                        
+                        <select class="form-select btn  p-2" name="id_nuevo_inte">
                             {{#each contactos}}
 							<option value="{{id_usuario}}">{{nombre_usuario}}</option>
 							{{/each}}
