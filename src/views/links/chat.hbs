@@ -116,11 +116,29 @@
                 <h5 class="text-center">Tomar notas</h5><br>
                 <div id="nota"></div>
                 <div class="d-flex justify-content-around mt-4">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" onclick="Enviar()">Enviar</button>
+                    <button class="btn btn-success"  onclick="Enviar()">Enviar</button>
+                    <button class="btn btn-danger"  onclick="EnviarFalso()">Enviar fake</button>
                 </div>
             </div></center>
 
     
+    <!--- Modal-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content" style="background-color:  rgb(12, 53, 77)">
+            <div class="modal-header" style="border-bottom: 0px solid rgb(4, 36, 56)">
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <p style="color:  #edf4fd; font-size: 30px;">El Mensaje: </p>
+                <p style="color:  #edf4fd; font-size: 30px;" id="score"></p>
+            </div>
+            <div class="modal-footer" style="border-top: 0px solid rgb(4, 36, 56)">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #189078">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
       integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="

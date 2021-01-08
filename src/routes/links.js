@@ -1,4 +1,4 @@
-
+const nodemailer = require('nodemailer');
 const express = require('express');
 const router = express.Router();
 const pool = require('../database');
@@ -31,11 +31,9 @@ function error404(req, res, next){
 }
 //login
 router.get('/login',isNotLoggedIn, (req,res)=>{
-    console.log('estoy en login');
     res.render('links/login', {layout: 'login'}); 
 });
 router.post('/login', (req,res,next)=>{
-    console.log('estoy aqui');
     passport.authenticate('local.login',{        
         successRedirect: '/links/Horario',
         failureRedirect: '/links/login',
@@ -54,8 +52,6 @@ router.get('/logout', isLoggedIn,(req,res)=>{
 
 //rutas del chat
 router.get('/chat', isLoggedIn, (req,res)=>{
-    console.log('chat:',  req.params);
-    console.log('chat:',  req.body); 
     res.render('links/chat', {layout: 'login'});
 });
 router.get('/chat_menu', isLoggedIn, async (req,res)=>{
@@ -67,7 +63,6 @@ router.get('/chat_menu', isLoggedIn, async (req,res)=>{
     res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0], grupos : grupos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
-    console.log('bodu:', req.body) ;
     const {username,room} = req.body;     
     const newlink = {
         username,
@@ -76,7 +71,6 @@ router.post('/chat_menu', isLoggedIn, (req,res)=>{
     let sala_vista = newlink.room.split(':');
     let sala = sala_vista[0];
     let id_contacto = sala_vista[1];
-    console.log(newlink.room);
     res.render('links/chat', {layout: 'login',newlink :sala,contacto : id_contacto});
 });
 
@@ -125,49 +119,32 @@ router.get('/Horario', isLoggedIn, async (req,res)=>{
 router.post('/llaves', isLoggedIn, async (req,res)=>{
     const key = new NodeRSA().generateKeyPair();
     const llavepublica = key.exportKey("public");
-    const llaveprivada = key.exportKey("private");
-    console.log('llaves del usuario inicio id',req.app.locals.user.id_usuario); 
-    console.log('publica de llaves',llavepublica);
-    console.log('privada de laves',llaveprivada);
-    console.log('llaves del usuario final id',req.app.locals.user.id_usuario); 
+    const llaveprivada = key.exportKey("private"); 
     await pool.query("call SaveKey(?,?)",[req.app.locals.user.id_usuario, llavepublica]);
-    console.log('se guardo la llave');
     res.json(llaveprivada);    
 });
 router.post('/llaves2', isLoggedIn, async (req,res)=>{
-    console.log('id del contacto',req.body.id);
     let id = parseInt(req.body.id);
-    console.log('id del remitente',req.app.locals.user.id_usuario);
     const obtllaves= await pool.query("call GetKey(?)",[id]);
     obtllaves.pop();
     let llavepriv = obtllaves[0][0].llave_usuario;
-    console.log('llavepublica del id:'+id+'llave: ',llavepriv); 
     res.json(llavepriv);    
 });
 router.post('/descifrar', isLoggedIn, async (req,res)=>{
-    console.log('req.body de decifrar',req.body);
     
     const key = new NodeRSA();
     key.importKey(req.body.llave,'pkcs8-public');
-    console.log('llave que se manda en descifrar',req.body.llave);
-    console.log('hash cifrado',req.body.hash_cifrado);
 
     var hashnuevo = key.decryptPublic(req.body.hash_cifrado).toString();
 
-    console.log('hash nuevo,a  comparar',hashnuevo); 
     res.json(hashnuevo);    
 });
 router.post('/encriptar', isLoggedIn, async (req,res)=>{
-    console.log('req.body de cifrar',req.body);
     
     const key = new NodeRSA();
     key.importKey(req.body.llave_privada,'pkcs1');
-    console.log('llave que se manda en cifrar',req.body.llave_privada);
-    console.log('hash',req.body.hash);
-
     var hash_cifrado = key.encryptPrivate(req.body.hash,'base64');
      
-    console.log('hash cifrado',hash_cifrado); 
     res.json(hash_cifrado);    
 });
 router.post('/Horario', isLoggedIn, async (req,res)=>{
@@ -247,7 +224,6 @@ router.get('/pendientes', isLoggedIn, async (req,res)=>{
     res.render('links/pendientes', {layout: 'login', clases: clase[0]});
 });
 router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
-    console.log(req.body);
     const {id, nombre, desc, clase, fecha} = req.body;
     const newlink = {
         id,
@@ -481,12 +457,10 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
             dia,
             horai,
             horat
-        }; 
-        console.log('clase', clase);       
+        };      
         clase.dia=parseInt(clase.dia);
         clase.horai=parseInt(clase.horai);
         clase.horat=parseInt(clase.horat);
-        console.log('clase con int', clase);
         if(clase.nombre == ''){
             req.flash('message', 'Ponle un nombre a la clase');
             throw res.redirect('/links/editar_horario');
@@ -508,10 +482,7 @@ router.post('/editar_horario/:id', isLoggedIn, async (req,res)=>{
             const resta2 = clase.horat - clase.horai;
             for(let i =0; i<resta; i++){                
                 hi2=clase.horai;
-                for(let j = 0; j<resta2; j++){                    
-                    console.log('elemento', element);                     
-                        console.log('hora bd', hi);
-                        console.log('hora form', hi2);                       
+                for(let j = 0; j<resta2; j++){                       
                     if(hi2 == hi){
                         req.flash('message', 'No pueden haber dos o mas clases en el mismo horario');                                                
                         throw res.redirect('/links/editar_horario');
@@ -546,8 +517,7 @@ router.post('/editar_clase', isLoggedIn, async (req, res)=>{
         const editar_clase = await pool.query('call GetClasHora (?, ?, ?)', [clase.dia, clase.horai, clase.id]);            
         editar_clase.pop();
         let obj = editar_clase[0][0];
-        if(obj.nombre_clase == undefined){
-            console.log('buenas');            
+        if(obj.nombre_clase == undefined){       
             throw res.redirect('/links/editar_horario');
         }else{
             res.render('links/editar_clase', {obj});
@@ -629,20 +599,15 @@ router.post('/registro', isNotLoggedIn,async (req,res)=>{
         correo_usuario,
         nombre_usuario
     };
-    console.log(newlink);
     
         for (let i = 0; i < allusers[0].length; i++) {
       if(allusers[0][i].usertag == newlink.usertag){
-          console.log('usuario ya existe');
         req.flash('message', 'Ese usuario ya existe');
          throw res.redirect('/links/registro');          
-        }
-       console.log(allusers[0][i].usertag);
-       console.log(newlink.usertag);        
+        }     
     }
      await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, null]);
      res.redirect('/links/login');
-     console.log("todo bien");
 
     } catch (error) {
         console.log(error);
@@ -670,7 +635,6 @@ router.post("/save_pdf",isLoggedIn,async(req,res)=>{
     });
 router.post("/save_nota",isLoggedIn,(req,res)=>{
         req.app.locals.nota = req.body.nota;
-        console.log("buenas", req.app.locals.nota);
         res.json({tag: req.app.locals.user.usertag});
         });  
 url_mysql = response.url;
@@ -689,7 +653,6 @@ router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
         usuarios.pop();
         for(let i=0; i<usuarios[0].length; i++){
             if(usuarios[0][i].id_usuario == newlink.id_contacto){
-                console.log("Existe");
                 cont++;
                 
             }
@@ -698,7 +661,6 @@ router.post('/agregar_contacto',isLoggedIn, async (req,res)=>{
         contactos.pop();
         for(let i=0; i<contactos[0].length; i++){
             if(contactos[0][i].id_usuario == newlink.id_contacto){
-                console.log("YA tiienes este contacto");
                 cont--;
             }
         }
@@ -823,7 +785,6 @@ router.post('/agregar_integrante',isLoggedIn, async (req,res)=>{
         for(let i=0; i<equipo[0].length; i++){
             if(equipo[0][i].id_usuario == newLink.id_nuevo_inte){
                 req.flash('message', 'El usuario ya esta agregado');
-                console.log("Ya existe ese integrante ");
                 cont++;
             }
         }
@@ -858,6 +819,30 @@ router.post('/eliminar_cuenta', isLoggedIn, async(req,res)=>{
 router.get('/terminos_condiciones', (req,res)=>{
     res.render('links/terminos_condiciones', {layout:'login'});
 });
+router.post('/correo',(req,res)=>{
+    contentHTML = 
+    `<h1>Buenas la fecha de entrega de tu tarea esta cerca</h1>
+    <ul>
+        <li>Nombre de la tarea: `+req.body.nombre+`</li>
+        <li>Fecha de entrega: `+req.body.fecha+`</li>
+    </ul>`
+    ;
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'savestudios@onclass.online',
+            pass: 'paulaonclass'
+        }
+    });
+
+    let info = transporter.sendMail({
+        from: 'savestudios@onclass.online', // sender address,
+        to: req.body.correo,
+        subject: '¡SE ACABA EL TIEMPO!',
+        html: contentHTML
+    });
+})
 router.use(error404);
 
 module.exports = router;

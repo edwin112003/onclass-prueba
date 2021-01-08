@@ -103,17 +103,20 @@
                     {{fecha_entrega}}
                     <br>
                     <br>
-                    <button type="submit" class="btn p-2">
+                    <button type="submit" class="btn btn-secondary p-2 mb-3">
                       Editar
                     </button>  
                     <br>
                     </form>
                     <form action="/links/cambiar_estado_a_t" method="POST">
                       <input type="hidden" name="id_estado" value="{{id_pendiente}}">
-                      <button type="submit" class="btn">
+                      <button type="submit" class="btn btn-success mb-3">
                         Cambiar estado
                       </button></a>
-                    </form> 
+                    </form>
+                    <button onclick="Correo( '{{nombre_pendiente}}' , '{{fecha_entrega}}') " class="btn btn-primary">
+                      Correo de prueba
+                    </button> 
                 </div>
             </div>
         </div>
@@ -176,4 +179,5 @@
         
     </footer>
     <script src="/js/reloj.js"></script>
+    <script src="/js/correo.js" correo = '{{user.correo_usuario}}'></script>
 </body>

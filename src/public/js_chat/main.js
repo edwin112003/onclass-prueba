@@ -18,8 +18,13 @@ console.log('con',id_remitente);
 var textooo = document.getElementById('nota').value;
 console.log('asdasdadasd',textooo);
 let file;
-
+var hashfaso = '';
+function EnviarFalso(){
+hashfaso = 'pepe';
+Enviar();
+}
 const Enviar = ()=>{
+  
   $('#nota').summernote({
     height: 300,                 // set editor height
     minHeight: null,             // set minimum height of editor
@@ -38,16 +43,6 @@ const Enviar = ()=>{
 var text = $('#nota').summernote('code');
 var texto = 'buenas';
 var k = 'pepe';
-// Encrypt
-
-/* Decrypt
-var bytes  = CryptoJS.AES.decrypt(ciphertext, 'secret key 123');
-var originalText = bytes.toString(CryptoJS.enc.Utf8);
- 
-console.log(originalText);*/
-
-//cifrar llave con asimetrico
-//obtener llave publica del contacto
 console.log('lleva');
 var array = {id:id_contacto};
 fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
@@ -65,7 +60,15 @@ fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/jso
 
   var llaveprivada = localStorage.getItem('llaveprivada');
   keyrsa.setPrivateKey(llaveprivada);
-  var cade_c =CryptoJS.SHA1(TC).toString(CryptoJS.enc.Base64);
+  var cade_c;
+  if(hashfaso == ''){
+    console.log('vacio');
+     cade_c =CryptoJS.SHA1(TC).toString(CryptoJS.enc.Base64);
+  }else{
+    console.log('fake');
+     cade_c =CryptoJS.SHA1(hashfaso).toString(CryptoJS.enc.Base64);
+  }
+  hashfaso = '';
   console.log('cc',cade_c);
   var array3 = {
     llave_privada : llaveprivada,
@@ -121,10 +124,17 @@ socket.on('message', message => {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 socket.on('file', message => {
-  console.log('dntro file',message);
-  var array = {
-    id:message.text.id
-  }
+  
+  console.log('asdasdasdasdasdasda',message.text.id);
+  console.log('asdasdasdasdasdasda',id_remitente);
+  if(message.text.id == id_remitente){
+    console.log('asdasdasdasdasdasda',message.text.id);
+  }else{
+
+    console.log('dntro file',message);
+    var array = {
+      id:message.text.id
+    }
   console.log('array',array);
   fetch("/links/llaves2", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array)}).then(response => response.json()).then(data =>{
   console.log('datadel2',data);
@@ -135,7 +145,7 @@ socket.on('file', message => {
   var id_remi = message.text.id;
 
   if(id_remi == id_remitente){
-    console.log('buenabuenabuenabuenabuneaubuena saltamos cifrado');
+    console.log('buenabuenabuenabuenabuneaubuena saltamos cifrado'); 
   }else{
   console.log('llave',kc_de);
   console.log('cifrado',TC_de);
@@ -164,10 +174,24 @@ socket.on('file', message => {
   fetch("/links/descifrar", {method: 'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(array2)}).then(response => response.json()).then(data =>{
     console.log('hash',hash);
     console.log('hash2',data);
-    $('#nota').summernote('code',txt);
+
+    if(hash == data){
+      console.log('si son iguales ya quedo eso');
+      document.getElementById("score").innerHTML = "No fue alterado";
+      $('#exampleModalCenter').modal('show');
+      $('#nota').summernote('code',txt);
+    }else{
+      console.log('no son iguales ):');
+      document.getElementById("score").innerHTML = "Fue alterado";
+      $('#exampleModalCenter').modal('show');
+    }
+
+    
   });
 }
 });
+  }
+  
 });
 
 // Message submit
