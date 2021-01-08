@@ -13,7 +13,18 @@ passport.use('local.login', new LocalStrategy({
         //notaaa para ellogin use nombre de usuario como contraseña porque no me deja por la ñ
         const user = rows[0];
         user.nota = "";
-        if(password == user.pass_usuario){
+        var crypto = require('crypto');  
+        var text  = 'I love cupcakes'; 
+        var secret = 'abcdeg'; //make this your secret!! 
+        var algorithm = 'sha256'; //consider using sha256 
+        var hash, hmac;
+        
+        hmac = crypto.createHmac(algorithm, secret); 
+        hmac.update(password); 
+        hash = hmac.digest('hex'); 
+        console.log("contra cifrada con hash: 222222", hash);
+
+        if(user.pass_usuario == hash){
             const clases = await pool.query("call GetClas (?)", [user.id_usuario]);
             clases.pop();
             

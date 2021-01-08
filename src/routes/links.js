@@ -5,6 +5,8 @@ const pool = require('../database');
 const passport = require('passport');
 const {isLoggedIn, isNotLoggedIn}= require('../lib/auth'); 
 const NodeRSA = require('node-rsa');
+const crypto =require('crypto');
+const hash = crypto.createHash('sha256'); 
 var cloudinary = require('cloudinary').v2;
 //buenas
 
@@ -63,7 +65,8 @@ router.get('/chat_menu', isLoggedIn, async (req,res)=>{
     res.render('links/chat_menu', {layout : 'login', usuarios: contactos[0], grupos : grupos[0]});
 });
 router.post('/chat_menu', isLoggedIn, (req,res)=>{
-    const {username,room} = req.body;     
+    try {
+        const {username,room} = req.body;     
     const newlink = {
         username,
         room
@@ -72,6 +75,11 @@ router.post('/chat_menu', isLoggedIn, (req,res)=>{
     let sala = sala_vista[0];
     let id_contacto = sala_vista[1];
     res.render('links/chat', {layout: 'login',newlink :sala,contacto : id_contacto});
+    } catch (error) {
+        req.flash('message', 'No tienes equipo, porque no creas uno');  
+        res.redirect('/links/grupo');
+    }
+    
 });
 
 //rutas del chat final
@@ -81,7 +89,14 @@ router.get('/registro', (req,res)=>{
 router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
     try{   
         const fecha = new Date();
-        const hora = fecha.getHours();
+        let hora = fecha.getHours();
+        for(let i=0; i<6; i++){
+            hora = hora-1
+            if(hora == 0){
+                hora=24;
+                hora++;
+            }
+        }   
         let dia = fecha.getDay();        
         let clase;
         let contador = 0;
@@ -167,17 +182,15 @@ router.post('/vista_editar_perfil', isLoggedIn, async(req,res)=>{
 });
 router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
     const {id} = req.body;
-    const {usertag, contra, correo_usuario, nombre_usuario} = req.body;     
+    const {usertag, correo_usuario, nombre_usuario} = req.body;     
     const newlink = {
         usertag,
-        contra,
         correo_usuario,
         nombre_usuario
     };
-    await pool.query('call EditUsu(?,?,?,?,?)',
+    await pool.query('call EditUsu(?,?,?,?)',
     [id,
      newlink.usertag, 
-     newlink.contra,
      newlink.correo_usuario,
      newlink.nombre_usuario,
      newlink.llave_usuario,]);
@@ -187,19 +200,14 @@ router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
 router.get('/material_clase',isLoggedIn, async (req,res)=>{
     try{   
         let fecha = new Date();
-        let hora = 4//fecha.getHours();
+        let hora = fecha.getHours();
         for(let i=0; i<6; i++){
             hora = hora-1
             if(hora == 0){
                 hora=24;
                 hora++;
             }
-            
-            console.log('hora for',hora);
-        }
-        console.log('hora', hora);
-        let hora2 = hora-6;        
-        console.log('hora2', hora2);        
+        }        
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
@@ -207,13 +215,15 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
         clase_actual.pop();
-        console.log(clase_actual[0]);
+        console.log('clase actual',clase_actual[0]);      
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
                 if(h1 == hora){
-                    contador++;                    
+                    console.log('contador antes del mas',contador);
+                    contador++;
+                    console.log('contador despues del mas',contador);                    
                     nombre_clase = element.nombre_clase;
                     clase = element;  
                 }
@@ -304,7 +314,7 @@ router.post('/pendientes',isLoggedIn, async (req,res)=>{
         fecha_base]);
         res.redirect('/links/pendientes');
     } catch (error) {
-        console.log(error);
+        req.flash('message', 'Pon el formato de la fecha bien');
         res.redirect('/links/pendientes');
     }    
 });
@@ -379,7 +389,14 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
 router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     try{   
         const fecha = new Date();
-        const hora = fecha.getHours();
+        let hora = fecha.getHours();
+        for(let i=0; i<6; i++){
+            hora = hora-1
+            if(hora == 0){
+                hora=24;
+                hora++;
+            }
+        }   
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
@@ -412,7 +429,14 @@ router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
 router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
     try{   
         const fecha = new Date();
-        const hora = fecha.getHours();
+        let hora = fecha.getHours();
+        for(let i=0; i<6; i++){
+            hora = hora-1
+            if(hora == 0){
+                hora=24;
+                hora++;
+            }
+        }   
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
@@ -601,7 +625,7 @@ router.post('/delete_clase', isLoggedIn, async(req, res)=>{
     await pool.query('call DelClas (?)', [id]);
     res.redirect('/links/editar_horario');
 });
-router.post('/registro', isNotLoggedIn,async (req,res)=>{
+router.post('/registro', isNotLoggedIn,async (req,res)=>{ 
     try {
     const {usertag, contra, correo_usuario, nombre_usuario} = req.body;   
     //aqui hice cambio para meter el for para identidifcar el repetido
@@ -620,7 +644,17 @@ router.post('/registro', isNotLoggedIn,async (req,res)=>{
          throw res.redirect('/links/registro');          
         }     
     }
-     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, newlink.contra, newlink.correo_usuario, newlink.nombre_usuario, null]);
+    console.log('buenas reist');
+    var crypto = require('crypto'); 
+    var secret = 'abcdeg'; //make this your secret!! 
+    var algorithm = 'sha256'; //consider using sha256 
+    var hash, hmac;
+    
+    hmac = crypto.createHmac(algorithm, secret); 
+    hmac.update(newlink.contra); 
+    hash = hmac.digest('hex'); 
+    console.log("contra cifrada con hash:", hash);
+     await pool.query('call SaveUsu(? ,? ,? ,? ,?)',[newlink.usertag, hash, newlink.correo_usuario, newlink.nombre_usuario, null]);
      res.redirect('/links/login');
 
     } catch (error) {
@@ -702,19 +736,24 @@ router.get('/grupo', isLoggedIn, async (req,res)=>{
     res.render('links/grupo',{contactos : contactos[0], grupos: grupos[0]});
 });
 router.post('/grupo', isLoggedIn, async (req,res)=>{
-    const {nombre, check_usuarios} = req.body;
-    const newLink= {
-        nombre,
-        check_usuarios
-    } 
-    check_usuarios.push(req.app.locals.user.id_usuario); 
-    const ultimo = await pool.query('call Ult()');
-    ultimo.pop();
-    
-    for(let i=0; i<newLink.check_usuarios.length; i++){
-        await pool.query('call SaveT(?,?,?)',[ultimo[0][0].id_registroE,newLink.check_usuarios[i],newLink.nombre]);
+    try {
+        const {nombre, check_usuarios} = req.body;
+        const newLink= {
+            nombre,
+            check_usuarios
+        } 
+        check_usuarios.push(req.app.locals.user.id_usuario); 
+        const ultimo = await pool.query('call Ult()');
+        ultimo.pop();
+        
+        for(let i=0; i<newLink.check_usuarios.length; i++){
+            await pool.query('call SaveT(?,?,?)',[ultimo[0][0].id_registroE,newLink.check_usuarios[i],newLink.nombre]);
+        }
+         res.redirect('/links/grupo');
+    } catch (error) {
+        res.redirect('/links/grupo');
     }
-    res.redirect('/links/grupo');
+    
 });
 
 router.post('/detalle_grupo',isLoggedIn, async (req,res)=>{

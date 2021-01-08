@@ -6,10 +6,7 @@
                     <form action="/links/editar_perfil" method="POST">
                     <div class="form-group">
                         <input type="text" value = "{{perfil.usertag}}" class="form-control" name="usertag" placeholder="usertag" pattern="^[A-Za-z]+$" onkeypress="return isText(event)">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" value = "{{perfil.pass_usuario}}" class="form-control" name="contra" placeholder="contraseña">
-                    </div>
+                    </div>                    
                     <div class="form-group">
                         <input type="text" value = "{{perfil.correo_usuario}}" class="form-control" name="correo_usuario" placeholder="Correo" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}">
                     </div>
