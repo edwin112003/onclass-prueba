@@ -186,15 +186,28 @@ router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
 
 router.get('/material_clase',isLoggedIn, async (req,res)=>{
     try{   
-        const fecha = new Date();
-        const hora = fecha.getHours();
+        let fecha = new Date();
+        let hora = 4//fecha.getHours();
+        for(let i=0; i<6; i++){
+            hora = hora-1
+            if(hora == 0){
+                hora=24;
+                hora++;
+            }
+            
+            console.log('hora for',hora);
+        }
+        console.log('hora', hora);
+        let hora2 = hora-6;        
+        console.log('hora2', hora2);        
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
         let contador = 0;
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-        clase_actual.pop();      
+        clase_actual.pop();
+        console.log(clase_actual[0]);
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
@@ -211,11 +224,12 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
             const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
             notas.pop();
             throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
-        }else{    
+        }else{                
             req.flash('success', 'No tienes clase ahorita, tranqui tomate un descanso crack');        
             throw res.redirect('/links/Horario');
         }   
     }catch(error){
+        
     }
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{

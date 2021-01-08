@@ -3,7 +3,6 @@ fetch("/links/Horario", {method: 'POST'}).then(response=>response.json()).then(d
     let hora_inicio =0;
     let columnas = 0;
     let contador =0;
-    
     for(let i=0; i<data.length; i++){
 
         let inicio_clase0 = data[i].horat_clase;
@@ -109,8 +108,26 @@ fetch("/links/Horario", {method: 'POST'}).then(response=>response.json()).then(d
                 } 
                 break;
         }
-    }        
-        
-    
-      
+    }    
 });
+let hora = 5;
+let gmt = hora;
+let f = new Date();
+let h = f.getHours();
+let resta = 3-6;
+let prueba = 25%resta;
+console.log('prueba mod',prueba);
+
+    console.log('gmt=j',gmt);
+    for(let i=0; i<6; i++){
+        gmt = gmt-1
+        if(gmt == 0){
+            gmt=24;
+            gmt++;
+        }
+        
+        console.log('hora for',gmt);
+    }
+    
+    console.log('hora final',gmt);
+
