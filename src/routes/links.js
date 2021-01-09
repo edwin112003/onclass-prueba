@@ -99,7 +99,7 @@ router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
         }   
         let dia = fecha.getDay();        
         let clase;
-        hora=19;
+        hora=20;
         let contador = 0;
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [5, req.app.locals.user.id_usuario]);
@@ -209,7 +209,7 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
                 hora++;
             }
         }      
-        hora = 19;  
+        hora = 20;  
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
@@ -410,7 +410,7 @@ router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
-         hora=19;
+         hora=20;
         let contador = 0;
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [5, req.app.locals.user.id_usuario]);
@@ -451,7 +451,7 @@ router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
-        hora =19;
+        hora =20;
         let contador = 0;
         if(dia==0) dia=7;        
         const clase_actual = await pool.query('call GetClasDia (?,?)', [5, req.app.locals.user.id_usuario]);
