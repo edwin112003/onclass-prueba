@@ -117,7 +117,7 @@ router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
             }                     
         });
         if(contador == 1){    
-            const resto_dia = await pool.query('call GetRestoDia(?,?,?)', [clase.horai_clase, req.app.locals.user.id_usuario, dia]);
+            const resto_dia = await pool.query('call GetRestoDia(?,?,?)', [20, req.app.locals.user.id_usuario, dia]);
             resto_dia.pop();
             throw res.render('links/clase_resto_dia', {clase: clase, resto: resto_dia[0]});            
         }else{            
