@@ -207,13 +207,14 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
                 hora=24;
                 hora++;
             }
-        }        
+        }      
+        hora = 19;  
         let dia = fecha.getDay();
         let nombre_clase = '';
         let clase;
         let contador = 0;
         if(dia==0) dia=7;        
-        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [5, req.app.locals.user.id_usuario]);
         clase_actual.pop();
         console.log('clase actual',clase_actual[0]);      
         clase_actual[0].forEach(async element=>{
