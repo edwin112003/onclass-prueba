@@ -1,10 +1,11 @@
-<body> 
+<body>
   <script src="/js/ver_horario.js" clase="{{clases}}"></script>
-    <!--Aqui metenoms el tercer div, segundo menu-->
-    <div class="d-flex justify-content-center p-4">
-      <div class="border">
-        <h5 class="text-center">Horario</h5><br>
-        <div class="border p-4">
+  <!--Aqui metenoms el tercer div, segundo menu-->
+  <div class="d-flex justify-content-center p-4">
+    <div class="card mx-auto shadow px-3 pb- 3 mb-5 bg-white rounded">
+      <div class="card-body">
+        <h5 class="text-center"> Horario <i class="fas fa-clock ml-2"></i></h5><br>
+        <div class="">
           <div class="d-flex justify-content-around">
             <table class="table table-bordered">
               <thead>
@@ -20,29 +21,31 @@
                 </tr>
               </thead>
               <tbody id="tbody">
-               
+
               </tbody>
             </table>
           </div>
           <div class="d-flex justify-content-center align-items-left">
             <a href="editar_horario"><button type="button" class="btn btn-secondary">Editar horario</button></a>
-            
           </div>
         </div>
-        
-        
       </div>
+
+
     </div>
-    
-      
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    
-    
-    <script src="/js/jquery.js" type="text/javascript"></script>
-    
-    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
-    <script src="/js/funciones.js"></script>
-    
-    
-    
-</body> 
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+
+
+  <script src="/js/jquery.js" type="text/javascript"></script>
+
+  <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
+  <script src="/js/funciones.js"></script>
+
+  {{>footer}}
+
+</body>

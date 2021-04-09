@@ -1,180 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar_tareas</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/><!--jquery-ui.css -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar_tareas</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+  <!--jquery-ui.css -->
   <link rel="stylesheet" href="/css_index/estilos.css">
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <!--<img src="/img/OnClass.png" width="130px" height="70px">-->
-          <a class="navbar-brand" href="/links/material_clase"><svg width="130px" height="70px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  width="1920px" height="1080px" viewBox="0 0 1920 1080" enable-background="new 0 0 1920 1080" xml:space="preserve">
-              <path fill="none" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" d="M719.483,351.776
-                  c-76.422,64.204-125,160.477-125,268.099c0,193.301,156.7,350,350,350c193.3,0,350-156.699,350-350
-                  c0-107.622-48.578-203.895-124.999-268.099"/>
-              <line fill="#079C39" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" x1="944.483" y1="502.59" x2="944.483" y2="127.591"/>
-              </svg></a>
-              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-                  <li class="nav-item ">
-                    <a class="nav-link" href="/links/Horario">Horario</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/grupo">Grupos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/chat_menu">Mensajes</a>
-                  </li>
-              </ul>              
-<ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-  <li class="nav-item">
-    <div class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="diaSemana">Martes</div>
-    <div class="p-1" id="dia"> 27</div>
-    <div class="p-1"> de </div>
-    <div class="p-1" id="mes">Octubre </div>
-    <div class="p-1"> del</div>
-    <div class="p-1" id="year">2015</div>
-  </div>
-  </li>
-  <li class="nav-item">
-    <div  class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="horas">11</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="minutos">48</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="segundos">12</div>
-    <div class="p-1" id="ampm">AM</div>    
-    </div>
-  </li>
-</ul>
 
-	
-              <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
-                <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                </svg></a>
-              <a href="/links/logout" class="nav-item">Cerrar sesion</a>
-         
-        </div>
-      </nav>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="d-flex justify-content-center">
-              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-                  <li class="nav-item ">
-                    <a class="nav-link" href="/links/terminados">Terminados</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/no_terminados">No terminados</a>
-                  </li>
-              </ul>  
-        </div>
-      </nav>
-      <div class="container p-4">
-        <div class="row">
-          {{#each pendientes}}
+<body>
+  {{>navigation}}
+  <nav style="margin-top: -4rem;" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="d-flex justify-content-center">
+      <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
+        <li class="nav-item ">
+          <a class="nav-link" href="/links/terminados">Terminados</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/links/no_terminados">No terminados</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container p-4">
+    <div class="row">
+      {{#each pendientes}}
       <div class="col-md-3">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h6>Nombre del pendiente: </h6>
-                    {{nombre_pendiente}}<p></p>
-                    <h6>Descripcion: </h6>
-                    {{desc_pendiente}}<p></p>
-                    <h6>Tipo pendiente</h6>
-                    {{nombre_tipo}}
-                    <h6>Estado: </h6>
-                    {{estado_pendiente}}
-                    <h6>Clase: </h6>
-                    {{clase}}
-                    <form action="/links/editar_pendiente" method="POST">
-                      <input type="hidden" value="{{id_pendiente}}" name="id">                    
-                    <h6>fecha de entrega: </h6>
-                    {{fecha_entrega}}
-                    <br>
-                    <br>
-                    <button type="submit" class="btn btn-secondary p-2 mb-3">
-                      Editar
-                    </button>    
-                    <br>
-                    </form>
-                    <form action="/links/cambiar_estado_a_nt" method="POST">
-                      <input type="hidden" name="id_estado" value="{{id_pendiente}}">
-                      <button type="submit" class="btn btn-success">
-                        Marcar no terminado
-                      </button></a>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {{/each}}
+        <div class="card text-center">
+          <div class="card-body">
+            <h6>Nombre del pendiente: </h6>
+            {{nombre_pendiente}}<p></p>
+            <h6>Descripcion: </h6>
+            {{desc_pendiente}}<p></p>
+            <h6>Tipo pendiente</h6>
+            {{nombre_tipo}}
+            <h6>Estado: </h6>
+            {{estado_pendiente}}
+            <h6>Clase: </h6>
+            {{clase}}
+            <form action="/links/editar_pendiente" method="POST">
+              <input type="hidden" value="{{id_pendiente}}" name="id">
+              <h6>fecha de entrega: </h6>
+              {{fecha_entrega}}
+              <br>
+              <br>
+              <button type="submit" class="btn btn-secondary p-2 mb-3">
+                Editar
+              </button>
+              <br>
+            </form>
+            <form action="/links/cambiar_estado_a_nt" method="POST">
+              <input type="hidden" name="id_estado" value="{{id_pendiente}}">
+              <button type="submit" class="btn btn-success">
+                Marcar no terminado
+              </button></a>
+            </form>
+          </div>
         </div>
       </div>
-
-<footer>
-       
-       <div class="container-footer-all">
-        
-            <div class="container-body">
-
-                <div class="colum1">
-                    <h1>Mas informacion de la compañia</h1>
-
-                    <p>Pretendemos ser una empresa fuerte en el mercado nacional dentro del sector privado en la 
-                      área de programación de Software, para ello abordaremos todos los servicios que ofrecemos 
-                      actualmente agregando los que vayan surgiendo debido a la necesidad de cambio provocado por 
-                      los avances tecnológicos.Somos una empresa que estará en constante innovación por lo que 
-                      Save Studio se compromete a siempre contar con las nuevas tecnologías de desarrollo de Software 
-                      dentro del mercado.</p>
-
-                </div>
-
-                <div class="colum3">
-
-                    <h1>Informacion Contactos</h1>
-
-                    <div class="row2">
-                        <label>Mar Mediterráneo 227, Popotla, 11400 Ciudad de México, CDMX Ciudad de México, Ciudad de México, México
-                        </label>
-                    </div>
-
-                    <div class="row2">
-                        <label>+52 5531415887</label>
-                    </div>
-
-                    <div class="row2">
-                         <label>savestudios@onclass.online</label>
-                    </div>
-
-                </div>
-
+      {{else}}
+      <div class="col-10 mx-auto">
+        <div class="card mx-auto shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <div class="card-body">
+              <div class="text-center">
+                <h1>No tienes pendientes completados<i class="fas fa-frown ml-2"></i></h1>
+                <hr>
+                <img src="/img/team.svg">
+              </div>
             </div>
-        
+          </div>
         </div>
-        
-        <div class="container-footer">
-               <div class="footer">
-                    <div class="copyright">
-                        © 2020 Todos los Derechos Reservados | <a href="">Magtimus</a>
-                    </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
 
-                    <div class="information">
-                        <a href="/links/terminos_condiciones">Terminos y Condiciones</a>
-                    </div>
-                </div>
-
-            </div>
-        
-    </footer>
-    <script src="/js/reloj.js"></script>
+  {{>footer}}
+  <script src="/js/reloj.js"></script>
 </body>
