@@ -1,247 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar_tareas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar_tareas</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  {{!-- BOOTSTRAP 4 --}}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  {{!-- FontAwesome, SweetAlert, CSSAnimations --}}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+    integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+  <!--jquery-ui.css -->
+  <link rel="stylesheet" href="/css_index/estilos.css">
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-    <!-- Bootstrap core CSS -->
-<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="../libs/css/form-validation.css" rel="stylesheet">
-    <script src="/js/main.js"></script>
-    <link rel="stylesheet" href="/css_index/estilos.css">
+    }
+  </style>
+  <!-- Custom styles for this template -->
+  <link href="../libs/css/form-validation.css" rel="stylesheet">
+  <script src="/js/main.js"></script>
+  {{!-- <link rel="stylesheet" href="/css_index/estilos.css"> --}}
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <!--<img src="/img/OnClass.png" width="130px" height="70px">-->
-          <a class="navbar-brand" href="/links/material_clase"><svg width="130px" height="70px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="1920px" height="1080px" viewBox="0 0 1920 1080" enable-background="new 0 0 1920 1080" xml:space="preserve">
-<path fill="none" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" d="M719.483,351.776
-    c-76.422,64.204-125,160.477-125,268.099c0,193.301,156.7,350,350,350c193.3,0,350-156.699,350-350
-    c0-107.622-48.578-203.895-124.999-268.099"/>
-<line fill="#079C39" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" x1="944.483" y1="502.59" x2="944.483" y2="127.591"/>
-</svg></a>
-              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-                  <li class="nav-item ">
-                    <a class="nav-link" href="/links/Horario">Horario</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/grupo">Grupos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/chat_menu">Mensajes</a>
-                  </li>
-              </ul>              
-<ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-  <li class="nav-item">
-    <div class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="diaSemana">Martes</div>
-    <div class="p-1" id="dia"> 27</div>
-    <div class="p-1"> de </div>
-    <div class="p-1" id="mes">Octubre </div>
-    <div class="p-1"> del</div>
-    <div class="p-1" id="year">2015</div>
+
+  {{>navigation}}  
+  <div class="container">
+    <center>
+      <h5>Bienvenido {{user.nombre_usuario}}</h5>
+    </center>
   </div>
-  </li>
-  <li class="nav-item">
-    <div  class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="horas">11</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="minutos">48</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="segundos">12</div>
-    <div class="p-1" id="ampm">AM</div>    
-    </div>
-  </li>
-</ul>
+  <br>
 
-	
-              <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
-                <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                </svg></a>
-              <a href="/links/logout" class="nav-item">Cerrar sesion</a>
-         
-        </div>
-      </nav>
-     
-        <hr><center><svg width="150px" height="100px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="1920px" height="1080px" viewBox="0 0 1920 1080" enable-background="new 0 0 1920 1080" xml:space="preserve">
-<path fill="none" stroke="#29AC3C" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" d="M127.832,352.107
-	c-50.007,42.013-81.793,105.01-81.793,175.43c0,126.488,102.536,229.023,229.022,229.023c126.486,0,229.021-102.535,229.021-229.023
-	c0-70.42-31.786-133.417-81.791-175.43"/>
-<line fill="none" stroke="#29AC3C" stroke-width="40" stroke-linecap="round" stroke-miterlimit="10" x1="275.062" y1="450.792" x2="275.062" y2="205.412"/>
-<g>
-	<path d="M591.244,512.407h31.417v43.759c12.567-16.753,26.48-29.285,41.739-37.588c15.26-8.303,31.866-12.455,49.818-12.455
-		c18.25,0,34.446,4.639,48.584,13.913c14.138,9.278,24.573,21.768,31.305,37.476c6.732,15.709,10.098,40.169,10.098,73.381v125.668
-		h-31.417V640.094c0-28.124-1.168-46.901-3.496-56.326c-3.64-16.157-10.624-28.311-20.947-36.466
-		c-10.323-8.152-23.791-12.23-40.396-12.23c-19.005,0-36.028,6.283-51.063,18.85c-15.039,12.566-24.951,28.128-29.737,46.677
-		c-2.995,12.117-4.488,34.26-4.488,66.424v89.538h-31.417V512.407z"/>
-	<path d="M1108.5,563.122l-24.909,15.484c-21.519-28.573-50.881-42.862-88.09-42.862c-29.737,0-54.429,9.566-74.079,28.693
-		c-19.65,19.127-29.475,42.363-29.475,69.709c0,17.784,4.52,34.524,13.559,50.211c9.04,15.691,21.445,27.869,37.209,36.536
-		c15.765,8.668,33.433,13.002,53.009,13.002c35.862,0,65.151-14.285,87.865-42.861l24.909,16.382
-		c-11.669,17.573-27.343,31.206-47.014,40.895c-19.674,9.688-42.076,14.533-67.209,14.533c-38.598,0-70.615-12.265-96.046-36.803
-		c-25.435-24.533-38.149-54.38-38.149-89.538c0-23.636,5.947-45.589,17.84-65.863c11.894-20.27,28.237-36.09,49.033-47.461
-		c20.793-11.368,44.058-17.055,69.79-17.055c16.157,0,31.754,2.469,46.789,7.406c15.035,4.937,27.788,11.371,38.262,19.299
-		C1092.266,540.759,1101.168,550.857,1108.5,563.122z"/>
-	<path d="M1164.153,418.156h31.417v338.405h-31.417V418.156z"/>
-	<path d="M1504.128,512.407v244.154h-30.968v-41.964c-13.167,16.01-27.938,28.051-44.32,36.129
-		c-16.382,8.079-34.299,12.118-53.745,12.118c-34.559,0-64.068-12.528-88.528-37.588c-24.461-25.057-36.69-55.541-36.69-91.445
-		c0-35.155,12.342-65.226,37.026-90.212c24.686-24.982,54.38-37.476,89.09-37.476c20.046,0,38.184,4.264,54.418,12.792
-		c16.231,8.527,30.481,21.318,42.75,38.374v-44.881H1504.128z M1378.572,536.418c-17.482,0-33.622,4.299-48.415,12.89
-		c-14.797,8.594-26.564,20.663-35.306,36.203s-13.11,31.978-13.11,49.31c0,17.188,4.407,33.626,13.223,49.313
-		c8.815,15.69,20.659,27.906,35.526,36.648c14.867,8.744,30.82,13.113,47.858,13.113c17.185,0,33.472-4.334,48.864-13.002
-		c15.39-8.667,27.23-20.396,35.526-35.189c8.292-14.793,12.44-31.455,12.44-49.986c0-28.24-9.303-51.852-27.907-70.832
-		C1428.668,545.91,1405.768,536.418,1378.572,536.418z"/>
-	<path d="M1697.566,539.111l-20.197,20.87c-16.802-16.305-33.226-24.46-49.271-24.46c-10.204,0-18.941,3.366-26.214,10.099
-		c-7.275,6.731-10.911,14.586-10.911,23.563c0,7.931,2.997,15.483,8.993,22.665c5.996,7.331,18.591,15.933,37.781,25.807
-		c23.387,12.118,39.278,23.787,47.676,35.007c8.243,11.371,12.367,24.162,12.367,38.374c0,20.049-7.045,37.026-21.13,50.94
-		c-14.085,13.913-31.69,20.869-52.813,20.869c-14.089,0-27.535-3.068-40.344-9.2c-12.813-6.133-23.412-14.587-31.803-25.358
-		l19.748-22.44c16.045,18.104,33.064,27.153,51.06,27.153c12.595,0,23.313-4.039,32.163-12.118
-		c8.847-8.078,13.271-17.577,13.271-28.5c0-8.976-2.924-16.978-8.77-24.011c-5.849-6.88-19.043-15.558-39.579-26.031
-		c-22.041-11.368-37.034-22.588-44.979-33.661c-7.945-11.069-11.918-23.71-11.918-37.925c0-18.549,6.329-33.959,18.994-46.228
-		c12.661-12.265,28.657-18.401,47.991-18.401C1652.159,506.123,1674.789,517.119,1697.566,539.111z"/>
-	<path d="M1875.97,539.111l-20.197,20.87c-16.802-16.305-33.226-24.46-49.271-24.46c-10.204,0-18.941,3.366-26.214,10.099
-		c-7.275,6.731-10.911,14.586-10.911,23.563c0,7.931,2.997,15.483,8.993,22.665c5.996,7.331,18.591,15.933,37.781,25.807
-		c23.387,12.118,39.278,23.787,47.676,35.007c8.243,11.371,12.367,24.162,12.367,38.374c0,20.049-7.045,37.026-21.13,50.94
-		c-14.085,13.913-31.69,20.869-52.813,20.869c-14.089,0-27.535-3.068-40.344-9.2c-12.813-6.133-23.412-14.587-31.803-25.358
-		l19.748-22.44c16.045,18.104,33.064,27.153,51.06,27.153c12.595,0,23.313-4.039,32.163-12.118
-		c8.847-8.078,13.271-17.577,13.271-28.5c0-8.976-2.924-16.978-8.77-24.011c-5.849-6.88-19.043-15.558-39.579-26.031
-		c-22.041-11.368-37.034-22.588-44.979-33.661c-7.945-11.069-11.918-23.71-11.918-37.925c0-18.549,6.329-33.959,18.994-46.228
-		c12.661-12.265,28.657-18.401,47.991-18.401C1830.563,506.123,1853.192,517.119,1875.97,539.111z"/>
-</g>
-</svg></center></center>
-        <center><h5>{{user.nombre_usuario}}</h5></center>
-        <br>
-    
-
-    <div class="container">    
+  <div class="container">
     <div class="row">
-    <div class="col-md-4 order-md-2 mb-4">
-      
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="text-muted">Contactos</span>       
-      </h4>
-      <div class="p-2">
-        <a href="/links/agregar_contacto" class="btn btn-secondary">Agregar</a>
-      </div>
-       
-       
-      {{#each usuarios}}
-      
-      <ul class="list-group mb-3">
-        
-        <li class="list-group-item d-flex justify-content-between lh-condensed">
-          <div>
-            <h6 class="my-0">{{nombre_usuario}}</h6>
-            <small class="text-muted">Brief description</small>
+      <div class="col-md-4 order-md-2 mb-4 border-left ml-1">
+
+        <h4 class="d-flex justify-content-between align-items-center mb-3 ">
+          <div class="row mb-5">
+            <div class="col-8">
+              <span class="text-muted">Contactos</span>
+            </div>
+            <div class="col-4">
+              <a href="/links/agregar_contacto" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Agregar</a>
+            </div>
           </div>
-          <span class="text-muted">
-          	<svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-             <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-            </svg>            
 
-           </span>
-           <div>
-             <a href="/links/eliminar_contacto/{{id_usuario}}" class="btn btn-secondary">Eliminar</a>
-           </div>
-        </li>
-      </ul>
-      {{/each}}
-     
-    </div>
-    
-    <div class="col-md-8 order-md-1">
+        </h4>
+
+
+        {{#each usuarios}}
+
+        <ul class="list-group mb-3">
+
+          <li class="list-group-item d-flex justify-content-between lh-condensed">
+            <div>
+
+              <h6 class="my-0"> <span style="font-size:1.3rem; color:grey;"><i
+                    class="fas fa-user mr-1"></i></span>{{nombre_usuario}}</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <div>
+              <a href="/links/eliminar_contacto/{{id_usuario}}" class="btn btn-danger"><i class="fas fa-trash"></i> </a>
+            </div>
+          </li>
+        </ul>
+        {{/each}}
+
+      </div>
+
+      <div class="col-md-7 order-md-1">
 
         <div class="mb-3">
-          <label>Usertag</label>
-          <div class="input-group"> 
+          <label><span style="font-size: 1.5rem;"><i class="fas fa-user-tag mr-2"></span></i>Usertag</label>
+          <div class="input-group">
             <input type="text" class="form-control" value="{{user.usertag}}" readonly="readonly">
-          </div>  
+          </div>
         </div>
         <div class="mb-3">
-          <label>Contraseña</label>
-          <div class="input-group"> 
+          <label><span style="font-size: 1.5rem;"><i class="fas fa-lock mr-2"></span></i>Contraseña</label>
+          <div class="input-group">
             <input type="text" class="form-control" value="*************************************" readonly="readonly">
-          </div>  
-        </div>         
+          </div>
+        </div>
         <div class="mb-3">
-          <label for="email">Correo</label>
-          <div class="input-group"> 
+          <label for="email"><span style="font-size: 1.5rem;"><i class="fas fa-envelope mr-2"></span></i>Correo</label>
+          <div class="input-group">
             <input type="text" class="form-control" value="{{user.correo_usuario}}" readonly="readonly">
-          </div>  
+          </div>
         </div>
         <div class="mb-3">
-          <label>Nombre</label>
-          <div class="input-group"> 
+          <label><span style="font-size: 1.5rem;"><i class="fas fa-id-card mr-2"></span></i>Nombre</label>
+          <div class="input-group">
             <input type="email" class="form-control" value="{{user.nombre_usuario}}" readonly="readonly">
-          </div>  
+          </div>
         </div>
         <div class="mb-3">
-          <label>Clave de Amigo</label>
-          <div class="input-group"> 
-            <input type="text" class="form-control" value="{{user.id_usuario}}" readonly="readonly" onkeypress="return isNumber(event)" pattern="^[\d]+$">
-          </div>  
+          <label><span style="font-size: 1.5rem;"><i class="fas fa-key mr-2"></span></i>Clave de Amigo</label>
+          <div class="input-group">
+            <input type="text" class="form-control" value="{{user.id_usuario}}" readonly="readonly"
+              onkeypress="return isNumber(event)" pattern="^[\d]+$">
+          </div>
         </div>
-        
 
-    <div>
-      <form action="/links/vista_editar_perfil" method="POST">
-      <input type="hidden" value="{{user.id_usuario}}" name="id">
-      <button type="submit" class="btn btn-secondary">Editar perfil</button>
-      </form>
+        <div class="row mt-5">
+          <div class="col-6">
+            <div>
+              <form action="/links/vista_editar_perfil" method="POST">
+                <input type="hidden" value="{{user.id_usuario}}" name="id">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-edit mr-1"></i>Editar
+                  perfil</button>
+              </form>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex justify-content-center">
+              <form action="/links/eliminar_cuenta" method="POST">
+                <input type="hidden" value="{{user.id_usuario}}" name="id">
+                <button type="submit" class="btn btn-danger btn-lg"><i class="fas fa-trash"></i> Eliminar
+                  cuenta</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="d-flex justify-content-center">
-      <form action="/links/eliminar_cuenta" method="POST">
-        <input type="hidden" value="{{user.id_usuario}}" name="id">
-        <button type="submit" class="btn btn-danger">Eliminar cuenta</button>
-      </form>
-    </div>
-    </div> 
-    
   </div>
-</div>
 
-    {{>footer}}
-      
-     
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-    <script src="/js/funciones.js"></script>
-    <script src="/js/main.js" ></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/form-validation.js"></script>
-        <script src="/js/urls.js"></script>
-        <script src="/js/reloj.js"></script>
-</body> 
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>  
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+  <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/form-validation.js"></script>
+  
+  <script src="/js/reloj.js"></script>
+{{>footer}}
+  
+</body>
+
 </html>

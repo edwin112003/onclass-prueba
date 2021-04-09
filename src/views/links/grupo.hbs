@@ -1,57 +1,108 @@
-<div class="container d-flex justify-content-center p-4 border" style="width: 60%;">
-    
-    <div class="">
-        <div class="mx-auto">
-          <h5 class="text-center">Lista de tus grupos</h5>            
-        </div>
-        {{#each grupos}}
-        <form action="/links/detalle_grupo" method="POST">
-            <div>
-                <input type="hidden" name="id" value="{{clave_equipo}}">
-            </div>            
-            <div>
-                <input type="text" class="form-control md-6" readonly="readonly" name="nombre" value="{{nombre_proyecto}}"></input>
+<div class="container mx-auto">
+    <div class="card mx-auto shadow px-3 pb-3 my-5 bg-white rounded">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <h4 class="text-center mx-auto"><i class="fas fa-user-friends mr-1"></i> MIS GRUPOS</h4>
+                    </div>
+                    <hr style="width:70%; width:70%; border: 1px dashed #000;" class="mx-auto">
+                    <div class="row ml-3">
+                        <ul>
+                            {{#each grupos}}
+                            <div class="col-12 hidden">
+                                <p class="hidden"></p>
+                            </div>
+                            <li>
+                                <div class="row ">
+                                    <div class="col-8">
+                                        <h5>{{nombre_proyecto}}</h5>
+                                    </div>
+                                    <div class="col-1 mx-1">
+                                        <form action="/links/detalle_grupo" method="POST">
+                                            <div>
+                                                <input type="hidden" name="id" value="{{clave_equipo}}">
+                                                <input type="hidden" name="nombre" value="{{nombre_proyecto}}">
+                                            </div>
+                                            <button type="submit" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-1 ml-1">
+                                        <form action="/links/eliminar_equipo" method="POST">
+                                            <input type="hidden" name="clave" value="{{clave_equipo}}">
+                                            <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    class="fas fa-trash"></i></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                            {{else}}
+                            <div class="col-12 mx-auto mt-4 border-0">
+                                <div>
+                                    <div class="text-center">
+                                        <h2>No tienes ningun grupo<i class="fas fa-frown ml-2"></i></h2>                                            
+                                        <img src="/img/info.svg">
+                                    </div>                                                                  
+                                </div>
+                            </div>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6 border-left">
+                    <div class="row">
+                        <h4 class="text-center mx-auto"><i class="fas fa-user-plus mr-1"></i> CREAR EQUIPO</h4>
+                    </div>
+                    <hr style="width:70%; border: 1px dashed #000;" class="mx-auto mb-5">                    
+                    <div class="col-10 mx-auto">
+                        <form action="/links/grupo" method="POST">
+                            {{#if contactos}} 
+                            <div>
+                                <input type="text" class="form-control md-6" name="nombre"
+                                    placeholder="Nombre del equipo"
+                                    pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
+                            </div>                            
+                            <p class="font-italic mt-4">Añadir Integrantes: </p>                            
+                            <div>
+                                <ul class="list-group">
+                                {{#each contactos}}                                
+                                    <div class="col-8 mb-2">                                    
+                                        <li class="list-group-item">
+                                            <div class="col-12">
+                                                <input type="checkbox" class="form-check-input me-1" name="check_usuarios"
+                                                value="{{id_usuario}}"><h6>{{nombre_usuario}}</h6>
+                                            </div>                                                                                
+                                        </li>
+                                    </div> 
+                                    {{/each}}
+                                </ul>
+                            </div>                                              
+                            <div class="float-right mt-5">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                            </div>
+                            {{else}}
+                                <div class="col-12 mx-auto mt-4">
+                                    <div>
+                                        <div class="">
+                                            <h3>No tienes ningun amigo<i class="fas fa-heart-broken ml-1"></i><br> Debes agregar amigos para poder crear un grupo</h3>                                                    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="float-right mt-5">
+                                <a  class="btn btn-primary" href="/links/agregar_contacto"><i class="fas fa-plus mr-1"></i> Agregar Amigo</a>
+                                </div>                
+                                
+                                
+                            {{/if}}
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
-            <button type="submit" class="btn btn-secondary">
-                Detalles del proyecto
-            </button>
-        </form>
-        <form action="/links/eliminar_equipo" method="POST">
-            <input type="hidden" name="clave" value="{{clave_equipo}}">
-            <button type="submit" class="btn btn-secondary">Eliminar Equipo</button>
-        </form>              
-        {{/each}}
-        
+        </div>
     </div>
 </div>
-<div class="container d-flex justify-content-center p-4 border" style="width: 60%;">
-    <div class="">
-        <div class="mx-auto">
-           <h5 class="text-center">Crear un equipo</h5>           
-        </div>
-        <form action="/links/grupo" method="POST">
-            <div>
-                <input type="text" class="form-control md-6" name="nombre" placeholder="Nombre del equipo" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$">
-            </div>
-            <br>
-            <div>
-            {{#each contactos}}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <input type="checkbox" class="form-check-input me-1" name="check_usuarios" value="{{id_usuario}}">{{nombre_usuario}}<br>                                 
-                    </li>
-                </ul>
-                
-            {{/each}}
-            </div>
-            <br>
-            <div>
-                <button type="submit" class="btn btn-secondary">Guardar</button>
-            </div>
-        </form>
-        
-        
-    </div>
-</div>      
-</div>
-</div>
+<br>

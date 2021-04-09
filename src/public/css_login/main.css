@@ -168,7 +168,6 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background:#ddd;
   /*background: #9053c7;
   background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
@@ -177,7 +176,7 @@ iframe {
 }
 
 .wrap-login100 {
-  box-shadow: 10px 5px 5px rgb(179, 179, 179);
+  box-shadow: 10px 5px 5px rgba(141, 140, 140, 0.253);
   width: 960px;
   background: #fff;
   border-radius: 10px;

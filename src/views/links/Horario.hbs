@@ -2,10 +2,11 @@
   <script src="/js/ver_horario.js" clase="{{clases}}"></script>
   <!--Aqui metenoms el tercer div, segundo menu-->
   <div class="d-flex justify-content-center p-4">
-    <div class="card mx-auto shadow px-3 pb- 3 mb-5 bg-white rounded">
+    <div class="card mx-auto shadow px-3 pb-3 mb-5 bg-white rounded">
       <div class="card-body">
-        <h5 class="text-center"> Horario <i class="fas fa-clock ml-2"></i></h5><br>
-        <div class="">
+        {{#if clases}}
+          <h5 class="text-center"><i class="fas fa-clock mr-2"></i> Horario </h5><br>
+          <div class="">          
           <div class="d-flex justify-content-around">
             <table class="table table-bordered">
               <thead>
@@ -25,13 +26,25 @@
               </tbody>
             </table>
           </div>
-          <div class="d-flex justify-content-center align-items-left">
-            <a href="editar_horario"><button type="button" class="btn btn-secondary">Editar horario</button></a>
+          
+          <div class="d-flex justify-content-center align-items-left mt-3">
+            <a href="editar_horario"><button type="button" class="btn btn-primary"><i class="fas fa-edit mr-2"></i> Editar horario</button></a>
           </div>
+          {{else}}
+          <h1 class="text-center"> No tienes ninguna clase creada</h1>
+          <img class="rounded-circle" src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-2506.jpg?size=626&ext=jpg&ga=GA1.2.2034070519.1617321600" alt="not data found">
+          {{!-- <img class="mt-3 mr-auto rounded-circle" src="https://i.pinimg.com/originals/a1/16/72/a1167211bffbc81f616db1ef850aee2d.png" alt="not data found" width="100%" height="80%"> --}}
+          <br>
+          <div class="float-right">          
+            <button onclick="window.location.href='editar_horario'" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Crear ahora</button>
+          </div>
+          
+          {{/if}}
+          
+
+
         </div>
       </div>
-
-
     </div>
   </div>
 
