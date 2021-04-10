@@ -1,3 +1,7 @@
+#cambiar{
+	filter: hue-rotate(120deg);
+	border-radius: 3rem;
+  }
 /*[ FONT SIZE ]
 ///////////////////////////////////////////////////////////
 */

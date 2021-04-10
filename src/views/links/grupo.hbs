@@ -3,10 +3,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    <div class="row">
+                    <div class="card-header">
                         <h4 class="text-center mx-auto"><i class="fas fa-user-friends mr-1"></i> MIS GRUPOS</h4>
                     </div>
-                    <hr style="width:70%; width:70%; border: 1px dashed #000;" class="mx-auto">
                     <div class="row ml-3">
                         <ul>
                             {{#each grupos}}
@@ -42,8 +41,8 @@
                             <div class="col-12 mx-auto mt-4 border-0">
                                 <div>
                                     <div class="text-center">
-                                        <h2>No tienes ningun grupo<i class="fas fa-frown ml-2"></i></h2>                                            
-                                        <img src="/img/info.svg">
+                                        <h2>No tienes ningun grupo</h2>                                            
+                                        <img class="rounded-circle" src="/img/info.svg" style="width: 60%;">
                                     </div>                                                                  
                                 </div>
                             </div>
@@ -52,10 +51,9 @@
                     </div>
                 </div>
                 <div class="col-6 border-left">
-                    <div class="row">
+                    <div class="card-header mb-5">
                         <h4 class="text-center mx-auto"><i class="fas fa-user-plus mr-1"></i> CREAR EQUIPO</h4>
                     </div>
-                    <hr style="width:70%; border: 1px dashed #000;" class="mx-auto mb-5">                    
                     <div class="col-10 mx-auto">
                         <form action="/links/grupo" method="POST">
                             {{#if contactos}} 
@@ -85,13 +83,13 @@
                             {{else}}
                                 <div class="col-12 mx-auto mt-4">
                                     <div>
-                                        <div class="">
-                                            <h3>No tienes ningun amigo<i class="fas fa-heart-broken ml-1"></i><br> Debes agregar amigos para poder crear un grupo</h3>                                                    
+                                        <div class="text-justify">
+                                            <h3>¡No tienes ningun contacto!<br class="my-3"> Debes tener por lo menos un contacto para poder crear un grupo.</h3>                                                    
                                         </div>
                                     </div>
                                 </div>
                                 <div class="float-right mt-5">
-                                <a  class="btn btn-primary" href="/links/agregar_contacto"><i class="fas fa-plus mr-1"></i> Agregar Amigo</a>
+                                <a  class="btn btn-primary" href="/links/agregar_contacto"><i class="fas fa-plus mr-1"></i> Agregar contacto</a>
                                 </div>                
                                 
                                 

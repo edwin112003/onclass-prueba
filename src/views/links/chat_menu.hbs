@@ -1,103 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
-			crossorigin="anonymous"
-		/>		
-        <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
-  {{!-- BOOTSTRAP 4 --}}
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  {{!-- FONT AWESOME 5 --}}
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
-    crossorigin="anonymous">
-    <link rel="stylesheet" href="/css_index/estilos.css">
-    <title>OnClass</title>
-	</head>
-	<body>
-    {{>navigation}}
-      
-		<div class="d-flex justify-content-center">
-			
-			<main class="join-main">
-        
-				<f3>Chat individual</f3>
-				<form  action="/links/chat_menu" method="POST">
-					<div class="form-control">
-						<label for="username">Username</label>
-						<input
-                        readonly="readonly"
-							type="text"
-							name="username"
-							id="username"
-							placeholder="Enter username..."
-                            value="{{user.nombre_usuario}}"
-							required
-						/>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+		integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+	{{!-- BOOTSTRAP 4 --}}
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	{{!-- FONT AWESOME 5 --}}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+		integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css_index/estilos.css">
+	<title>OnClass</title>
+</head>
+
+<body>
+	{{>navigation}}
+	<div class="container mb-5" style="margin-top: 4rem;">
+		<div class="row justify-content-between">
+			<div class="col-5">
+				<div class="card mx-auto shadow px-3 pb-3 mb-5 bg-white rounded">
+					<div class="card-body">
+						<div class="card-header">
+							<div class="row" style="margin-top: -0.2rem;">
+								<div class="col-3">
+									<img class=" js-tilt rounded-circle" src="/img/chat-23.png" alt="single-chat"
+										style="width: 100%; height: 100%;">
+								</div>
+								<div class="col-9">
+									<h3 class="text-left mt-3"> CHAT INDIVIDUAL </h3>
+								</div>
+							</div>
+						</div>
+						<div class="mb-5">
+							<form action="/links/chat_menu" method="POST">
+								<div class="row">
+									{{!-- <label class="col-5">
+										<h3> Username </h3>
+									</label> --}}
+									<div class="col-5">
+										<input readonly="readonly" type="hidden" name="username" id="username"
+											placeholder="Enter username..." value="{{user.nombre_usuario}}" required />
+										{{!-- <h3 class="align-middle">{{user.nombre_usuario}}</h3> --}}
+									</div>
+								</div>
+								{{!-- <hr style="width: 70%;"> --}}
+								{{#if usuarios}}
+								<div class="row mb-4">
+									<label class="col-4">
+										<h4> Room: </h4>
+									</label>
+									<div class="col-6 mt-2">
+										<select name="room" id="room">
+											{{#each usuarios}}
+											<option value="{{id_chat}}:{{id_usuario}}">
+												<h3>{{nombre_usuario}}</h3>
+											</option>
+											{{/each}}
+										</select>
+
+									</div>
+								</div>
+								<div class="float-right">
+									<button type="submit" class="btn btn-success">Join Chat <i
+											class="fas fa-paper-plane ml-1"></i></button>
+								</div>
+								{{else}}
+								<div class="col-12 mx-auto mt-4 border-0" style="margin-bottom: -3rem;">
+									<div>
+										<div class="text-center mb-3">
+											<h3>No tienes ningun contacto</h3>
+											<img class="rounded-circle mt-3" src="/img/space.svg" style="width: 60%;">
+										</div>
+										<div class="float-right">
+											<a class="btn btn-primary" href="/links/agregar_contacto"><i
+													class="fas fa-plus mr-1"></i> Agregar Contacto</a>
+										</div>
+									</div>
+								</div>
+								{{/if}}
+							</form>
+						</div>
 					</div>
-					<br>
-					<div class="form-control">
-						<label for="room">Room</label>
-						<select name="room" id="room">
-              {{#each usuarios}}
-							<option value="{{id_chat}}:{{id_usuario}}" >{{nombre_usuario}}</option>
-							{{/each}}
-						</select>
+				</div>
+			</div>
+			{{!-- =============================== --}}
+			<div class="col-5">
+				<div class="card mx-auto shadow px-3 pb-3 mb-5 bg-white rounded">
+					<div class="card-body">
+						<div class="card-header">
+							<div class="row" style="margin-top: -0.2rem;">
+								<div class="col-3">
+									<img class="rounded-circle" src="/img/chat-25.png" alt="single-chat"
+										style="width: 100%; height: 100%;">
+								</div>
+								<div class="col-9">
+									<h3 class="text-left mt-3"> CHAT GRUPAL </h3>
+								</div>
+							</div>
+						</div>
+						<div class="mb-5">
+							<form action="/links/chat_menu" method="POST">
+								<div class="row">
+									{{!-- <label class="col-5">
+										<h3> Username </h3>
+									</label> --}}
+									<div class="col-5">
+										<input readonly="readonly" type="hidden" name="username" id="username"
+											placeholder="Enter username..." value="{{user.nombre_usuario}}" required />
+										{{!-- <h3 class="align-middle">{{user.nombre_usuario}}</h3> --}}
+									</div>
+								</div>
+								{{!-- <hr style="width: 70%;"> --}}
+								{{#if grupos}}
+								<div class="row mb-4">
+									<label class="col-4">
+										<h4> Room: </h4>
+									</label>
+									<div class="col-6 mt-2">
+										<select name="room" id="room">
+											{{#each grupos}}
+											<option value="{{clave_equipo}}">{{nombre_proyecto}}</option>
+											{{/each}}
+										</select>
+									</div>
+								</div>
+								<div class="float-right">
+									<button type="submit" class="btn btn-success">Join Chat <i
+											class="fas fa-paper-plane ml-1"></i></button>
+								</div>
+								{{else}}
+								<div class="col-12 mx-auto mt-4 border-0">
+									<div>
+										<div class="text-center">
+											<h3>No tienes ningun grupo</h3>
+											<img class="rounded-circle mt-3" src="/img/team2.svg" style="width: 62%;">
+										</div>
+										
+									</div>
+								</div>
+								{{/if}}
+							</form>
+						</div>
 					</div>
-					<button type="submit" class="btn" >Join Chat</button>
-				</form>
-        
-			</main>
+				</div>
+			</div>
 		</div>
+	</div>
 
-	<br>
-	<br>
+	{{>footer}}
 
-    <div class="d-flex justify-content-center">
-			
-			<main class="join-main">
-        
-				<f3>Chat de equipo</f3>
-				<form  action="/links/chat_menu" method="POST">
-					<div class="form-control">
-						<label for="username">Username</label>
-						<input
-                        readonly="readonly"
-							type="text"
-							name="username"
-							id="username"
-							placeholder="Enter username..."
-                            value="{{user.nombre_usuario}}"
-							required
-						/>
-					</div>
-					<div class="form-control">
-						<label for="room">Room</label>
-						<select name="room" id="room">
-              {{#each grupos}}
-							<option value="{{clave_equipo}}">{{nombre_proyecto}}</option>
-							{{/each}}
-						</select>
-					</div>
-					<button type="submit" class="btn" >Join Chat</button>
-				</form>
-        
-			</main>
-		</div>
-    
-    {{>footer}}
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+		integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+	<script src="/js/reloj.js"></script>
+</body>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"></script>  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-    <script src="/js/reloj.js"></script>
-	</body>
 </html>

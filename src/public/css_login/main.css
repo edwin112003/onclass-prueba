@@ -189,12 +189,18 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 177px 130px 33px 95px;
+  padding: 70px 130px 33px 65px;
 }
 
 /*------------------------------------------------------------------
 [  ]*/
+#cambiar{
+  filter: hue-rotate(120deg);
+  border-radius: 3rem;
+}
+
 .login100-pic {
+  margin: auto;
   width: 316px;
 }
 
@@ -362,7 +368,7 @@ iframe {
 
 @media (max-width: 992px) {
   .wrap-login100 {
-    padding: 177px 90px 33px 85px;
+    padding: 105px 90px 33px 85px;
   }
 
   .login100-pic {
