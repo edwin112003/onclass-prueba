@@ -1,127 +1,171 @@
-
-    <!--Aqui metemos el segundo div, primera tabla-->
-    <div class="d-flex justify-content-center p-4">
-      <div class="d-flex justify-content-center p-4">
-      <div class="border"> 
-        <form action="/links/editar_horario/{{user.id_usuario}}" method="POST">
-          <h5 class="text-center">Agrega una clase</h5><br>
-          <div class="form-group d-flex justify-content-center">
-            
-            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
-                    <option selected>Seleccione un dia</option>
-                    <option name="dia" value="1">Lunes</option>
-                    <option name="dia" value="2">Martes</option>
-                    <option name="dia" value="3">Miercoles</option>
-                    <option name="dia" value="4">Jueves</option>
-                    <option name="dia" value="5">Viernes</option>
-                    <option name="dia" value="6">Sabado</option>
-                    <option name="dia" value="7">Domingo</option>
-            </select>
-          </div><br>
-          <div class="dropdown d-flex justify-content-center">
-            <input type="text" class="form-control col-sm-6" name="nombre" placeholder="Nombre de la clase" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" onkeypress="return isText(event)">       
-          </div><br>
-          <div class="d-flex justify-content-around">
-              <div class=" form-group p-2">
-                  <select class="form-select btn btn-secondary" name="horai" id="inhoras1" aria-label="Default select example">
-                    <option selected>Hora de inicio</option>
-                    
-                  </select>                
+<style>
+    body {
+        background-image: url('/img/bkg.svg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+    }
+</style>
+<div class="container my-5">
+  <div class="row justify-content-between">
+    {{!-- ========================================================================= --}}
+    {{!-- DIV AGREGAR CLASE --}}
+    {{!-- ========================================================================= --}}
+    <div class="col-4">
+      <div class="row" style="margin-left:-3rem;">
+        <div class="col-12">
+          <div class="card shadow p-1 mb-2 bg-body rounded">
+            <div class="card-body">
+              <div class="card-header mb-3">
+                <span style="font-size: 1.5rem; color:rgb(95, 22, 95)"><i class="fas fa-plus-circle  mr-2"></i> AGREGAR
+                  CLASE</span>
               </div>
-              <div class=" form-group p-2">
-                  <select class="form-select btn btn-secondary" name="horat" id="inhoras2" aria-label="Default select example">
-                    <option selected>Hora de termino</option>
-                    
-                  </select>              
-              </div>                         
-          </div>
-          <div class="d-flex justify-content-around">
-            <div class="d-flex align-items-center p-2">
-                <button type="submit" class="btn btn-secondary">Guardar</button>
-                
-            </div>  
-          </div>
-        </form>
-                
-      </div>      
-    </div><br>
-     <!--DIV EDITAR HORARIO-->
-    <div class="d-flex justify-content-center">
-      <div class="border">
-        <form action="/links/editar_clase" method="POST">
-          <input type="hidden" value="{{user.id_usuario}}" name="id">
-          <h5 class="text-center">Elimina/Edita una clase</h5><br>
-          <div class="form-group d-flex justify-content-center">          
-            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
-                    <option selected>Seleccione un dia</option>
-                    <option value="1">Lunes</option>
-                    <option value="2">Martes</option>
-                    <option value="3">Miercoles</option>
-                    <option value="4">Jueves</option>
-                    <option value="5">Viernes</option>
-                    <option value="6">Sabado</option>
-                    <option value="7">Domingo</option>
-            </select>
-          </div><br>
-          <div class="d-flex justify-content-around">
-              <div class=" form-group p-2">
-                  <select class="form-select btn btn-secondary" name="horai" id="inhoras3" aria-label="Default select example">
-                    <option selected>Hora de inicio</option>                    
-                  </select>                 
-              </div>                                  
-          </div>          
-          <div class="d-flex justify-content-around">
-            <div class="d-flex align-items-center p-2">
-              <button type="submit" class="btn btn-secondary">Editar clase</button>
-            </div>   
-          </div>
-        </form>                 
-      </div>      
-    </div><br>
-
-    </div>
-    
-    <!--Aqui metenoms el tercer div, segundo menu-->
-    <div class="d-flex justify-content-center">
-      <div class="border">
-        <h5 class="text-center">Horario</h5><br>
-        <div class="border p-4">
-          <div class=" form-group d-flex justify-content-center" style="max-width: 700px;">
-            <table class="table table-bordered">
-              <thead >
-                <tr>
-                  <th scope="col">Hora</th>
-                  <th scope="col">Lunes</th>
-                  <th scope="col">Martes</th>
-                  <th scope="col">Miercoles</th>
-                  <th scope="col">Jueves</th>
-                  <th scope="col">Viernes</th>
-                  <th scope="col">Sabado</th>
-                  <th scope="col">Domingo</th>
-                </tr>
-              </thead>
-              <tbody id="tbody">
-
-              </tbody>
-            </table>
+              <form action="/links/editar_horario/{{user.id_usuario}}" method="POST">
+                <div class="row g-2 align-items-center">
+                  <div class="col-5">
+                    <label for="" class="col-form-label text-dark font-italic mx-auto">Nombre de la clase: </label>
+                  </div>
+                  <div class="col-7">
+                    <input type="text" class="form-control" name="nombre" placeholder="Historia"
+                      pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
+                      onkeypress="return isText(event)" required>
+                  </div>
+                </div>
+                <div class="row g-2 align-items-center">
+                  <div class="col-5">
+                    <label for="" class="col-form-label text-justify text-dark font-italic mx-auto">Día: </label>
+                  </div>
+                  <div class="col-7">
+                    <select class="form-select btn btn-link" name="dia" aria-label="Default select example">
+                      <option selected name="dia" value="1">Lunes</option>
+                      <option name="dia" value="2">Martes</option>
+                      <option name="dia" value="3">Miercoles</option>
+                      <option name="dia" value="4">Jueves</option>
+                      <option name="dia" value="5">Viernes</option>
+                      <option name="dia" value="6">Sabado</option>
+                      <option name="dia" value="7">Domingo</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row g-3 align-items-center text-left">
+                  <div class="col-3 mr-2">
+                    <label for="" class="col-form-label text-dark font-italic mx-auto">Horario: </label>
+                  </div>
+                  <div class="col-3 border-left mr-2">
+                    <select class="form-select btn btn-link" name="horai" id="inhoras1"
+                      aria-label="Default select example" required>
+                      <option selected disabled>Inicio </option>
+                    </select>
+                  </div>
+                  <div class="col-3  border-left mx-auto">
+                    <select class="form-select btn btn-link" name="horat" id="inhoras2"
+                      aria-label="Default select example" required>
+                      <option selected disabled>Termino </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <div class="col-10 text-center">
+                    <button type="submit" class="btn btn-success">Guardar <i class="fas fa-save ml-2"></i></button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        
-        
+        {{!-- ========================================================================= --}}
+        {{!-- DIV MODIFICAR CLASE --}}
+        {{!-- ========================================================================= --}}
+        <div class="col-12" style="margin-top: 20%; margin-bottom:5rem;">
+          <div class="card shadow p-1 mb-2 bg-body rounded">
+            <div class="card-body">
+              <div class="card-header mb-3">
+                <span style="font-size: 1.5rem; color:rgb(95, 22, 95)"><i class="fas fa-plus-circle  mr-2"></i>
+                  MODIFICAR CLASE </span>
+              </div>
+              <form action="/links/editar_clase" method="POST">
+                <input type="hidden" value="{{user.id_usuario}}" name="id">
+                <div class="row justify-content-between my-4">
+                  <div class="col-5">
+                    <select class="form-select btn btn-link" name="dia" aria-label="Default select example"
+                      required>
+                      <option selected disabled>Seleccione un dia</option>
+                      <option value="1">Lunes</option>
+                      <option value="2">Martes</option>
+                      <option value="3">Miercoles</option>
+                      <option value="4">Jueves</option>
+                      <option value="5">Viernes</option>
+                      <option value="6">Sabado</option>
+                      <option value="7">Domingo</option>
+                    </select>
+                  </div>
+                  <div class="col-6 ml-2">
+                    <select class="form-select btn btn-link mx-auto" name="horai" id="inhoras3"
+                      aria-label="Default select example" required>
+                      <option selected disabled>Hora de inicio</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row my-3">
+                  <div class="col-12 text-center">                    
+                      <button type="submit" class="btn btn-dark text-white mx-auto">Editar clase <i
+                        class="fas fa-edit ml-2"></i></button>                  
+                  </div>
+                </div>                
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    
-    
-    <script src="js/jquery.js" type="text/javascript"></script>
-    
-    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
-    
-    <script src="/js/horario.js" ></script>
-    <script src="/js/ver_horario.js" ></script>
-    <script src="/js/main.js" ></script>
 
-</body> 
+
+    {{!-- ========================================================================= --}}
+    {{!-- TABLA HORARIOOOOO --}}
+    {{!-- ========================================================================= --}}
+
+    <div class="col-7 ">
+      <div class="d-flex justify-content-center">
+        <div class="bg-white">
+          <div class="card-header">
+            <h5 class="text-center"><span style="color:rgb(25, 110, 61); font-size:1.3rem;"> <i
+                class="fas fa-clock mr-1"></i></span> Horario </h5>
+          </div>          
+                {{!-- <hr class="my-2 mx-auto" style="width: 70%;"> --}}
+          <div class="bg-white shadow p-1 my-3 bg-body rounded">
+            <div class="form-group d-flex justify-content-center" style="max-width: 700px;">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Lunes</th>
+                    <th scope="col">Martes</th>
+                    <th scope="col">Miercoles</th>
+                    <th scope="col">Jueves</th>
+                    <th scope="col">Viernes</th>
+                    <th scope="col">Sabado</th>
+                    <th scope="col">Domingo</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{>footer}}
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script><!-- jquery-ui.js -->
+<script src="/js/horario.js"></script>
+<script src="/js/ver_horario.js"></script>
+<script src="/js/main.js"></script>
+
+</body>

@@ -29,7 +29,7 @@ passport.use('local.login', new LocalStrategy({
             clases.pop();
             
             const clas = clases[0];            
-            done(null, user, req.flash('success', 'Buenas ' +user.nombre_usuario));
+            done(null, user, req.flash('success', 'Bienvenido ' +user.nombre_usuario));
             
         }else{
             done(null, false,req.flash('message', 'Contraseña incorrecta'));

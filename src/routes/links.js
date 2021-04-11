@@ -281,7 +281,7 @@ router.post('/editar_pendiente_vista', isLoggedIn, async(req,res)=>{
     }
     const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
     await pool.query('call EditPen (?, ?, ?, ?, ?)', [newlink.id, newlink.nombre, newlink.desc, newlink.clase, fecha_base]);
-    throw res.redirect('/links/pendientes');
+    throw res.redirect('/links/no_terminados');
     } catch (error) { 
     }
 });
@@ -336,12 +336,60 @@ router.post('/pendientes',isLoggedIn, async (req,res)=>{
         req.app.locals.user.id_usuario,
         newlink.clase,
         fecha_base]);
-        res.redirect('/links/pendientes');
+        res.redirect('/links/no_terminados');
     } catch (error) {
         req.flash('message', 'Pon el formato de la fecha bien');
         res.redirect('/links/pendientes');
     }    
 });
+
+/* 
+ ==============================================================================
+*/
+router.post('/add_pendientes',isLoggedIn, async (req,res)=>{
+    try {
+        const {nombre, descripcion, clase, fecha} = req.body;     
+        const newlink = {
+            nombre,
+            descripcion,
+            clase,
+            fecha
+        };
+        if(newlink.nombre == ''){
+            req.flash('message', 'Dale un nombre al pendiente');
+            throw res.redirect('/links/pendientes');
+        }
+        if(newlink.descripcion == ''){
+            req.flash('message', 'Dale una descripcion al pendiente');
+            throw res.redirect('/links/pendientes');
+        }
+        if(newlink.fecha == ''){
+            req.flash('message', 'Coloca una fecha porfa');
+            throw res.redirect('/links/pendientes');
+        }
+        if(newlink.clase == 'Seleccione una clase'){
+            req.flash('message', 'Selecciona una clase plocs');
+            throw res.redirect('/links/pendientes');
+        }
+        const fecha_nueva = newlink.fecha.split('/');
+        const fecha_base = `${fecha_nueva[2]}-${fecha_nueva[1]}-${fecha_nueva[0]}`;
+        await pool.query('call SavePen(?,?,?,?,?,?,?)',
+        [newlink.nombre,
+        newlink.descripcion, 
+        1,
+        false,
+        req.app.locals.user.id_usuario,
+        newlink.clase,
+        fecha_base]);
+        res.redirect('/links/terminados');
+    } catch (error) {
+        req.flash('message', 'Pon el formato de la fecha bien');
+        res.redirect('/links/pendientes');
+    }    
+});
+
+
+
 router.get('/no_terminados', isLoggedIn, async (req,res)=>{
     const clase = await pool.query("call GetClas (?)", req.app.locals.user.id_usuario);
     clase.pop();
@@ -405,10 +453,9 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
     let fecha_valor =pendiente[0][0].fecha_entrega; 
     let fecha_sint = pendiente[0][0].fecha_entrega.toString();
     let fecha_media =  fecha_sint.split(' ');
-    let fecha_muestra = `${fecha_media[2]}-${fecha_media[1]}-${fecha_media[3]}`;
-    
-
+    let fecha_muestra = `${fecha_media[2]}/${fecha_media[1]}/${fecha_media[3]}`;    
     res.render('links/editar_pendiente',{pendiente: pendiente[0],fecha_muestra,fecha_valor, clases: clase[0]});
+    
 });
 router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     try{   
@@ -651,6 +698,7 @@ router.post('/update_clase/:id', isLoggedIn, async(req,res)=>{
             }
         });
         await pool.query('call EditClas(?, ?, ?, ?, ?)', [params.id, new_clase.nombre, new_clase.dia, new_clase.horai, new_clase.horat]);
+        // console.log("\nid: "+ params.id+ "\nnombre de clase. "+new_clase.nombre+ "\ndía: "+new_clase.dia+ "\ninicio de clase: "+new_clase.horai + "\ntermino de clase: "+new_clase.horat)
         res.redirect('/links/editar_horario');
     } catch (error) {
         console.log('errrroorororr',error);

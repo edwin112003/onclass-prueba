@@ -1,77 +1,120 @@
-<div class="d-flex justify-content-center">
-    <!-- DATOS OBTENIDOS-->
-    <div class="container p-4">
-        <div class="row">
-            <div class=" col-md-4 mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="/links/delete_clase" method="POST">
-                        <div class="form-group">
-                             <input type="hidden" value="{{obj.id_clase}}" name="id">
-                            <input type="text" value="{{obj.nombre_clase}}" class="form-control" name="nombre" readonly="readonly">
+<link rel="stylesheet" href="/css_complements/style.css">
+
+<style>
+    body {
+        background-image: url('/img/bckg.svg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+    }
+</style>
+
+<div class="container mx-auto my-5">
+    <div class="row mx-auto">
+        <div class="col-5 mx-auto">
+            <div class="card shadow-lg p-1 mb-2 bg-body rounded">
+                <div class="card-body">
+                    <div class="card-header my-2 text-center">
+                        <div class="row g-3 align-items-center  mx-auto">
+                            <div class="col-9  mx-auto">
+                                <span style="font-size: 1.5rem; color:rgb(95, 22, 95)">
+                                    ELIMINAR/EDITAR CLASE
+                                </span>
+                            </div>
+                            <div class="col-3  mx-auto">
+                                <form action="/links/delete_clase" method="POST">
+                                    <input type="hidden" value="{{obj.id_clase}}" name="id">
+                                    <button id="kul" class="btn btn-danger btn-block"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" value="{{obj.desc_dia}}" class="form-control" name="dia" readonly="readonly">
+
+                    </div>
+                    {{!-- ===================================================================== --}}
+                    <form action="/links/update_clase/{{obj.id_clase}}" method="POST">
+
+                        <div class="row g-2 align-items-center">
+                            <div class="col-5">
+                                <label for="" class="col-form-label text-dark font-italic mx-auto">Nombre de la clase:
+                                </label>
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control" name="nombre" placeholder="{{obj.nombre_clase}}"
+                                    value="{{obj.nombre_clase}}"
+                                    pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
+                                    onkeypress="return isText(event)" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" value="{{obj.horai_clase}} horas" class="form-control" name="horai" readonly="readonly">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-5">
+                                <label for="" class="col-form-label text-justify text-dark font-italic mx-auto">Día:
+                                </label>
+                            </div>
+                            <div class="col-7">
+                                <select id="cdia" class="form-select btn btn-link" aria-label="Default select example" onchange="cday();" required>
+                                    <option value="{{obj.desc_dia}}" selected disabled>{{obj.desc_dia}}</option>
+                                    <option value="Lunes">Lunes</option>
+                                    <option value="Martes">Martes</option>
+                                    <option value="Miercoles">Miercoles</option>
+                                    <option value="Jueves">Jueves</option>
+                                    <option value="Viernes">Viernes</option>
+                                    <option value="Sabado">Sabado</option>
+                                    <option value="Domingo">Domingo</option>
+                                </select>
+                                <input type="hidden" id="cgday"  name="dia" value="">                            
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" value="{{obj.horat_clase}} horas" class="form-control" name="horat" readonly="readonly">
+                        <div class="row g-3 align-items-center text-left">
+                            <div class="col-3 mr-2">
+                                <label for="" class="col-form-label text-dark font-italic mx-auto">Horario: </label>
+                            </div>
+                            <div class="col-3 border-left mr-2">
+                                <select class="form-select btn btn-link" name="horai" id="inhoras1"
+                                    aria-label="Default select example" required>
+                                    <option value="{{obj.horai_clase}}" selected>{{obj.horai_clase}} </option>
+                                </select>
+                            </div>
+                            <div class="col-3  border-left mx-auto">
+                                <select class="form-select btn btn-link" name="horat" id="inhoras2"
+                                    aria-label="Default select example" required>
+                                    <option value="{{obj.horat_clase}}" selected>{{obj.horat_clase}} </option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block">Eliminar</button>
+                        <div class="row mt-5">
+                            <div class="col-6 ">
+                                <button id="rnd" type="submit" class="btn btn-danger">Cancelar <i
+                                        class="fas fa-times ml-2"></i></button>
+                            </div>
+                            <div class="col-6">
+                                <button id="rnd" type="submit" class="btn btn-success">Guardar Cambios <i
+                                        class="fas fa-save ml-2"></i></button>
+                            </div>
                         </div>
                     </form>
-                    </div>
+                    {{!-- ===================================================================== --}}
                 </div>
             </div>
         </div>
     </div>
-    
 </div>
-<!-- DATOS NUEVOS-->
-    <div class="container p-4">
-        <div class="row">
-            <div class=" col-md-4 mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="/links/update_clase/{{obj.id_clase}}" method="POST">
-                        <div class="form-group">
-                            <input type="text" value = "{{obj.nombre_clase}}" class="form-control" name="nombre" placeholder="Nomre de la clase" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$" onkeypress="return isText(event)">
-                        </div>
-                        <div class="form-group">
-                            <select class="form-select btn btn-secondary" name="dia" aria-label="Default select example">
-                                    <option selected>Seleccione un dia</option>
-                                    <option value="1">Lunes</option>
-                                    <option value="2">Martes</option>
-                                    <option value="3">Miercoles</option>
-                                    <option value="4">Jueves</option>
-                                    <option value="5">Viernes</option>
-                                    <option value="6">Sabado</option>
-                                    <option value="7">Domingo</option>
-                            </select>                            
-                        </div>
-                        <div class="form-group">
-                            <select class="form-select btn btn-secondary" name="horai" id="inhoras1" aria-label="Default select example">
-                                <option selected>Hora de inicio</option>
-                                
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-select btn btn-secondary" name="horat" id="inhoras2" aria-label="Default select example">
-                                <option selected>Hora de termino</option>
-                                
-                            </select>  
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block">Actualizar</button>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 <script src="/js/horario.js" var="{{user.id_usuario}}"></script>
-<script src="/js/main.js" ></script>
+<script src="/js/main.js"></script>
+
+<script>
+    function cday(){
+        var select = document.getElementById("cdia");
+        var valor = select.options[select .selectedIndex].value;        
+        let dias= ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+        var fdai;
+        for(let i = 0; i < dias.length; i++){
+            if(valor===dias[i]){
+                fdai=(i+1)
+                break;
+            }
+        }                
+        document.getElementById("cgday").value = parseInt(fdai);
+    }
+    window.onload = cday();
+</script>

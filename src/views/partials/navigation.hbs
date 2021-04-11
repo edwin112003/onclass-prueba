@@ -14,23 +14,6 @@
         <line fill="#079C39" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10"
           x1="944.483" y1="502.59" x2="944.483" y2="127.591" />
       </svg></a>
-
-    {{!-- Menu --}}
-    {{!-- <ul class="navbar-nav mr-5 mt-2 mt-xl-0">
-      <li class="nav-item ">
-        <a class="nav-link" href="/links/Horario"><i class="fas fa-clock mr-1"></i> Horario</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/links/grupo"><i class="fas fa-users mr-1"></i>Grupos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/links/pendientes"><i class="fas fa-list mr-1"></i>Pendientes individuales</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/links/chat_menu"><i class="fas fa-paper-plane mr-1"></i>Mensajes</a>
-      </li>
-    </ul> --}}
-
     {{!-- Date/Time --}}
     <ul class="navbar-nav ml-auto mt-5 mt-xl-0">
       <li class="nav-item">
@@ -54,49 +37,38 @@
         </div>
       </li>
     </ul>
+    <ul class="navbar-nav ml-auto mt-5 mt-xl-0">
+      <li class="nav-item dropleft">
 
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="font-size: 1.3rem; font-weight: bold; color: white;">
+          <span class="font-weight-bold" style="font-size: 1.3rem; color: white;"><i class="fas fa-bars"></i> </span>
+          Menu
+        </a>
+        <div class="dropdown-menu rounded px-2" aria-labelledby="navbarDropdown" style="color: rgba(99, 97, 97, 0.089)">
 
-  {{!-- <ul class="navbar-nav ml-auto mt-5 mt-xl-0">                
-          <li class="nav-item dropleft">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v"></i>  
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">              
-              <a class="dropdown-item" href="/links/perfil" class="text-decoration-none" style="color: black; text-decoration: none;">                
-                <span style="font-size: 1.4rem;"> <i class="fas fa-user mr-1"></i> </span>
-                {{user.nombre_usuario}}
-              </a>
-              <a class="dropdown-item" href="/links/logout" style="color: black; text-decoration: none;">
-              <span style="font-size: 1.4rem;"> <i class="fas fa-sign-out-alt mr-1"></i></span>Cerrar Sesion
-              </a>
-            </div>
-          </li>        
-    </ul> --}}
-
-
-  <ul class="navbar-nav ml-auto mt-5 mt-xl-0">                       
-          <li class="nav-item dropleft">
-            
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.3rem; font-weight: bold; color: white;">
-            <span class="font-weight-bold" style="font-size: 1.3rem; color: white;"><i class="fas fa-bars"></i> </span> Menu 
-            </a>
-            <div class="dropdown-menu rounded px-2" aria-labelledby="navbarDropdown" style="color: rgba(99, 97, 97, 0.089)">              
-
-              <a class="dropdown-item mt-3" href="/links/Horario"><span style="color:#007bff; "><i class="fas fa-clock mr-2"></i></span> Horario</a>      
-              <a class="dropdown-item" href="/links/grupo"><span style="color: #007bff;"><i class="fas fa-users mr-2"></i></span>Grupos</a>      
-              <a class="dropdown-item" href="/links/pendientes"><span style="color: #007bff;"><i class="fas fa-tasks mr-2"></i></span>Pendientes</a>      
-              <a class="dropdown-item" href="/links/chat_menu"><span style="color:#007bff ;"><i class="fas fa-paper-plane mr-2"></i></span>Mensajes</a>  
-              <a class="dropdown-item" href="/links/chat_menu"><span style="color: #007bff ;"><i class="fas fa-chart-line mr-2"></i></span>Rendimiento</a>  
-              <hr class="my-2">
-              <a class="dropdown-item" href="/links/perfil" class="text-decoration-none" style="color: black; text-decoration: none;">                
-                <span style="font-size: 1.3rem; color: #black;"> <i class="fas fa-user-cog mr-1"></i> </span>
-                {{user.nombre_usuario}}
-              </a>
-              <a class="dropdown-item mb-3" href="/links/logout" style="color: black; text-decoration: none;">
-              <span style="font-size: 1.4rem;  color: #dc3545;"> <i class="fas fa-sign-out-alt mr-2"></i></span>Cerrar Sesion
-              </a>
-            </div>
-          </li>        
+          <a class="dropdown-item mt-2" href="/links/Horario"><span style="color:#007bff; "><i
+                class="fas fa-clock mr-2"></i></span> Horario</a>
+          <a class="dropdown-item" href="/links/grupo"><span style="color: #007bff;"><i
+                class="fas fa-users mr-2"></i></span>Grupos</a>
+          <a class="dropdown-item" href="/links/no_terminados"><span style="color: #007bff;"><i
+                class="fas fa-tasks mr-2"></i></span>Pendientes</a>
+          <a class="dropdown-item" href="/links/chat_menu"><span style="color:#007bff ;"><i
+                class="fas fa-paper-plane mr-2"></i></span>Mensajes</a>
+          <a class="dropdown-item" href="/links/chat_menu"><span style="color: #007bff ;"><i
+                class="fas fa-chart-line mr-2"></i></span>Rendimiento</a>
+          <hr class="my-2">
+          <a class="dropdown-item" href="/links/perfil" class="text-decoration-none"
+            style="color: black; text-decoration: none;">
+            <span style="font-size: 1.3rem; color: #black;"> <i class="fas fa-user-cog mr-1"></i> </span>
+            {{user.nombre_usuario}}
+          </a>
+          <a class="dropdown-item mb-3" href="/links/logout" style="color: black; text-decoration: none;">
+            <span style="font-size: 1.4rem;  color: #dc3545;"> <i class="fas fa-sign-out-alt mr-2"></i></span>Cerrar
+            Sesion
+          </a>
+        </div>
+      </li>
     </ul>
 
 
