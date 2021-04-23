@@ -24,7 +24,8 @@
                             <div class="col-3  mx-auto">
                                 <form action="/links/delete_clase" method="POST">
                                     <input type="hidden" value="{{obj.id_clase}}" name="id">
-                                    <button id="kul" class="btn btn-danger btn-block"><i class="fas fa-trash"></i></button>
+                                    <button id="kul" class="btn btn-danger btn-block"><i
+                                            class="fas fa-trash"></i></button>
                                 </form>
                             </div>
                         </div>
@@ -51,7 +52,8 @@
                                 </label>
                             </div>
                             <div class="col-7">
-                                <select id="cdia" class="form-select btn btn-link" aria-label="Default select example" onchange="cday();" required>
+                                <select id="cdia" class="form-select btn btn-link" aria-label="Default select example"
+                                    onchange="cday();" required>
                                     <option value="{{obj.desc_dia}}" selected disabled>{{obj.desc_dia}}</option>
                                     <option value="Lunes">Lunes</option>
                                     <option value="Martes">Martes</option>
@@ -61,7 +63,7 @@
                                     <option value="Sabado">Sabado</option>
                                     <option value="Domingo">Domingo</option>
                                 </select>
-                                <input type="hidden" id="cgday"  name="dia" value="">                            
+                                <input type="hidden" id="cgday" name="dia" value="">
                             </div>
                         </div>
                         <div class="row g-3 align-items-center text-left">
@@ -83,8 +85,10 @@
                         </div>
                         <div class="row mt-5">
                             <div class="col-6 ">
-                                <button id="rnd" type="submit" class="btn btn-danger">Cancelar <i
-                                        class="fas fa-times ml-2"></i></button>
+                                <button class="btn btn-danger"
+                                    onclick="javascript:window.history.go(-1);">Cancelar <i
+                                        class="fas fa-times ml-2"></i>
+                                </button>
                             </div>
                             <div class="col-6">
                                 <button id="rnd" type="submit" class="btn btn-success">Guardar Cambios <i
@@ -103,17 +107,17 @@
 <script src="/js/main.js"></script>
 
 <script>
-    function cday(){
+    function cday() {
         var select = document.getElementById("cdia");
-        var valor = select.options[select .selectedIndex].value;        
-        let dias= ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+        var valor = select.options[select.selectedIndex].value;
+        let dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
         var fdai;
-        for(let i = 0; i < dias.length; i++){
-            if(valor===dias[i]){
-                fdai=(i+1)
+        for (let i = 0; i < dias.length; i++) {
+            if (valor === dias[i]) {
+                fdai = (i + 1)
                 break;
             }
-        }                
+        }
         document.getElementById("cgday").value = parseInt(fdai);
     }
     window.onload = cday();

@@ -1,55 +1,68 @@
-<h2 class="text-center">{{nombres.nombre}}</h2>
-<div class="container p-4">
-    <div class="row">
-        {{#each integrantes}}
-    <div class="col-md-3">
-        <div class="card text-center">
-            <div class="card-body">
-                <h6>Nombre del integrante: </h6>
-                {{nombre_usuario}}
-                <form action="/links/eliminar_integrante" method="POST">
-                    <input type="hidden" value="{{id_usuario}}" name="id_usuario">
-                    <input type="hidden" value="{{clave_equipo}}" name="clave">
-                <button type="submit" class="btn p-2">
-                    Eliminar
-                </button>
-                </form>
-                <form action="/links/agregar_tarea_integrante" method="POST">
-                    <input type="hidden" value="{{id_usuario}}" name="id_usuario">
-                    <input type="hidden" value="{{nombre_proyecto}}" name="nombre_equipo">
-                <button type="submit" class="btn p-2">
-                    Agregar tarea
-                </button>
-                </form>
+<h2 class="text-center"><i class="fas fa-users mr-2"></i>GRUPO {{nombres.nombre}} </h2>
+<div class="container mx-auto my-4">
+    <div class="row mt-5">
+        <div class="col-7">
+            <div style="margin-left:-2.5rem;">
+                <h3>Integrantes</h3>
+                <hr style="width: 80%;">
             </div>
+            {{#each integrantes}}
+            <div class="mt-5">
+                <div class="">
+                    <div class="row">
+                        <div class="col-4">
+                            <h5>
+                                <p class="font-weight-bold text-capitalize">
+                                   <i class="fas fa-user mr-2"></i> {{nombre_usuario}}
+                                </p>
+                            </h5>
+                        </div>
+                        <div class="col-3">
+                            <form action="/links/agregar_tarea_integrante" method="POST">
+                                <input type="hidden" value="{{nombre_usuario}}" name="nombre_usuario">
+                                <input type="hidden" value="{{id_usuario}}" name="id_usuario">
+                                <input type="hidden" value="{{nombre_proyecto}}" name="nombre_equipo">
+                                <button type="submit" class="btn btn-primary">Asignar Pendiente <i
+                                        class="fas fa-plus ml-1"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-3 ml-5">
+                            <form action="/links/eliminar_integrante" method="POST">
+                                <input type="hidden" value="{{id_usuario}}" name="id_usuario">
+                                <input type="hidden" value="{{clave_equipo}}" name="clave">
+                                <button type="submit" class="btn btn-danger">Eliminar <i class="fas fa-trash ml-"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
         </div>
-    </div>
-    {{/each}}
-    </div>
-</div>
-<div class="container p-4">
-    <div class="row">
-        <div class=" col-md-4 mx-auto">
-            <div class="card">
+        <div class="col-4 mt-5">
+            <div class="card shadow-sm mb-5 bg-white rounded">
+                <div class="card-header text-center">
+                    NUEVO INTEGRANTE <i class="fas fa-user-plus ml-2"></i>
+                </div>
                 <div class="card-body">
                     <form action="/links/agregar_integrante" method="POST">
-                    <div class="form-group">
-                        <input type="hidden" value="{{nombres.id}}" name ="clave">
-                        <input type="hidden" value="{{nombres.nombre}}" name ="nombre">
-                        Agrega un usuario:
-                        
-                        <select class="form-select btn  p-2" name="id_nuevo_inte">
-                            {{#each contactos}}
-							<option value="{{id_usuario}}">{{nombre_usuario}}</option>
-							{{/each}}
-						</select>
-                    </div>                  
-                    <div class="form-group">
-                        <button class="btn btn-success btn-block">Agregar</button>
-                    </div>
-                </form>
+                        <div class="form-group mt-3">
+                            <input type="hidden" value="{{nombres.id}}" name="clave">
+                            <input type="hidden" value="{{nombres.nombre}}" name="nombre">
+                            Seleccionar:
+                            <select class="form-select btn  p-2" name="id_nuevo_inte">
+                                {{#each contactos}}
+                                <option value="{{id_usuario}}">{{nombre_usuario}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button class="btn btn-success btn-block">Agregar <i class="fas fa-save"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{{>footer}}

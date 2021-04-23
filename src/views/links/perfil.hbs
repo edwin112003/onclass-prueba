@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agregar_tareas</title>
+   <link rel="icon" type="image/png" href="/img/icon.png" sizes="192x192">
+  <title>Perfil</title>
 
   {{!-- BOOTSTRAP 4 --}}
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -15,7 +16,7 @@
     integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
   <!--jquery-ui.css -->
-  <link rel="stylesheet" href="/css_index/estilos.css">
+  
 
   <style>
     .bd-placeholder-img {
@@ -44,17 +45,17 @@
   {{>navigation}}  
   <div class="container mt-4">
     <center>
-      <h3>Bienvenido {{user.nombre_usuario}}</h3>
+      <h3 class="text-capitalize">Bienvenido {{user.nombre_usuario}}</h3>
     </center>
   </div>
   <br>
 
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-between">
       <div class="col-md-4 order-md-2 mb-4 border-left ml-1">
 
         <h4 class="d-flex justify-content-between align-items-center mb-3 ">
-          <div class="row mb-5">
+          <div class="row my-5">
             <div class="col-8">
               <span class="text-muted">Contactos</span>
             </div>
@@ -69,10 +70,8 @@
         {{#each usuarios}}
 
         <ul class="list-group mb-3">
-
           <li class="list-group-item d-flex justify-content-between lh-condensed">
             <div>
-
               <h6 class="my-0"> <span style="font-size:1.3rem; color:grey;"><i
                     class="fas fa-user mr-1"></i></span>{{nombre_usuario}}</h6>
               <small class="text-muted">Brief description</small>
@@ -86,8 +85,7 @@
 
       </div>
 
-      <div class="col-md-7 order-md-1">
-
+      <div class="col-md-6 order-md-1">
         <div class="mb-3">
           <label><span style="font-size: 1.5rem;"><i class="fas fa-user-tag mr-2"></span></i>Usertag</label>
           <div class="input-group">

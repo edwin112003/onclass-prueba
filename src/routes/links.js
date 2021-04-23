@@ -865,8 +865,9 @@ router.post('/eliminar_integrante',isLoggedIn, async (req,res)=>{
     res.redirect('/links/grupo');
 });
 router.post('/agregar_tarea_integrante',isLoggedIn, async (req,res)=>{
-    const {id_usuario,nombre_equipo} = req.body;
+    const {nombre_usuario,id_usuario,nombre_equipo} = req.body;
     const newLink = {
+        nombre_usuario,
         id_usuario,
         nombre_equipo
     }

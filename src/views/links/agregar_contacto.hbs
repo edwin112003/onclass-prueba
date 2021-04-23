@@ -1,28 +1,58 @@
+<link rel="stylesheet" href="/css_complements/style.css">
 <div class="container p-4">
-    <div class="row">
-        <div class=" col-md-4 mx-auto">
-            <div class="card">
+    <div style="margin-left: -2rem;">
+        <h2 class="text-left"><i class="fas fa-user-plus mr-2"></i> Agregar contacto</h2>
+        <hr style="width: 60%;">
+    </div>
+    <div class="row justify-content-center ">
+        <div class="col-6 mt-5">
+            <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                <div class="card-header text-center">
+                    NUEVO CONTACTO
+                </div>
                 <div class="card-body">
                     <form action="/links/agregar_contacto/" method="POST">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="id_contacto" placeholder="Clave de Amigo" onkeypress="return isNumber(event)" pattern="^[\d]+$">
-                    </div>                  
-                    <div class="form-group">
-                        <button class="btn btn-success btn-block">Agregar</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <label style="margin-left: -0.1rem; color:black;" class="font-weight-bold">Clave de amigo </label>
+                            <input type="text" class="form-control" name="id_contacto" placeholder="EJ. 458"
+                                onkeypress="return isNumber(event)" pattern="^[\d]+$" required>
+                            <small id="" class="form-text text-muted">
+                                Ingresa la clave de tu amigo. Puedes encontrar la tuya en el apartado "Perfil".
+                            </small>
+                        </div>
+                        <div class="form-group mt-5">
+                            <button class="btn btn-success btn-block">Agregar <i class="fas fa-save ml-2"></i></button>
+                        </div>
+                    </form>
                 </div>
-            </div>
+            </div>            
         </div>
+        <div class="col-6 mx-auto">
+            <div class="row">
+                <img class="js-tilt mx-auto" src="/img/add-friend.svg" style="width:65%; margin-top:auto;">
+            </div>
+        </div>       
     </div>
 </div>
-<script >
+{{>footer}}
+<script>
     function isNumber(evt) {
-           evt = (evt) ? evt : window.event;
-           var charCode = (evt.which) ? evt.which : evt.keyCode;
-           if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-               return false;
-           }
-           return true;
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
         }
+        return true;
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="/vendor/tilt/tilt.jquery.min.js"></script>
+<script>
+    $('.js-tilt').tilt({
+        scale: 1.15
+    })
 </script>
