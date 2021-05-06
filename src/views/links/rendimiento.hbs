@@ -1,0 +1,227 @@
+<body>
+
+    <div class="container-sm">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a class='btn btn-success btn-lg' href='terminados'> Agregar Pendientes </a> 
+        </div>
+        <div class="row justify-content-md-center" id="chartInd">
+        </div>
+        <div class="row justify-content-md-center" id="chartEq">
+        </div>
+        <div class="row justify-content-md-center" id="table">
+          {{#if listPen.length}}
+            <table class="table table-hover table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>Clase</th>
+                  <th>Pendiente</th>
+                  <th>Descripcion</th>
+                  <th>Fecha entrega</th>
+                  <th>Entregado</th>
+                </tr>
+              </thead>
+            {{#each listPen}}
+              <tr>
+                <td>{{clase}}</td>
+                <td>{{nombre_pendiente}}</td>
+                <td>{{desc_pendiente}}</td>
+                <td>{{fecha_entrega}}</td>
+                <td>{{estado_pendiente}}</td>
+              </tr>
+            {{/each}}
+            </table>
+          {{/if}}
+        </div>
+        
+    </div>
+
+    {{>footer}}
+    
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        let fechasIndividual = [];
+        let cantidadIndividual = [];
+        let cantidadNoIndividual = [];
+        {{#each datesInd}}
+            fechasIndividual.push('{{this}}');
+        {{/each}}
+        {{#each cantidadInd}}
+            cantidadIndividual.push({{this}});
+        {{/each}}
+        {{#each cantidadNoInd}}
+            cantidadNoIndividual.push({{this}});
+        {{/each}}
+
+        if (fechasIndividual.length > 0) {
+          let maxe = Math.max.apply(null, cantidadIndividual) > Math.max.apply(null, cantidadNoIndividual) ? Math.max.apply(null, cantidadIndividual) : Math.max.apply(null, cantidadNoIndividual);
+          while (maxe % 2 != 0) { maxe++;}
+          var options = {
+            series: [
+            {
+              name: "Entregado",
+              data: cantidadIndividual
+            },
+            {
+              name: "No entregado",
+              data: cantidadNoIndividual
+            }
+          ],
+            chart: {
+            height: 350,
+            type: 'line',
+            dropShadow: {
+              enabled: true,
+              color: '#000',
+              top: 18,
+              left: 7,
+              blur: 10,
+              opacity: 0.2
+            },
+            toolbar: {
+              show: false
+            }
+          },
+          colors: ['#38C962', '#545454'],
+          dataLabels: {
+            enabled: true,
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          title: {
+            text: 'Pendientes individuales por fecha',
+            align: 'left'
+          },
+          grid: {
+            borderColor: '#e7e7e7',
+            row: {
+              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+              opacity: 0.5
+            },
+          },
+          markers: {
+            size: 1
+          },
+          xaxis: {
+            categories: fechasIndividual,
+            title: {
+              text: 'Fecha'
+            }
+          },
+          yaxis: {
+            title: {
+              text: 'Cantidad'
+            },
+            min: 0,
+            max: maxe
+          },
+          legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+          }
+          };
+
+        
+          var chart = new ApexCharts(document.querySelector("#chartInd"), options);
+          chart.render();
+        } else {
+          document.getElementById('chartInd').innerHTML = "<h4><span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente individuales</span></h4>";
+        }
+      
+        let fechasEquipo = [];
+        let cantidadEquipo = [];
+        let cantidadNoEquipo = [];
+        {{#each datesEq}}
+            fechasEquipo.push('{{this}}');
+        {{/each}}
+        {{#each cantidadEq}}
+            cantidadEquipo.push({{this}});
+        {{/each}}
+        {{#each cantidadNoEq}}
+            cantidadNoEquipo.push({{this}});
+        {{/each}}
+
+        if (fechasEquipo.length > 0) {
+          
+          let maxee = Math.max.apply(null, cantidadEquipo) > Math.max.apply(null, cantidadNoEquipo) ? Math.max.apply(null, cantidadEquipo) : Math.max.apply(null, cantidadNoEquipo);
+          while (maxee % 2 != 0) { maxee++;}
+          var optionse = {
+            series: [
+            {
+              name: "Entregado",
+              data: cantidadEquipo
+            },
+            {
+              name: "No entregado",
+              data: cantidadNoEquipo
+            }
+          ],
+            chart: {
+            height: 350,
+            type: 'line',
+            dropShadow: {
+              enabled: true,
+              color: '#000',
+              top: 18,
+              left: 7,
+              blur: 10,
+              opacity: 0.2
+            },
+            toolbar: {
+              show: false
+            }
+          },
+          colors: ['#6D3DCC', '#545454'],
+          dataLabels: {
+            enabled: true,
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          title: {
+            text: 'Pendientes en equipo por fecha',
+            align: 'left'
+          },
+          grid: {
+            borderColor: '#e7e7e7',
+            row: {
+              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+              opacity: 0.5
+            },
+          },
+          markers: {
+            size: 1
+          },
+          xaxis: {
+            categories: fechasEquipo,
+            title: {
+              text: 'Fecha'
+            }
+          },
+          yaxis: {
+            title: {
+              text: 'Cantidad'
+            },
+            min: 0,
+            max: maxee
+          },
+          legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+          }
+          };
+
+          var charte = new ApexCharts(document.querySelector("#chartEq"), optionse);
+          charte.render();
+        } else {
+          document.getElementById('chartEq').innerHTML = "<h4> <span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente en equipo</span></h4>";
+        }
+      
+    </script>
+</body>

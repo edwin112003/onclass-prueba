@@ -957,6 +957,103 @@ router.post('/eliminar_cuenta', isLoggedIn, async(req,res)=>{
     req.logOut();
     res.redirect('/links/Horario');
 });
+
+//rutas de rendimiento
+router.get('/rendimiento', isLoggedIn, async(req, res)=>{
+
+    const pendientesEntregadosIndividual = await pool.query('call Get15Pendientes(?, ?, ?)', [req.app.locals.user.id_usuario, 1, 1]);
+    const pendientesNoEntregadosIndividual = await pool.query('call Get15Pendientes(?, ?, ?)', [req.app.locals.user.id_usuario, 0, 1]);
+    const pendientesEntregadosEquipo = await pool.query('call Get15Pendientes(?, ?, ?)', [req.app.locals.user.id_usuario, 1, 2]);
+    const pendientesNoEntregadosEquipo = await pool.query('call Get15Pendientes(?, ?, ?)', [req.app.locals.user.id_usuario, 0, 2]);
+    let listaPendientes = await pool.query('call GetAllPendientes (?)', req.app.locals.user.id_usuario);
+
+    //pendientes individual
+    let fechasIndividual = [];
+    let cantidadIndividual = [];
+    let cantidadNoIndividual = [];
+
+    let individualEntregados = {}; 
+    let individualNoEntregados = {}; 
+
+    for (let i = 0; i < pendientesEntregadosIndividual[0].length; i++) {
+        let date = new Date(pendientesEntregadosIndividual[0][i].fecha_entrega);
+        fechasIndividual.push(String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()));
+        individualEntregados[String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear())] = pendientesEntregadosIndividual[0][i].cantidad;
+    }
+    for (let i = 0; i < pendientesNoEntregadosIndividual[0].length; i++) {
+        let date = new Date(pendientesNoEntregadosIndividual[0][i].fecha_entrega);
+        fechasIndividual.push(String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()));
+        individualNoEntregados[String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear())] = pendientesNoEntregadosIndividual[0][i].cantidad;
+    }
+
+    fechasIndividual = fechasIndividual.filter((value, index, self) => {return self.indexOf(value) === index});
+    fechasIndividual = fechasIndividual.sort((a,b) => {return new Date(b.date) - new Date(a.date)});
+
+    for (let i = 0; i < fechasIndividual.length; i++) {
+        if (individualEntregados[String(fechasIndividual[i])] == undefined) {
+            cantidadIndividual.push(0);
+        } else {
+            cantidadIndividual.push(individualEntregados[String(fechasIndividual[i])]);
+        }
+
+        if (individualNoEntregados[String(fechasIndividual[i])] == undefined) {
+            cantidadNoIndividual.push(0);
+        } else {
+            cantidadNoIndividual.push(individualNoEntregados[String(fechasIndividual[i])]);
+        }
+    }
+
+    //pendientes en equipo
+    let fechasEquipo = [];
+    let cantidadEquipo = [];
+    let cantidadNoEquipo = [];
+
+    let equipoEntregados = {}; 
+    let equipoNoEntregados = {}; 
+
+    for (let i = 0; i < pendientesEntregadosEquipo[0].length; i++) {
+        let date = new Date(pendientesEntregadosEquipo[0][i].fecha_entrega);
+        fechasEquipo.push(String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()));
+        equipoEntregados[String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear())] = pendientesEntregadosEquipo[0][i].cantidad;
+    }
+    for (let i = 0; i < pendientesNoEntregadosEquipo[0].length; i++) {
+        let date = new Date(pendientesNoEntregadosEquipo[0][i].fecha_entrega);
+        fechasEquipo.push(String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()));
+        equipoNoEntregados[String(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear())] = pendientesNoEntregadosEquipo[0][i].cantidad;
+    }
+
+    fechasEquipo = fechasEquipo.filter((value, index, self) => {return self.indexOf(value) === index});
+    fechasEquipo = fechasEquipo.sort((a,b) => {return new Date(b.date) - new Date(a.date)});
+
+    for (let i = 0; i < fechasEquipo.length; i++) {
+        if (equipoEntregados[String(fechasEquipo[i])] == undefined) {
+            cantidadEquipo.push(0);
+        } else {
+            cantidadEquipo.push(equipoEntregados[String(fechasEquipo[i])]);
+        }
+
+        if (equipoNoEntregados[String(fechasEquipo[i])] == undefined) {
+            cantidadNoEquipo.push(0);
+        } else {
+            cantidadNoEquipo.push(equipoNoEntregados[String(fechasEquipo[i])]);
+        }
+    }
+
+    listaPendientes = listaPendientes[0];
+    for (let i = 0; i < listaPendientes.length; i++) {
+        if ( listaPendientes[i].estado_pendiente == 1 ) {
+            listaPendientes[i].estado_pendiente = "✓";
+        } else {
+            listaPendientes[i].estado_pendiente = "x";
+        }
+    }
+
+    res.render('links/rendimiento', {datesInd: fechasIndividual, cantidadInd: cantidadIndividual, cantidadNoInd: cantidadNoIndividual,
+                                    datesEq: fechasEquipo, cantidadEq: cantidadEquipo, cantidadNoEq: cantidadNoEquipo,
+                                    listPen: listaPendientes});
+
+});
+
 router.get('/terminos_condiciones', (req,res)=>{
     res.render('links/terminos_condiciones', {layout:'login'});
 });
