@@ -1,102 +1,122 @@
-  <link rel="stylesheet" href="/css_index/estilos.css">
-  <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js" integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
+    integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+    integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
-    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-    <script src="/js/llaves.js"></script>
-    <script src="/js/notas.js" nota="{{user.nota}}" clase="{{clase.nombre_clase}}"></script>
-    
-    {{>navigation}}
-    
-      <div class="d-flex justify-content-center" >
-        <div class="p-3">
-                <p><i class="font-monospace"></i>Usuarios conectados:</p>
-                <ul id="users" class="list-group"></ul><br><br>
-                <a href="/links/chat_menu" class="btn btn-danger">Leave Room</a>
-              </div>
-              
-        <div class="p-3 col-md-5">
-          <div style="background-color: #848C8B;" class="border">
-            <h4 class="font-monospace fs-1 text-center">CHAT</h4>
-            
-            <h5><i class="fas fa-comments"></i></h5>
-            <h5 id="room-name" hidden="hidden"></h5>
-          </div>
-          <div>
-            <div >              
-              <div class="chat-messages" style="background-color:azure;"></div>
-            </div>
-            <div>
-            </div>
-            <div class="chat-form-container d-flex flex-row justify-content-center p-3" style="background-color: #848C8B;">
-              
-              <form id="chat-form" class="d-flex flex-row ">
-                <input
-                  class="form-control"
-                  id="msg"
-                  type="text"
-                  placeholder="Enter Message"
-                  required
-                  autocomplete="off"
-                />
-          <button class="btn" onclick="Submit()"><i class="fas fa-paper-plane"></i> Send</button>
-        </form>
-      </div>
-          </div>
-        </div>
-      </div>
-      
+  <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+  <script src="/js/llaves.js"></script>
+  <script src="/js/notas.js" nota="{{user.nota}}" clase="{{clase.nombre_clase}}"></script>
 
-    <br>
-      <center><div class="d-flex flex-column justify-content-center" style="width: 60%;" >
-                <h5 class="text-center">Tomar notas</h5><br>
-                <div id="nota"></div>
-                <div class="d-flex justify-content-around mt-4">
-                    <button class="btn btn-success"  onclick="Enviar()">Enviar</button>
-                    <button class="btn btn-danger"  onclick="EnviarFalso()">Enviar fake</button>
+  {{>navigation}}
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-7">
+        <div class="row">
+          <div class="col-12">
+            <div class="clearfix">
+              <div>
+                <h4 class="text-center"><i class="fas fa-comments mr-2"></i>CHAT</h4>
+                <h5 id="room-name" hidden="hidden"></h5>
+                <div class="shadow-lg p-3 mb-5 bg-white rounded mr-5"
+                  style="width:100%; height:480px; overflow: scroll;">
+                  <div class="chat-messages"></div>
                 </div>
-            </div></center>
-
-    
-    <!--- Modal-->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content" style="background-color:  rgb(12, 53, 77)">
-            <div class="modal-header" style="border-bottom: 0px solid rgb(4, 36, 56)">
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <p style="color:  #edf4fd; font-size: 30px;">El Mensaje: </p>
-                <p style="color:  #edf4fd; font-size: 30px;" id="score"></p>
-            </div>
-            <div class="modal-footer" style="border-top: 0px solid rgb(4, 36, 56)">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #189078">Cerrar</button>
+              </div>
             </div>
           </div>
         </div>
+        <div class="row bg-muted" style="margin-top: -2rem;"> 
+          <div class="col-12">
+            <form id="chat-form" class="d-flex flex-row ">
+              <input class="form-control" id="msg" type="text" placeholder="Enter Message" required
+                autocomplete="off" />
+              <button class="btn btn-success" onclick="Submit()"><i class="fas fa-paper-plane"> </i></button>
+            </form>
+          </div>
+        </div>
       </div>
+      <div class="col-4">
+        <div class="mt-5 text-center">
+          <p class="mt-5">Usuarios conectados:</p>
+          <ul class="ml-5 my-2">
+            <li type="disc" style="color:rgb(15, 255, 87);">
+              <span id="users" class="font-weight-bolder text-body"></span>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="float-right">
+            <a href="/links/chat_menu" class="btn btn-danger">Salir</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <br>
+  <center>
+    <div class="d-flex flex-column justify-content-center" style="width: 60%;">
+      <h5 class="text-center">Tomar notas</h5><br>
+      <div id="nota"></div>
+      <div class="d-flex justify-content-around mt-4">
+        <button class="btn btn-success" onclick="Enviar()">Enviar</button>
+        <button class="btn btn-danger" onclick="EnviarFalso()">Enviar fake</button>
+      </div>
+    </div>
+  </center>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
-      integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
-      crossorigin="anonymous"
-    ></script>
-    
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+
+  <!--- Modal-->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content" style="background-color:  rgb(12, 53, 77)">
+        <div class="modal-header" style="border-bottom: 0px solid rgb(4, 36, 56)">
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <p style="color:  #edf4fd; font-size: 30px;">El Mensaje: </p>
+          <p style="color:  #edf4fd; font-size: 30px;" id="score"></p>
+        </div>
+        <div class="modal-footer" style="border-top: 0px solid rgb(4, 36, 56)">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            style="background-color: #189078">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+    integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
     crossorigin="anonymous"></script>
 
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js_chat/main.js" username = '{{user.nombre_usuario}} ' room = '{{newlink}}' id_usuario = '{{contacto}}' id_remitente = '{{user.id_usuario}}'></script>
-    <script src="/js/reloj.js"></script>
-    {{>footer}}
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js_chat/main.js" username='{{user.nombre_usuario}} ' room='{{newlink}}' id_usuario='{{contacto}}'
+    id_remitente='{{user.id_usuario}}'></script>
+  <script src="/js/reloj.js"></script>
+  {{>footer}}
 
-  </body>
+</body>

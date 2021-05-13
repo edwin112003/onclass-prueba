@@ -1,8 +1,9 @@
 <body>
 
-    <div class="container-sm">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <a class='btn btn-success btn-lg' href='terminados'> Agregar Pendientes </a> 
+    <div class="container">
+
+      <h3 class=" my-3 text-center">Mi Rendimiento <i class="fas fa-chart-line ml-2"></i></h3>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">          
         </div>
         <div class="row justify-content-md-center" id="chartInd">
         </div>
@@ -10,11 +11,12 @@
         </div>
         <div class="row justify-content-md-center" id="table">
           {{#if listPen.length}}
-            <table class="table table-hover table-striped">
-              <thead class="table-dark">
+          <br>
+            <table class="table table-hover table-striped table-responsive">
+              <thead class="thead-dark">
                 <tr>
                   <th>Clase</th>
-                  <th>Pendiente</th>
+                  <th class="text-center">Pendiente</th>
                   <th>Descripcion</th>
                   <th>Fecha entrega</th>
                   <th>Entregado</th>
@@ -23,10 +25,10 @@
             {{#each listPen}}
               <tr>
                 <td>{{clase}}</td>
-                <td>{{nombre_pendiente}}</td>
+                <td class="text-center">{{nombre_pendiente}}</td>
                 <td>{{desc_pendiente}}</td>
-                <td>{{fecha_entrega}}</td>
-                <td>{{estado_pendiente}}</td>
+                <td class="text-center">{{fecha_entrega}}</td>
+                <td class="text-center">{{estado_pendiente}}</td>
               </tr>
             {{/each}}
             </table>
@@ -220,7 +222,7 @@
           var charte = new ApexCharts(document.querySelector("#chartEq"), optionse);
           charte.render();
         } else {
-          document.getElementById('chartEq').innerHTML = "<h4> <span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente en equipo</span></h4>";
+          document.getElementById('chartEq').innerHTML = "<h4> <span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente en equipo</span> <a class='btn btn-success btn-lg' href='pendientes'> Agregar Pendientes </a>  </h4>";
         }
       
     </script>

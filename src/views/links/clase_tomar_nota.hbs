@@ -1,190 +1,157 @@
-<!-- CSS only -->
-        <link rel="stylesheet" href="/css_index/estilos.css">
 <body onbeforeunload="saveNota()">
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+    integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 
-    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
-    <script src="/js/notas.js" clase="{{clase.nombre_clase}}"></script>
-    {{#if message}}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mx-auto">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{message}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+  <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+  <script src="/js/notas.js" clase="{{clase.nombre_clase}}"></script>
+  {{#if message}}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mx-auto">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
       </div>
-    {{/if}}
-	{{#if success}}
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 mx-auto">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-              {{success}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    {{/if}}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <!--<img src="/img/OnClass.png" width="130px" height="70px">-->
-          <a class="navbar-brand" href="/links/material_clase"><svg width="130px" height="70px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     width="1920px" height="1080px" viewBox="0 0 1920 1080" enable-background="new 0 0 1920 1080" xml:space="preserve">
-<path fill="none" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" d="M719.483,351.776
-    c-76.422,64.204-125,160.477-125,268.099c0,193.301,156.7,350,350,350c193.3,0,350-156.699,350-350
-    c0-107.622-48.578-203.895-124.999-268.099"/>
-<line fill="#079C39" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" x1="944.483" y1="502.59" x2="944.483" y2="127.591"/>
-</svg></a>
-              <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-                  <li class="nav-item ">
-                    <a class="nav-link" href="/links/Horario">Horario</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/grupo">Grupos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/pendientes">Pendientes individuales</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/links/chat_menu">Mensajes</a>
-                  </li>
-              </ul>              
-<ul class="navbar-nav mr-auto mt-2 mt-xl-0">
-  <li class="nav-item">
-    <div class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="diaSemana">Martes</div>
-    <div class="p-1" id="dia"> 27</div>
-    <div class="p-1"> de </div>
-    <div class="p-1" id="mes">Octubre </div>
-    <div class="p-1"> del</div>
-    <div class="p-1" id="year">2015</div>
-  </div>
-  </li>
-  <li class="nav-item">
-    <div  class="d-flex flex-row bd-highlight mb-3">
-    <div class="p-1" id="horas">11</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="minutos">48</div>
-    <div class="p-1" >:</div>
-    <div class="p-1" id="segundos">12</div>
-    <div class="p-1" id="ampm">AM</div>    
     </div>
-  </li>
-</ul>
+  </div>
+  {{/if}}
+  {{#if success}}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mx-auto">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{success}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+  {{>navigation}}
+  <!--Primer menu-->
+  <div class="d-flex justify-content-around mt-4">
+    <!--Menu izquierda-->
+    <div class="p-3">
 
-	
-              <a href="/links/perfil" style="color: black; text-decoration: none;"> {{user.nombre_usuario}}
-                <svg width="2.5em" height="2.5em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                </svg></a>
-              <a href="/links/logout" class="nav-item">Cerrar sesion</a>
-         
-        </div>
-      </nav>
-      <!--Primer menu-->
-     <div class="d-flex justify-content-around mt-4">
-          <!--Menu izquierda-->
-          <div class="p-3">
-            
-            <div class="border p-3 d-flex justify-content-around" style="background-color: #ABAAA7;" >
-                Clase: {{clase.nombre_clase}}
-                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-            </div>
-        
-        <a href="material_clase" style="color: black;">
-            <div class="border p-3 d-flex justify-content-around" style="background-color:#23EB5F;">
-                Materiales(lista de notas)
-                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-journals" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2z"/>
-                    <path d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2zM1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                </svg>
-            </div>
-        </a>
-        <a href="clase_tomar_nota" style="color: black;">
-            <div class="border p-3 d-flex justify-content-around" style="background-color:#D9BC2E;">
-                Tomar nota
-                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                </svg>
-            </div>
-        </a>
-        <a href="clase_pendiente" style="color: black;">
-            <div class="border p-3 d-flex justify-content-around" style="background-color:#E63E25;">
-                Pendientes de clase
-                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                    <path fill-rule="evenodd" d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z"/>
-                </svg>
-            </div>
-        </a>
-        <a href="clase_resto_dia" style="color: black;">
-            <div class="border p-3 d-flex justify-content-around" style="background-color:#6B26F0;">
-                Resto del dia
-                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-calendar-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-                    <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                </svg>
-            </div>
-        </a>
-       
-        </div>
-            <!--Menu derecha-->
-            <div class="d-flex flex-column justify-content-center" style="width: 60%;">
-                <h5 class="text-center">Tomar notas</h5><br>
-                <div id="nota"></div>
-                <div class="d-flex justify-content-around mt-4">
-                    <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Guardar cambios</button>
-                </div>
-            </div><br>
-        </div>
-      <!-- Button trigger modal -->
+      <div class="border p-3 d-flex justify-content-around" style="background-color: #ABAAA7;">
+        Clase: {{clase.nombre_clase}}
+        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-list" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+        </svg>
+      </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Guardar cambios</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" placeholder="Nombre del documento" class="form-control" id="nombre">
-                <input type="hidden" value="{{clase.nombre_clase}}" id="clase">
-            </div>
-            <div class="modal-footer">
-            
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="guardar(true)">Descargar</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="guardar(false)">Guardar</button>
-            </div>
-            </div>
+      <a href="material_clase" style="color: black;">
+        <div class="border p-3 d-flex justify-content-around" style="background-color:#23EB5F;">
+          Materiales(lista de notas)
+          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-journals" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2z" />
+            <path
+              d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2zM1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+          </svg>
         </div>
+      </a>
+      <a href="clase_tomar_nota" style="color: black;">
+        <div class="border p-3 d-flex justify-content-around" style="background-color:#D9BC2E;">
+          Tomar nota
+          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+            <path fill-rule="evenodd"
+              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+          </svg>
         </div>
-        
-        {{>footer}}
-        
-    <script src="/js/reloj.js"></script>
+      </a>
+      <a href="clase_pendiente" style="color: black;">
+        <div class="border p-3 d-flex justify-content-around" style="background-color:#E63E25;">
+          Pendientes de clase
+          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+            <path fill-rule="evenodd"
+              d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z" />
+          </svg>
+        </div>
+      </a>
+      <a href="clase_resto_dia" style="color: black;">
+        <div class="border p-3 d-flex justify-content-around" style="background-color:#6B26F0;">
+          Resto del dia
+          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-calendar-check" fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+              d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+            <path fill-rule="evenodd"
+              d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+          </svg>
+        </div>
+      </a>
+
+    </div>
+    <!--Menu derecha-->
+    <div class="d-flex flex-column justify-content-center" style="width: 60%;">
+      <h5 class="text-center">Tomar notas</h5><br>
+      <div id="nota"></div>
+      <div class="d-flex justify-content-around mt-4">
+        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Guardar cambios <i class="fas fa-save ml-2"></i></button>
+      </div>
+    </div><br>
+  </div>
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Guardar cambios <i class="fas fa-save ml-2"></i></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" placeholder="Nombre del documento" class="form-control" id="nombre">
+          <input type="hidden" value="{{clase.nombre_clase}}" id="clase">
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            onclick="guardar(true)">Descargar</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="guardar(false)">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  {{>footer}}
+
+  <script src="/js/reloj.js"></script>
 </body>
