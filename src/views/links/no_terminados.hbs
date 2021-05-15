@@ -15,7 +15,7 @@
     integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
   <!--jquery-ui.css -->
-    <link rel="stylesheet" href="/css_complements/style.css">
+  <link rel="stylesheet" href="/css_complements/style.css">
 </head>
 
 <body>
@@ -27,7 +27,7 @@
   {{>navigation}}
   <nav style="margin-top: -1.6rem;" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <div style="margin-bottom: -0.5rem; margin-top: -0.5rem;" class="d-flex justify-content-center">
-      <ul class="navbar-nav mr-auto mt-2 mt-xl-0">        
+      <ul class="navbar-nav mr-auto mt-2 mt-xl-0">
         <li class="nav-item mr-2">
           <a class="nav-link" href="/links/terminados"> <i class="fas fa-calendar-check mr-1"></i> Terminados</a>
         </li>
@@ -45,11 +45,11 @@
   <div class="container" style="margin-top: 4.8rem;">
     <div class="row">
       <div class="col-6">
-        <h1 style="margin-top: -2.1rem; margin-left:-2.3rem;">Pendientes Por Completar <span style="color: rgb(255, 251, 6);"><i
-          class="fas fa-exclamation-triangle ml-2"></i></span> </h1>
-    <hr class="mt-2 mb-1" style="margin-left:-3rem;">
+        <h1 style="margin-top: -2.1rem; margin-left:-2.3rem;">Pendientes Por Completar <span
+            style="color: rgb(255, 251, 6);"><i class="fas fa-exclamation-triangle ml-2"></i></span> </h1>
+        <hr class="mt-2 mb-1" style="margin-left:-3rem;">
       </div>
-    </div>    
+    </div>
   </div>
   <div class="container p-4">
     {{#if message}}
@@ -82,70 +82,69 @@
     {{/if}}
     <div class="row rows-col-2">
       {{#each pendientes}}
-      <div class="col-6 my-3">          
-          <div class="card shadow bg-body rounded" style="height: 100%;">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-5 border-right" style="margin:auto auto;">
-                  <div class="row">
-                    <div class="col-12">
-                      <h4>{{nombre_pendiente}}</h4>
-                    </div>
-                    <hr class="mx-auto my-1" style="width: 80%;">
-                    <div class="col-12">
-                      <div class="row row-cols-3">
-                        <div class="col-6">
-                          <p style="font-size: 0.9rem;">
-                            {{clase}}
-                          </p>
-                        </div>
-                        <div class="col-6">
-                          <p style="font-size: 0.8rem;">
-                            {{fecha_entrega}}
-                          </p>
-                        </div>
+      <div class="col-6 my-3">
+        <div class="card shadow bg-body rounded" style="height: 100%;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-5 border-right" style="margin:auto auto;">
+                <div class="row">
+                  <div class="col-12">
+                    <h4>{{nombre_pendiente}}</h4>
+                  </div>
+                  <hr class="mx-auto my-1" style="width: 80%;">
+                  <div class="col-12">
+                    <div class="row row-cols-3">
+                      <div class="col-6">
+                        <p style="font-size: 0.9rem;">
+                          {{clase}}
+                        </p>
+                      </div>
+                      <div class="col-6">
+                        <p style="font-size: 0.8rem;">
+                          {{fecha_entrega}}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-7">
-                  <div class="row">
-                    <div class="col-12">
-                      <p class="text-muted text-justify">{{desc_pendiente}}</p>
-                    </div>
-                    <div class="col-12">
-                      <div class="row row-cols-3">
-                        <div class="col-6">
-                          <p class="font-italic">{{nombre_tipo}}</p>
-                        </div>
-                        <div class="col-2">
-                          <form action="" method="POST">
-                            <input type="hidden" value="{{id_pendiente}}" name="id">
-                            {{!-- 
-                            pendiente
-                            <button type="submit" class="btn btn-sm btn-danger">
-                              <i class="fas fa-trash"></i>
-                            </button> 
-                            --}}
-                          </form>
-                        </div>
-                        <div class="col-2" style="margin-left: -0.8rem;">
-                          <form action="/links/editar_pendiente" method="POST">
-                            <input type="hidden" value="{{id_pendiente}}" name="id">
-                            <button type="submit" class="btn btn-sm btn-primary">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </form>
-                        </div>
-                        <div class="col-2" style="margin-left: -0.5rem;">
-                          <form action="/links/cambiar_estado_a_t" method="POST">
-                            <input type="hidden" name="id_estado" value="{{id_pendiente}}">
-                            <button type="submit" class="btn btn-sm btn-success" title="Marcar como terminado"
-                              data-toggle="popover" data-trigger="hover">
-                              <i class="fas fa-check-circle"></i>
-                            </button>
-                          </form>
-                        </div>
+              </div>
+              <div class="col-7">
+                <div class="row">
+                  <div class="col-12">
+                    <p class="text-muted text-justify">{{desc_pendiente}}</p>
+                  </div>
+                  <div class="col-12">
+                    <div class="row row-cols-3">
+                      <div class="col-6">
+                        <p class="font-italic">{{nombre_tipo}}</p>
+                      </div>
+                      <div class="col-2">
+                        <form action="" method="POST">
+                          <input type="hidden" value="{{id_pendiente}}" name="id">
+                          {{!--
+                          pendiente
+                          <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                          --}}
+                        </form>
+                      </div>
+                      <div class="col-2" style="margin-left: -0.8rem;">
+                        <form action="/links/editar_pendiente" method="POST">
+                          <input type="hidden" value="{{id_pendiente}}" name="id">
+                          <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </form>
+                      </div>
+                      <div class="col-2" style="margin-left: -0.5rem;">
+                        <form action="/links/cambiar_estado_a_t" method="POST">
+                          <input type="hidden" name="id_estado" value="{{id_pendiente}}">
+                          <button type="submit" class="btn btn-sm btn-success" title="Marcar como terminado"
+                            data-toggle="popover" data-trigger="hover">
+                            <i class="fas fa-check-circle"></i>
+                          </button>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -154,24 +153,26 @@
             </div>
           </div>
         </div>
-        {{else}}
-        <div class="col-10 mx-auto">
-          <div class="card mx-auto shadow p-3 mb-5 bg-white rounded">
-            <div class="card-body">
-              <div class="text-center">
-                <h1>No tienes pendientes por completar</h1>
-                <hr class="my-3">
-                <img class="my-3 js-tilt" src="/img/team.svg" style="width: 45%;">
-              </div>
-              <a href="/links/pendientes" class="mt-3 btn btn-success btn-block btn-lg"><i class="fas fa-plus mr-2"></i> Crea
-                un pendiente ahora
-              </a>
+      </div>
+      {{else}}
+      <div class="col-10 mx-auto">
+        <div class="card mx-auto shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <div class="text-center">
+              <h1>No tienes pendientes por completar</h1>
+              <hr class="my-3">
+              <img class="my-3 js-tilt" src="/img/team.svg" style="width: 45%;">
             </div>
+            <a href="/links/pendientes" class="mt-3 btn btn-success btn-block btn-lg"><i class="fas fa-plus mr-2"></i>
+              Crea
+              un pendiente ahora
+            </a>
           </div>
         </div>
+      </div>
       {{/each}}
-      
-    </div>    
+
+    </div>
   </div>
   {{>footer}}
   <script src="/js/reloj.js"></script>

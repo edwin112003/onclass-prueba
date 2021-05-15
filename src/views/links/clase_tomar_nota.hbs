@@ -1,3 +1,11 @@
+<style>
+    body {
+        background-image: url('/img/bkg.svg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+    }
+</style>
 <body onbeforeunload="saveNota()">
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
@@ -51,80 +59,29 @@
   </div>
   {{/if}}
   {{>navigation}}
-  <!--Primer menu-->
-  <div class="d-flex justify-content-around mt-4">
-    <!--Menu izquierda-->
-    <div class="p-3">
-
-      <div class="border p-3 d-flex justify-content-around" style="background-color: #ABAAA7;">
-        Clase: {{clase.nombre_clase}}
-        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-list" fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-        </svg>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-3 sticky-top">
+        <div>
+          {{>menu}}
+        </div>
       </div>
-
-      <a href="material_clase" style="color: black;">
-        <div class="border p-3 d-flex justify-content-around" style="background-color:#23EB5F;">
-          Materiales(lista de notas)
-          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-journals" fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M3 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2h1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1H1a2 2 0 0 1 2-2z" />
-            <path
-              d="M5 0h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1H3a2 2 0 0 1 2-2zM1 6v-.5a.5.5 0 0 1 1 0V6h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V9h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
-          </svg>
+      <div class="col-9">
+        <h4 class="text-center">Tomar notas de clase</h4>
+        <hr class="mb-4">
+        <div class="container mx-auto shadow-sm text-center" style="background-color: rgb(223, 223, 223);">
+          <div class="py-3">
+            <br>
+            <div id="nota"></div>
+            <div class="d-flex justify-content-around mt-4">
+              <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Guardar cambios <i
+                  class="fas fa-save ml-2"></i></button>
+            </div>
+          </div>
         </div>
-      </a>
-      <a href="clase_tomar_nota" style="color: black;">
-        <div class="border p-3 d-flex justify-content-around" style="background-color:#D9BC2E;">
-          Tomar nota
-          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-            <path fill-rule="evenodd"
-              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-          </svg>
-        </div>
-      </a>
-      <a href="clase_pendiente" style="color: black;">
-        <div class="border p-3 d-flex justify-content-around" style="background-color:#E63E25;">
-          Pendientes de clase
-          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check2-square" fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-              d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-            <path fill-rule="evenodd"
-              d="M1.5 13A1.5 1.5 0 0 0 3 14.5h10a1.5 1.5 0 0 0 1.5-1.5V8a.5.5 0 0 0-1 0v5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5h8a.5.5 0 0 0 0-1H3A1.5 1.5 0 0 0 1.5 3v10z" />
-          </svg>
-        </div>
-      </a>
-      <a href="clase_resto_dia" style="color: black;">
-        <div class="border p-3 d-flex justify-content-around" style="background-color:#6B26F0;">
-          Resto del dia
-          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-calendar-check" fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-              d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
-            <path fill-rule="evenodd"
-              d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
-          </svg>
-        </div>
-      </a>
-
+      </div>
     </div>
-    <!--Menu derecha-->
-    <div class="d-flex flex-column justify-content-center" style="width: 60%;">
-      <h5 class="text-center">Tomar notas</h5><br>
-      <div id="nota"></div>
-      <div class="d-flex justify-content-around mt-4">
-        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Guardar cambios <i class="fas fa-save ml-2"></i></button>
-      </div>
-    </div><br>
   </div>
-  <!-- Button trigger modal -->
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
@@ -142,7 +99,6 @@
           <input type="hidden" value="{{clase.nombre_clase}}" id="clase">
         </div>
         <div class="modal-footer">
-
           <button type="button" class="btn btn-secondary" data-dismiss="modal"
             onclick="guardar(true)">Descargar</button>
           <button type="button" class="btn btn-success" data-dismiss="modal" onclick="guardar(false)">Guardar</button>
@@ -151,7 +107,10 @@
     </div>
   </div>
   <br>
+  <br>
+
   {{>footer}}
 
   <script src="/js/reloj.js"></script>
+  
 </body>
