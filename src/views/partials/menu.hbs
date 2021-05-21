@@ -5,8 +5,8 @@
     <hr class="mb-4">
     <div class="list-group list-group-flush">
         <form id="material_clase_form" action="/links/material_clase" method="post">
-    <input type="hidden" name="hora" id="horas_material" value="">
-    <input type="hidden" name="dia" id="dia_material">
+    <input type="hidden" name="hora" id="horas_material_n" value="">
+    <input type="hidden" name="dia" id="dia_material_n">
         <a class="list-group-item list-group-item-action" type="submit" href="#"  onclick="return hora()">
             <i class="fas fa-clipboard-list mr-2"></i>Mis Notas</h5>
         </a>    
@@ -18,7 +18,7 @@
         <form id="nota_clase_form" action="/links/clase_tomar_nota" method="post">
     <input type="hidden" name="hora_n" id="horas_nota" value="">
     <input type="hidden" name="dia_n" id="dia_nota">
-        <a class="list-group-item list-group-item-action" type="submit" href="#"  onclick="return nota()">
+        <a class="list-group-item list-group-item-action" type="submit" href="#"  onclick="return nota_n()">
             <i class="fas fa-pen-square mr-2"></i>Tomar nota</h5>
         </a>
         </form>

@@ -439,7 +439,6 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
     res.render('links/editar_pendiente',{pendiente: pendiente[0],fecha_muestra,fecha_valor, clases: clase[0]});
     
 });
-router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{});
 router.post('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     try{   
         const {hora_n, dia_n} = req.body; 

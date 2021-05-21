@@ -74,7 +74,7 @@ function hora(){
 	document.getElementById("material_clase_form").submit();
 }
 
-function nota(){
+function nota_n(){
 	fecha = new Date();
 	document.getElementById("horas_nota").value=fecha.getHours();
 	dia = fecha.getDay();
