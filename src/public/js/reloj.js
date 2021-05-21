@@ -64,3 +64,14 @@
 	actualizarHora();
 	var intervalo = setInterval(actualizarHora, 1000);
 }())
+
+function hora(){
+	var fecha = new Date()
+	let hora = fecha.getHours()
+	let dia = fecha.getDay()
+	if(dia==0) dia=7; 
+	let array = [hora, dia];
+	console.log(array)
+	fetch("/links/material_clase", {method: 'POST',headers:{'Content-Type': 'application/json'},redirect: 'follow',  body:JSON.stringify(array)});
+	console.log("llego a la hora")
+}

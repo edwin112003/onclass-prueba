@@ -204,31 +204,16 @@ router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
     res.redirect('/links/perfil'); 
 });
 
-router.get('/material_clase',isLoggedIn, async (req,res)=>{
+router.post('/material_clase',isLoggedIn, async (req,res)=>{
     try{   
-        let fecha = new Date();
-        let hora = fecha.getHours();            
-        let dia = fecha.getDay();
+        let hora = req.body[0];            
+        let dia = req.body[1];
+        console.log('hora final pichula', hora);
+        console.log('Dia final pichula', dia);
         let nombre_clase = '';
         let clase;
         let contador = 0;
-        if(dia==0) dia=7;  
         //si es entre las 0 y 6 hrs en utc el dia se resta
-        if(hora >=0 && hora <=6){
-            dia--;
-        }
-        if(dia==0){
-            dia=7;
-        }
-        //cambiar horas de utc a gmt
-        for(let j=0; j<6;j++){
-            if(hora == 0){
-                hora = 24
-            }
-            hora--;
-        }    
-        console.log('hora final', hora);
-        console.log('Dia final ', dia);
         const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
         clase_actual.pop();
         console.log('clase actual',clase_actual[0]);      
@@ -241,21 +226,26 @@ router.get('/material_clase',isLoggedIn, async (req,res)=>{
                     contador++;
                     console.log('contador despues del mas',contador);                    
                     nombre_clase = element.nombre_clase;
-                    clase = element;  
+                    clase = element; 
+                    
                 }
                 h1 ++;
-            }                     
+            }                    
         });
-        if(contador == 1){    
+        console.log("clase pich", clase);  
+        if(contador == 1){
+            console.log("antes query")    
             const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+            console.log("despues query")   
             notas.pop();
+            console.log("despues query2")  
             throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
         }else{                
             req.flash('success', 'No tienes clase ahorita, tranqui tomate un descanso crack');        
             throw res.redirect('/links/Horario');
         }   
     }catch(error){
-        console.log(error);
+        console.log("aber", error);
     }
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{
