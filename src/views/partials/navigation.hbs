@@ -5,7 +5,10 @@
   </button>
   <div style="margin-bottom: -0.5rem;" class="collapse navbar-collapse" id="navbarTogglerDemo01">
     {{!-- Logo --}}
-    <a class="navbar-brand" href="/links/material_clase"><svg width="120px" height="60px" version="1.1" id="Capa_1"
+    <form id="material_clase_form" action="/links/material_clase" method="post">
+    <input type="hidden" name="hora" id="horas_material" value="">
+    <input type="hidden" name="dia" id="dia_material">
+        <a class="navbar-brand" type="submit" href="#"  onclick="return hora()"><svg width="120px" height="60px" version="1.1" id="Capa_1"
         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1920px"
         height="1080px" viewBox="0 0 1920 1080" enable-background="new 0 0 1920 1080" xml:space="preserve">
         <path fill="none" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10" d="M719.483,351.776
@@ -14,6 +17,8 @@
         <line fill="#079C39" stroke="#00A24F" stroke-width="70" stroke-linecap="round" stroke-miterlimit="10"
           x1="944.483" y1="502.59" x2="944.483" y2="127.591" />
       </svg></a>
+    </form>
+    
     {{!-- Date/Time --}}
     <ul class="navbar-nav ml-auto mt-5 mt-xl-0">
       <li class="nav-item">

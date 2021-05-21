@@ -64,3 +64,39 @@
 	actualizarHora();
 	var intervalo = setInterval(actualizarHora, 1000);
 }())
+
+function hora(){
+	fecha = new Date();
+	document.getElementById("horas_material").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_material").value=dia;
+	document.getElementById("material_clase_form").submit();
+}
+
+function nota_n(){
+	fecha = new Date();
+	document.getElementById("horas_nota").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_nota").value=dia;
+	document.getElementById("nota_clase_form").submit();
+}
+
+function pen(){
+	fecha = new Date();
+	document.getElementById("horas_pen").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_pen").value=dia;
+	document.getElementById("pen_clase_form").submit();
+}
+
+function res(){
+	fecha = new Date();
+	document.getElementById("horas_res").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_res").value=dia;
+	document.getElementById("res_clase_form").submit();
+}

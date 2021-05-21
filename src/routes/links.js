@@ -86,35 +86,23 @@ router.post('/chat_menu', isLoggedIn, (req,res)=>{
 router.get('/registro', (req,res)=>{
     res.render('links/registro', {layout: 'login'}); 
 }); 
-router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
+router.post('/clase_resto_dia', isLoggedIn,async(req,res)=>{
     try{   
-        const fecha = new Date();
-        let hora = fecha.getHours();   
-        let dia = fecha.getDay();        
+        const {hora_r, dia_r} = req.body; 
+        const param={
+            hora_r,
+            dia_r
+        }       
+        let nombre_clase = '';
         let clase;
         let contador = 0;
-        if(dia==0) dia=7;    
-        //si es entre las 0 y 6 hrs en utc el dia se resta
-        if(hora >=0 && hora <=6){
-            dia--;
-        }
-        if(dia==0){
-            dia=7;
-        }
-        //cambiar horas de utc a gmt
-        for(let j=0; j<6;j++){
-            if(hora == 0){
-                hora = 24
-            }
-            hora--;
-        }       
-        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [param.dia_r, req.app.locals.user.id_usuario]);
         clase_actual.pop();      
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
-                if(h1 == hora){
+                if(h1 == param.hora_r){
                     contador++;                    
                     nombre_clase = element.nombre_clase;
                     clase = element; 
@@ -123,7 +111,7 @@ router.get('/clase_resto_dia', isLoggedIn,async(req,res)=>{
             }                     
         });
         if(contador == 1){    
-            const resto_dia = await pool.query('call GetRestoDia(?,?,?)', [20, req.app.locals.user.id_usuario, dia]);
+            const resto_dia = await pool.query('call GetRestoDia(?,?,?)', [20, req.app.locals.user.id_usuario, param.dia_r]);
             resto_dia.pop();
             throw res.render('links/clase_resto_dia', {clase: clase, resto: resto_dia[0]});            
         }else{            
@@ -205,57 +193,51 @@ router.post('/editar_perfil',isLoggedIn, async (req,res)=>{
 });
 
 router.get('/material_clase',isLoggedIn, async (req,res)=>{
-    try{   
-        let fecha = new Date();
-        let hora = fecha.getHours();            
-        let dia = fecha.getDay();
+    
+});
+
+router.post('/material_clase',isLoggedIn, async (req,res)=>{
+    try{  
+        const {hora, dia} = req.body; 
+        const param={
+            hora,
+            dia
+        }
+        console.log('Que hay aqui? ',req.body)
+        console.log('hora final pichula', param.hora);
+        console.log('Dia final pichula', param.dia);
         let nombre_clase = '';
         let clase;
         let contador = 0;
-        if(dia==0) dia=7;  
         //si es entre las 0 y 6 hrs en utc el dia se resta
-        if(hora >=0 && hora <=6){
-            dia--;
-        }
-        if(dia==0){
-            dia=7;
-        }
-        //cambiar horas de utc a gmt
-        for(let j=0; j<6;j++){
-            if(hora == 0){
-                hora = 24
-            }
-            hora--;
-        }    
-        console.log('hora final', hora);
-        console.log('Dia final ', dia);
-        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
-        clase_actual.pop();
-        console.log('clase actual',clase_actual[0]);      
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [param.dia, req.app.locals.user.id_usuario]);
+        clase_actual.pop();  
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
-                if(h1 == hora){
-                    console.log('contador antes del mas',contador);
-                    contador++;
-                    console.log('contador despues del mas',contador);                    
+                if(h1 == param.hora){
+                    contador++;                   
                     nombre_clase = element.nombre_clase;
-                    clase = element;  
+                    clase = element;                     
                 }
                 h1 ++;
-            }                     
+            }                    
         });
-        if(contador == 1){    
+        console.log("clase pich", clase);  
+        if(contador == 1){
+            console.log("antes query")    
             const notas = await pool.query('call GetNotClas(?,?)', [req.app.locals.user.id_usuario, nombre_clase]);
+            console.log("despues query")   
             notas.pop();
+            console.log("despues query2")  
             throw res.render('links/material_clase', {clase : clase, notas: notas[0]});
         }else{                
             req.flash('success', 'No tienes clase ahorita, tranqui tomate un descanso crack');        
             throw res.redirect('/links/Horario');
         }   
     }catch(error){
-        console.log(error);
+        console.log("aber", error);
     }
 });
 router.get('/pendientes', isLoggedIn, async (req,res)=>{
@@ -457,36 +439,24 @@ router.post('/editar_pendiente',isLoggedIn, async (req,res)=>{
     res.render('links/editar_pendiente',{pendiente: pendiente[0],fecha_muestra,fecha_valor, clases: clase[0]});
     
 });
-router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
+router.post('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     try{   
-        const fecha = new Date();
-        let hora = fecha.getHours(); 
-        let dia = fecha.getDay();
+        const {hora_n, dia_n} = req.body; 
+        const param={
+            hora_n,
+            dia_n
+        }
+        
         let nombre_clase = '';
-        let clase;        
+        let clase;
         let contador = 0;
-        if(dia==0) dia=7;   
-        //si es entre las 0 y 6 hrs en utc el dia se resta
-        if(hora >=0 && hora <=6){
-            dia--;
-        }
-        if(dia==0){
-            dia=7;
-        }
-        //cambiar horas de utc a gmt
-        for(let j=0; j<6;j++){
-            if(hora == 0){
-                hora = 24
-            }
-            hora--;
-        }        
-        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [param.dia_n, req.app.locals.user.id_usuario]);
         clase_actual.pop();      
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
-                if(h1 == hora){
+                if(h1 == param.hora_n){
                     contador++;                    
                     nombre_clase = element.nombre_clase;
                     clase = element; 
@@ -504,36 +474,23 @@ router.get('/clase_tomar_nota',isLoggedIn, async(req,res)=>{
     }catch(error){
     }
 });
-router.get('/clase_pendiente', isLoggedIn,async(req,res)=>{
+router.post('/clase_pendiente', isLoggedIn,async(req,res)=>{
     try{   
-        const fecha = new Date();
-        let hora = fecha.getHours();
-        let dia = fecha.getDay();
+        const {hora_p, dia_p} = req.body; 
+        const param={
+            hora_p,
+            dia_p
+        }       
         let nombre_clase = '';
         let clase;
         let contador = 0;
-        if(dia==0) dia=7;  
-        //si es entre las 0 y 6 hrs en utc el dia se resta
-        if(hora >=0 && hora <=6){
-            dia--;
-        }
-        if(dia==0){
-            dia=7;
-        }
-        //cambiar horas de utc a gmt
-        for(let j=0; j<6;j++){
-            if(hora == 0){
-                hora = 24
-            }
-            hora--;
-        }         
-        const clase_actual = await pool.query('call GetClasDia (?,?)', [dia, req.app.locals.user.id_usuario]);
+        const clase_actual = await pool.query('call GetClasDia (?,?)', [param.dia_p, req.app.locals.user.id_usuario]);
         clase_actual.pop();      
         clase_actual[0].forEach(async element=>{
             let h1 = element.horai_clase;
             let resta = element.horat_clase - element.horai_clase;
             for(let i =0; i<resta; i++){
-                if(h1 == hora){
+                if(h1 == param.hora_p){
                     contador++;                    
                     nombre_clase = element.nombre_clase;
                     clase = element; 
