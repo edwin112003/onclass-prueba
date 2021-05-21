@@ -12,7 +12,7 @@
         <div class="row justify-content-md-center" id="table">
           {{#if listPen.length}}
           <br>
-            <table class="table table-hover table-striped table-responsive">
+            <table class="table table-hover table-striped table-responsive mx-auto">
               <thead class="thead-dark">
                 <tr>
                   <th>Clase</th>
@@ -130,7 +130,7 @@
           var chart = new ApexCharts(document.querySelector("#chartInd"), options);
           chart.render();
         } else {
-          document.getElementById('chartInd').innerHTML = "<h4><span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente individuales</span></h4>";
+          document.getElementById('chartInd').innerHTML = "<h4><span class='badge bg-light text-dark'><br>Aquí aparecerán tus pendientes individuales</span></h4>";
         }
       
         let fechasEquipo = [];
@@ -222,7 +222,7 @@
           var charte = new ApexCharts(document.querySelector("#chartEq"), optionse);
           charte.render();
         } else {
-          document.getElementById('chartEq').innerHTML = "<h4> <span class='badge bg-light text-dark'>Aqui aparecerán tus pendiente en equipo</span> <a class='btn btn-success btn-lg' href='pendientes'> Agregar Pendientes </a>  </h4>";
+          document.getElementById('chartEq').innerHTML = "<h4> <span class='badge bg-light text-dark'><br>Aqui aparecerán tus pendientes de equipo</span></h4>";
         }
       
     </script>

@@ -1,4 +1,14 @@
+<style>
+    body {
+        background-image: url('/img/bckg.svg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+    }
+</style>
 <body>
+  
+  <link rel="icon" type="image/png" href="/img/icon.png" sizes="192x192">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
     integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
     crossorigin="anonymous"></script>
@@ -28,13 +38,13 @@
   {{>navigation}}
 
 
-  <div class="container">
+  <div class="container mt-4">
     <div class="row">
       <div class="col-7">
         <div class="row">
           <div class="col-12">
             <div class="clearfix">
-              <div>
+              <div class="mt-2">
                 <h4 class="text-center"><i class="fas fa-comments mr-2"></i>CHAT</h4>
                 <h5 id="room-name" hidden="hidden"></h5>
                 <div class="shadow-lg p-3 mb-5 bg-white rounded mr-5"
@@ -48,7 +58,7 @@
         <div class="row bg-muted" style="margin-top: -2rem;"> 
           <div class="col-12">
             <form id="chat-form" class="d-flex flex-row ">
-              <input class="form-control" id="msg" type="text" placeholder="Enter Message" required
+              <input class="form-control" id="msg" type="text" placeholder="Escribe un mensaje" required
                 autocomplete="off" />
               <button class="btn btn-success" onclick="Submit()"><i class="fas fa-paper-plane"> </i></button>
             </form>
@@ -58,11 +68,11 @@
       <div class="col-4">
         <div class="mt-5 text-center">
           <p class="mt-5">Usuarios conectados:</p>
-          <ul class="ml-5 my-2">
-            <li type="disc" style="color:rgb(15, 255, 87);">
+          <ol class="ml-5 my-2">
+            <li type="disc" style="color:rgb(15, 255, 87);"> 
               <span id="users" class="font-weight-bolder text-body"></span>
-            </li>
-          </ul>
+            </li>            
+          </ol>
           <br>
           <br>
           <div class="float-right">
