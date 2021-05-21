@@ -66,12 +66,37 @@
 }())
 
 function hora(){
-	var fecha = new Date()
-	let hora = fecha.getHours()
-	let dia = fecha.getDay()
-	if(dia==0) dia=7; 
-	let array = [hora, dia];
-	console.log(array)
-	fetch("/links/material_clase", {method: 'POST',headers:{'Content-Type': 'application/json'},redirect: 'follow',  body:JSON.stringify(array)});
-	console.log("llego a la hora")
+	fecha = new Date();
+	document.getElementById("horas_material").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_material").value=dia;
+	document.getElementById("material_clase_form").submit();
+}
+
+function nota(){
+	fecha = new Date();
+	document.getElementById("horas_nota").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_nota").value=dia;
+	document.getElementById("nota_clase_form").submit();
+}
+
+function pen(){
+	fecha = new Date();
+	document.getElementById("horas_pen").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_pen").value=dia;
+	document.getElementById("pen_clase_form").submit();
+}
+
+function res(){
+	fecha = new Date();
+	document.getElementById("horas_res").value=fecha.getHours();
+	dia = fecha.getDay();
+	if(dia==0) dia=7;
+	document.getElementById("dia_res").value=dia;
+	document.getElementById("res_clase_form").submit();
 }
