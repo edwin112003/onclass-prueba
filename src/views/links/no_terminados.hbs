@@ -118,6 +118,9 @@
                     <div class="row row-cols-3">
                       <div class="col-6">
                         <p class="font-italic">{{nombre_tipo}}</p>
+                        <button onclick="Correo( '{{nombre_pendiente}}' , '{{fecha_entrega}}') " class="btn btn-sm btn-primary">
+                        Correo de prueba
+                        </button>
                       </div>
                       <div class="col-2">
                         <form action="" method="POST">
@@ -144,8 +147,10 @@
                           <button type="submit" class="btn btn-sm btn-success" title="Marcar como terminado"
                             data-toggle="popover" data-trigger="hover">
                             <i class="fas fa-check-circle"></i>
+                            
                           </button>
                         </form>
+                        
                       </div>
                     </div>
                   </div>

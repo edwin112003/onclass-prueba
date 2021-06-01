@@ -1015,8 +1015,9 @@ router.get('/terminos_condiciones', (req,res)=>{
     res.render('links/terminos_condiciones', {layout:'login'});
 });
 router.post('/correo',(req,res)=>{
+    console.log("aber")
     contentHTML = 
-    `<h1>Buenas la fecha de entrega de tu tarea esta cerca</h1>
+    `<h1>La fecha de entrega de tu tarea esta cerca</h1>
     <ul>
         <li>Nombre de la tarea: `+req.body.nombre+`</li>
         <li>Fecha de entrega: `+req.body.fecha+`</li>
@@ -1026,20 +1027,25 @@ router.post('/correo',(req,res)=>{
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'savestudios@onclass.online',
+            user: 'onclass.online.p@gmail.com',
             pass: 'paulaonclass'
         }
     });
-
+try{
     let info = transporter.sendMail({
-        from: 'savestudios@onclass.online', // sender address,
+        from: 'onclass.online.p@gmail.com', // sender address,
         to: req.body.correo,
         subject: '¡SE ACABA EL TIEMPO!',
         html: contentHTML
     });
     req.flash('success', 'Correo enviado correctamente');
+}catch(error){
     res.redirect('/links/no_terminados')
+}
+    
+    
 });
+
 router.use(error404);
 
 module.exports = router;
