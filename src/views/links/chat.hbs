@@ -1,13 +1,14 @@
 <style>
-    body {
-        background-image: url('/img/bckg.svg');
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: 100%;
-    }
+  body {
+    background-image: url('/img/bckg.svg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+  }
 </style>
+
 <body>
-  
+
   <link rel="icon" type="image/png" href="/img/icon.png" sizes="192x192">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
     integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
@@ -45,17 +46,18 @@
           <div class="col-12">
             <div class="clearfix">
               <div class="mt-2">
-                <h4 class="text-center"><i class="fas fa-comments mr-2"></i>CHAT</h4>
+                
+      <h3 class="text-center mt-4 mb-5"><i class="fas fa-comments mr-2"></i>CHAT</h3>                
                 <h5 id="room-name" hidden="hidden"></h5>
                 <div class="shadow-lg p-3 mb-5 bg-white rounded mr-5"
-                  style="width:100%; height:480px; overflow: scroll;">
+                  style="width:100%; height:520px; overflow: scroll;">
                   <div class="chat-messages"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row bg-muted" style="margin-top: -2rem;"> 
+        <div class="row bg-muted" style="margin-top: -2rem;">
           <div class="col-12">
             <form id="chat-form" class="d-flex flex-row ">
               <input class="form-control" id="msg" type="text" placeholder="Escribe un mensaje" required
@@ -65,31 +67,37 @@
           </div>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-3 ml-5 mt-5">
         <div class="mt-5 text-center">
-          <p class="mt-5">Usuarios conectados:</p>
-          <ol class="ml-5 my-2">
-            <li type="disc" style="color:rgb(15, 255, 87);"> 
-              <span id="users" class="font-weight-bolder text-body"></span>
-            </li>            
-          </ol>
+          <div class="card">
+            <div class="card-header">
+              Usuarios conectados:
+            </div>
+            <div class="card-body">
+              <ol class="ml-1 my-2">
+                <li type="disc" style="color:rgb(15, 255, 87);">
+                  <span id="users" class="font-weight-bolder text-body text-left" style="margin-left: -3rem;"></span>
+                </li>
+              </ol>
+            </div>
+          </div>
           <br>
           <br>
           <div class="float-right">
-            <a href="/links/chat_menu" class="btn btn-danger">Salir</a>
+            <a href="/links/chat_menu" class="btn btn-danger">Salir <i class="fas fa-sign-out-alt ml-2"></i></a>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-  <br>
+
+  <br><br>
   <center>
     <div class="d-flex flex-column justify-content-center" style="width: 60%;">
-      <h5 class="text-center">Tomar notas</h5><br>
+      <h3 class="text-center">Tomar notas <i class="fas fa-pen ml-2"></i></h3><br>
       <div id="nota"></div>
       <div class="d-flex justify-content-around mt-4">
-        <button class="btn btn-success" onclick="Enviar()">Enviar</button>
+        <button class="btn btn-success" onclick="Enviar()">Enviar <i class="fas fa-paper-plane ml-2"></i></button>
         <button class="btn btn-danger" onclick="EnviarFalso()">Enviar fake</button>
       </div>
     </div>

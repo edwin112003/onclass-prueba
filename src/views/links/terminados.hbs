@@ -19,7 +19,26 @@
     * {
       font-family: sans-serif;
     }
+
+    body {
+      background-image: url('/img/bkg_pend.svg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100%;
+    }
   </style>
+  {{!--
+  <style>
+    * {
+      font-family: sans-serif;
+    }
+
+    <style>body {
+      background-color: #eeeeee;
+    }
+  </style>
+
+  --}}
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
 </head>
 
@@ -38,11 +57,11 @@
     </div>
   </nav>
 
-  <div class="container p-4">
+  <div class="container p-4" style="margin-bottom: 15rem;">
     <div class="row py-5 mb-5">
-      <div class="col-7" style="margin-left: -0.5rem;">
-        <h1 style="margin-top: -2.1rem; margin-left:-3rem;">Pendientes Terminados <span style="color: green;"><i
-              class="fas fa-check-circle ml-2"></i></span> </h1>
+      <div class="col-7 bg-white" style="margin-left: -0.5rem;">
+        <h1 style="margin-top: -2.1rem; margin-left:-3rem;" class="bg-white">Pendientes Terminados <span
+            style="color: green;"><i class="fas fa-check-circle ml-2"></i></span> </h1>
         <hr class="mt-2 mb-4" style="margin-left:-3rem;">
         {{!-- INICIO DEL LOOP --}}
         {{!-- =========================================== --}}
@@ -135,17 +154,23 @@
                 <div class="card-header text-center mb-3">
                   <span style="font-size: 1.4rem;"><i class="fas fa-plus-circle mr-2"></i> AGREGAR PENDIENTE</span>
                 </div>
-                <form action="/links/add_pendientes" method="POST">
+                <form class="needs-validation" action="/links/add_pendientes" method="POST" novalidate>
                   <div class="form-group">
                     <label for="des">Titulo de pendiente</label>
                     <input type="text" class="form-control" name="nombre" placeholder="Nombre de la tarea"
                       pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
                       onkeypress="return isText(event)" required>
+                    <div class="invalid-feedback">
+                      Agrega un titulo para el pendiente
+                    </div>
                   </div>
                   <div class="form-group">
                     <label for="des">Descripción</label>
                     <textarea class="form-control" name="descripcion" aria-describedby="des" rows="3" minlength="5"
                       required></textarea>
+                    <div class="invalid-feedback">
+                      Agrega una descripción
+                    </div>
                   </div>
                   <div class="form-group mb-5">
                     <div class="row">
@@ -161,13 +186,20 @@
                           <option value="{{nombre_clase}}">{{nombre_clase}}</option>
                           {{/each}}
                         </select>
+                        <div class="invalid-feedback">
+                          Selecciona una clase
+                        </div>
                       </div>
                       <div class="col-5" style="margin-right: -1rem;">
                         <input name="fecha" class="form-control" type="text" id="from" placeholder="dd/mm/aa" required>
+                        <div class="invalid-feedback">
+                        Ingresa una fecha válida
+                      </div>
                       </div>
                       <div class="col-1">
                         <span style="font-size: 1.5rem;"> <i class="fas fa-calendar-alt"></i> </span>
                       </div>
+                      
                     </div>
                   </div>
                   <div class="form-group">
@@ -233,5 +265,21 @@
       scale: 1.15
     })
   </script>
-
+  <script>
+      (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+          var forms = document.getElementsByClassName('needs-validation');
+          var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
+  </script>
 </body>

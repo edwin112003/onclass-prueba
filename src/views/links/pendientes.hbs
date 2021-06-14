@@ -14,8 +14,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
     integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
-  <!--jquery-ui.css -->
 
   <!--datepicker cnd -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"
@@ -24,7 +22,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"
     integrity="sha512-bQDrQVcciTl18hVB8cNhjJZE2l+bi4xGo7m0T81f1AUEbY72xOCgaKP5TD1TQwW1Ji3GCX6ua8ORarZkC00rdg=="
     crossorigin="anonymous"></script>
-    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="stylesheet" href="/css_complements/style.css">
 </head>
 
 <body>
@@ -83,18 +81,23 @@
             <div class="card-header text-center mb-3">
               <span style="font-size: 1.4rem;"><i class="fas fa-plus-circle mr-2"></i> AGREGAR PENDIENTE</span>
             </div>
-            <form action="/links/pendientes" method="POST">
+            <form class="needs-validation" action="/links/pendientes" method="POST" novalidate>
               <div class="form-group">
                 <label for="des">Titulo de pendiente</label>
-                <input type="text" class="form-control" name="nombre" placeholder="Ecuaciones pg-75"
+                <input type="text" class="form-control" name="nombre" placeholder="Integrales pg-75"
                   pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
-                  onkeypress="return isText(event)" required>
+                  onkeypress="return isText(event)" autofocus required>
+                <div class="invalid-feedback">
+                  Coloca un titulo para el pendiente
+                </div>
               </div>
               <div class="form-group">
                 <label for="des">Descripción</label>
-                <textarea class="form-control" name="descripcion" aria-describedby="des" rows="3"
-                  placeholder="Resolver ejerciios en hojas blancas" required>
-                </textarea>
+                <textarea class="form-control" name="descripcion" aria-describedby="des" rows="3" minlength="5"
+                  required></textarea>
+                  <div class="invalid-feedback">
+                  Agrega una descripción
+                </div>
               </div>
               <div class="form-group mb-5">
                 <div class="row">
@@ -105,15 +108,21 @@
                   <div class="col-5 mr-2">
                     <select class="form-select btn btn-secondary" name="clase" aria-label="Default select example"
                       required>
-                      <option selected disabled>Mis clases </option>
+                      <option selected disabled> Mis clases </option>
                       {{#each clases}}
                       <option value="{{nombre_clase}}">{{nombre_clase}}</option>
                       {{/each}}
                     </select>
+                    <div class="invalid-feedback">
+                      Selecciona una clase
+                    </div>
                   </div>
                   <div class="col-5" style="margin-right: -1rem;">
                     <input name="fecha" class="form-control" type="text" id="from" placeholder="dd/mm/aa" required>
-                  </div>                  
+                    <div class="invalid-feedback">
+                      Ingresa una fecha válida
+                    </div>
+                  </div>
                   <div class="col-1">
                     <span style="font-size: 1.5rem;"> <i class="fas fa-calendar-alt"></i> </span>
                   </div>
@@ -181,6 +190,23 @@
     $('.js-tilt').tilt({
       scale: 1.15
     })
+  </script>
+  <script>
+      (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+          var forms = document.getElementsByClassName('needs-validation');
+          var validation = Array.prototype.filter.call(forms, function (form) {
+            form.addEventListener('submit', function (event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+      })();
   </script>
 
 </body>

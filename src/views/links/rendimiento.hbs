@@ -2,17 +2,19 @@
 
     <div class="container">
 
-      <h3 class=" my-3 text-center">Mi Rendimiento <i class="fas fa-chart-line ml-2"></i></h3>
+      <h2 class=" mt-5 mb-3 text-center">Mi Rendimiento <i class="fas fa-chart-line ml-2"></i></h2>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">          
         </div>
         <div class="row justify-content-md-center" id="chartInd">
         </div>
         <div class="row justify-content-md-center" id="chartEq">
         </div>
-        <div class="row justify-content-md-center" id="table">
-          {{#if listPen.length}}
-          <br>
-            <table class="table table-hover table-striped table-responsive mx-auto">
+        <br><br>
+        <h2 class="text-center">Mi historial <i class="fas fa-history ml-2"></i></h2>        
+        <div class="row" id="table">
+          <div class="mx-auto">
+            {{#if listPen.length}}          
+            <table class="table table-hover table-striped table-responsive">
               <thead class="thead-dark">
                 <tr>
                   <th>Clase</th>
@@ -33,6 +35,8 @@
             {{/each}}
             </table>
           {{/if}}
+          </div>
+          
         </div>
         
     </div>

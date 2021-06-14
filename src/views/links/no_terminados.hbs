@@ -17,14 +17,35 @@
   <!--jquery-ui.css -->
   <link rel="stylesheet" href="/css_complements/style.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-</head>
-
-<body>
   <style>
     * {
       font-family: sans-serif;
     }
+
+    body {
+      background-image: url('/img/bkg_pend.svg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100%;
+    }
   </style>
+  {{!--
+  <style>
+    * {
+      font-family: sans-serif;
+    }
+
+    <style>body {
+      background-color: #eeeeee;
+    }
+  </style>
+
+  --}}
+
+</head>
+
+<body>
+
   {{>navigation}}
   <nav style="margin-top: -1.6rem;" class="navbar navbar-expand-lg navbar-light bg-light mb-3">
     <div style="margin-bottom: -0.5rem; margin-top: -0.5rem;" class="d-flex justify-content-center">
@@ -45,14 +66,14 @@
 
   <div class="container" style="margin-top: 4.8rem;">
     <div class="row">
-      <div class="col-6">
-        <h1 style="margin-top: -2.1rem; margin-left:-2.3rem;">Pendientes Por Completar <span
-            style="color: rgb(255, 251, 6);"><i class="fas fa-exclamation-triangle ml-2"></i></span> </h1>
+      <div class="col-6 bg-white">
+        <h1 style="margin-top: -2.1rem; margin-left:-2.3rem;" class="bg-white">Pendientes Por Completar <span
+            style="color: rgb(255, 238, 0);"><i class="fas fa-exclamation-triangle ml-2"></i></span> </h1>
         <hr class="mt-2 mb-1" style="margin-left:-3rem;">
       </div>
     </div>
   </div>
-  <div class="container p-4">
+  <div class="container p-4" style="margin-bottom: 15rem;">
     {{#if message}}
     <div class="container">
       <div class="row">
